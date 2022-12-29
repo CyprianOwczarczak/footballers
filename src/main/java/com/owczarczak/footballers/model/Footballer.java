@@ -1,22 +1,21 @@
 package com.owczarczak.footballers.model;
 
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
-@Slf4j
-@AllArgsConstructor
-@RequiredArgsConstructor
+@Entity
+@Table(name = "footballers")
 public class Footballer implements Serializable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private final String pesel;
+    private String pesel;
     private String name;
     private String club;
     private int goals;
@@ -27,8 +26,9 @@ public class Footballer implements Serializable {
         this.name = name;
         this.club = club;
         this.height = height;
+    }
 
-        log.info("Added a footballer: " + name);
+    public Footballer() {
     }
 
     @Override
@@ -48,8 +48,55 @@ public class Footballer implements Serializable {
         return Objects.hash(pesel);
     }
 
-    //todo switch off the 'final' prompt, and turn off check for some test classes
     public String toString() {
         return "Pesel: " + pesel + " name: " + name + ", football club: " + club + ", number of goals scored: " + goals + ", height: " + height;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getClub() {
+        return club;
+    }
+
+    public void setClub(String club) {
+        this.club = club;
+    }
+
+    public int getGoals() {
+        return goals;
+    }
+
+    public void setGoals(int goals) {
+        this.goals = goals;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
