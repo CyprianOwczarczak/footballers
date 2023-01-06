@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/footballers
+    username: postgres
+    password: cypriani
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate # Hibernate ddl auto (create, create-drop, validate, update)

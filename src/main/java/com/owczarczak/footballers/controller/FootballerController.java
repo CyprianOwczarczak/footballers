@@ -1,23 +1,19 @@
 package com.owczarczak.footballers.controller;
 
+import com.owczarczak.footballers.database.FootballerRepository;
 import com.owczarczak.footballers.model.Footballer;
-import com.owczarczak.footballers.repository.FootballerRepository;
-import jakarta.validation.Valid;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/footballers")
-@Getter
 public class FootballerController {
-//    @Autowired
-    private FootballerRepository repository;
+    @Autowired
+    FootballerRepository repository;
 
     @GetMapping
     public String index(Footballer footballer) {
@@ -25,13 +21,9 @@ public class FootballerController {
     }
 
     @GetMapping("/")
-    ResponseEntity<List<Footballer>> getAllPlayers() {
-        return ResponseEntity.ok(repository.getAllPlayers());
+    public List<Footballer> getFootballers() {
+        List<Footballer> footballers = repository.findAll();
+        footballers.forEach(System.out::println);
+        return footballers;
     }
-
-//    @PostMapping
-//    ResponseEntity<Footballer> addFootballer(@RequestBody @Valid Footballer footballerToAdd) {
-//        Footballer result = repository.addFootballer(footballerToAdd);
-//        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
-//    }
 }
