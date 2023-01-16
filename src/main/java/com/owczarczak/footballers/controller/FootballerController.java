@@ -34,13 +34,7 @@ public class FootballerController {
         return repository.findById(id);
     }
 
-//    @GetMapping("/{id}")
-//    public List<Footballer> getFootballers(@PathVariable int id) {
-//        //TODO Use Query
-//        return repository.getByName(Query);
-//    }
-
-    @GetMapping("top3ByHeight")
+    @GetMapping("/top3ByHeight")
     public List<Footballer> getHighest() {
         List<Footballer> footballers = repository.findAll();
         footballers.sort(new FootballerHeightComparator());
@@ -65,7 +59,9 @@ public class FootballerController {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-//        repository.findById(id).ifPresent(footballer -> footballer);
+        repository.findById(id)
+                .ifPresent(footballer -> footballer.updateFootballer(footballerToUpdate));
+        repository.save()
         return ResponseEntity.noContent().build();
     }
 

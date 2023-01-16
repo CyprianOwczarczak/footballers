@@ -21,6 +21,13 @@ public class Footballer {
         this.height = height;
     }
 
+    public void updateFootballer(Footballer footballerToUpdate) {
+        pesel = footballerToUpdate.pesel;
+        name = footballerToUpdate.name;
+        goals = footballerToUpdate.goals;
+        height = footballerToUpdate.height;
+    }
+
     public Footballer() {
 
     }
