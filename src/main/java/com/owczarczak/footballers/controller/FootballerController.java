@@ -34,10 +34,19 @@ public class FootballerController {
         return repository.findById(id);
     }
 
+//    @GetMapping("/{id}")
+//    public List<Footballer> getFootballers(@PathVariable int id) {
+//        //TODO Use Query
+//        return repository.getByName(Query);
+//    }
+
     @GetMapping("top3ByHeight")
     public List<Footballer> getHighest() {
         List<Footballer> footballers = repository.findAll();
         footballers.sort(new FootballerHeightComparator());
+        if (footballers.size() == 0) {
+            return null;
+        }
         if (footballers.size() < 3) {
             return footballers.subList(0, footballers.size());
         }
@@ -50,5 +59,31 @@ public class FootballerController {
         Footballer result = repository.save(footballerToAdd);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
+
+    @PutMapping("/{id}")
+    ResponseEntity<?> updateFootballer(@PathVariable int id, @RequestBody Footballer footballerToUpdate) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+//        repository.findById(id).ifPresent(footballer -> footballer);
+        return ResponseEntity.noContent().build();
+    }
+
+    //    @PostMapping
+//    Footballer addFootballer(@RequestBody Footballer footballerToAdd) {
+//        Footballer result = repository.save(footballerToAdd);
+//        return result;
+//    }
+//
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Footballer> deleteFootballer(@PathVariable int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
 }
