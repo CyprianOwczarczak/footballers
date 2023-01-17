@@ -23,19 +23,23 @@ public class FootballerController {
         return "Greetings !";
     }
 
+    //TODO Rozwinąć, pomiędzy Copntroller a Repository wstawić Service (do wszystkich metod)
+
     @GetMapping("/")
     public List<Footballer> getFootballers() {
         List<Footballer> footballers = repository.findAll();
-        footballers.forEach(System.out::println);
         return footballers;
     }
 
     @GetMapping("/{id}")
     public Optional<Footballer> getFootballers(@PathVariable int id) {
+        //TODO dodać 404a i zwracać ResponseEntity
         return repository.findById(id);
     }
 
     @GetMapping("/top3ByHeight")
+    //TODO na SQL
+    //
     public List<Footballer> getHighest() {
         List<Footballer> footballers = repository.findAll();
         footballers.sort(new FootballerHeightComparator());
@@ -50,6 +54,7 @@ public class FootballerController {
 
     @PostMapping
     ResponseEntity<Footballer> addFootballer(@RequestBody Footballer footballerToAdd) {
+        //TODO Validacja sprawdzająca poprawność zaoytania (Ręcznie zrobić)
         Footballer result = repository.save(footballerToAdd);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
@@ -61,6 +66,8 @@ public class FootballerController {
         }
         footballerToUpdate.setId(id);
         repository.save(footballerToUpdate);
+        //TODO zwrcacać created (tak jak w postMapping)
+        //Validacja
         return ResponseEntity.noContent().build();
     }
 
@@ -68,8 +75,9 @@ public class FootballerController {
     ResponseEntity<Footballer> deleteFootballer(@PathVariable int id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
+            //TODO Sprawdzić czy nie lepiej zwracać 204 (no content)
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 }
