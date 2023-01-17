@@ -1,0 +1,15 @@
+Przeróbka na serwisy i dodanoe DTOs'ów i dopisanie Mapperów ręcznie
+Dodać Flywaya -> ściągnąć klasę FlywayMigrationConfig z EnergyDataViewer
+Zrobić testy Controller'a, (do samych Footbalerów na razie) (wszystko co się da)
+Dodanie Walidacji ręcznej
+Przeróbka Walidacji JSR
+Dodanie stronicowania do zwracanych List -> DataPointController metoda GetDataPointByHourAndDeliveryPoints (poczytać o stronicowaniu ze SpringData)
+Dodanie kolejnych Encji
+
+Obejrzeć z yt (teams) CommandQueryResponsibilitySegregation
+Pakietować funkcjonalnościami (klasa Footballera w jednym miejscu, Meczu w drugiej itp.)
+
+Przejrzeć energy-data-viewer(testy też)
+Record poczytać co to jest
+
+(za pomocą MapStruct (konwertery)) -> na razie przepisywać ręcznie/ builder z Lomboka
