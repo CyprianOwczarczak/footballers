@@ -21,13 +21,6 @@ public class Footballer {
         this.height = height;
     }
 
-    public void updateFootballer(Footballer footballerToUpdate) {
-        pesel = footballerToUpdate.pesel;
-        name = footballerToUpdate.name;
-        goals = footballerToUpdate.goals;
-        height = footballerToUpdate.height;
-    }
-
     public Footballer() {
 
     }
@@ -54,6 +47,30 @@ public class Footballer {
 
     public int getHeight() {
         return height;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setClub(String club) {
+        this.club = club;
+    }
+
+    public void setGoals(int goals) {
+        this.goals = goals;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     @Override

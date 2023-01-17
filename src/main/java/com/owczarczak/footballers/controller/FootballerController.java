@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -45,7 +46,6 @@ public class FootballerController {
             return footballers.subList(0, footballers.size());
         }
         return footballers.subList(0, 3);
-        //TODO Add a @Query to Repository and use ResponseEntity
     }
 
     @PostMapping
@@ -59,18 +59,10 @@ public class FootballerController {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        repository.findById(id)
-                .ifPresent(footballer -> footballer.updateFootballer(footballerToUpdate));
-        repository.save()
+        footballerToUpdate.setId(id);
+        repository.save(footballerToUpdate);
         return ResponseEntity.noContent().build();
     }
-
-    //    @PostMapping
-//    Footballer addFootballer(@RequestBody Footballer footballerToAdd) {
-//        Footballer result = repository.save(footballerToAdd);
-//        return result;
-//    }
-//
 
     @DeleteMapping("/{id}")
     ResponseEntity<Footballer> deleteFootballer(@PathVariable int id) {
@@ -80,6 +72,4 @@ public class FootballerController {
         }
         return ResponseEntity.notFound().build();
     }
-
-
 }
