@@ -37,19 +37,15 @@ public class FootballerController {
         return ResponseEntity.ok(repository.findById(id));
     }
 
-    //TODO na SQL
     @GetMapping("/top3ByHeight")
     public List<Footballer> getHighest() {
-        List<Footballer> footballers = repository.findAll();
-        footballers.sort(new FootballerHeightComparator());
-        if (footballers.size() == 0) {
-            return null;
-        }
-        if (footballers.size() < 3) {
-            return footballers.subList(0, footballers.size());
-        }
-        return footballers.subList(0, 3);
+        return repository.get3HighestFootballers();
     }
+
+//    @GetMapping("/{name}")
+//    public List<Footballer> getFootballersByName(@RequestParam String name) {
+//        return repository.getFootballersByName(name);
+//    }
 
     //TODO Validacja sprawdzająca poprawność zaoytania (Ręcznie zrobić)
     @PostMapping
