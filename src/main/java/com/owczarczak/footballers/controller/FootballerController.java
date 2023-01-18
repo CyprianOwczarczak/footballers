@@ -22,7 +22,7 @@ public class FootballerController {
         return "Greetings !";
     }
 
-    //TODO Rozwinąć, pomiędzy Coptroller a Repository wstawić Service (do wszystkich metod)
+    //TODO Rozwinąć, pomiędzy Controller a Repository wstawić Service (do wszystkich metod)
     @GetMapping("/")
     public List<Footballer> getFootballers() {
         List<Footballer> footballers = repository.findAll();
