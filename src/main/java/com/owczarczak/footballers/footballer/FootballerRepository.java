@@ -1,6 +1,5 @@
-package com.owczarczak.footballers.database;
+package com.owczarczak.footballers.footballer;
 
-import com.owczarczak.footballers.model.Footballer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

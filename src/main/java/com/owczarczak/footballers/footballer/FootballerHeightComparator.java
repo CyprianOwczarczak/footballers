@@ -1,4 +1,4 @@
-package com.owczarczak.footballers.model;
+package com.owczarczak.footballers.footballer;
 
 import java.util.Comparator;
 

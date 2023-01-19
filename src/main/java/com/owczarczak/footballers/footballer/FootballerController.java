@@ -1,12 +1,10 @@
-package com.owczarczak.footballers.controller;
+package com.owczarczak.footballers.footballer;
 
-import com.owczarczak.footballers.database.FootballerRepository;
-import com.owczarczak.footballers.model.Footballer;
-import com.owczarczak.footballers.model.FootballerHeightComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +12,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/footballers")
 public class FootballerController {
+
+    //TODO change to service
     @Autowired
     FootballerRepository repository;
 
@@ -22,9 +22,8 @@ public class FootballerController {
         return "Greetings !";
     }
 
-    //TODO Rozwinąć, pomiędzy Controller a Repository wstawić Service (do wszystkich metod)
     @GetMapping("/")
-    public List<Footballer> getFootballers() {
+    public List<Footballer> getAllFootballers() {
         List<Footballer> footballers = repository.findAll();
         return footballers;
     }
@@ -47,9 +46,8 @@ public class FootballerController {
 //        return repository.getFootballersByName(name);
 //    }
 
-    //TODO Validacja sprawdzająca poprawność zaoytania (Ręcznie zrobić)
     @PostMapping
-    ResponseEntity<Footballer> addFootballer(@RequestBody Footballer footballerToAdd) {
+    ResponseEntity<Footballer> addFootballer(@RequestBody @Valid Footballer footballerToAdd) {
         Footballer result = repository.save(footballerToAdd);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
