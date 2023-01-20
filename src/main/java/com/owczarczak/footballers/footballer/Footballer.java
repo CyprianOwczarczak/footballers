@@ -1,7 +1,9 @@
 package com.owczarczak.footballers.footballer;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 //TODO Przerobić na listę klubów w któych grał, i niech to będzie encja, i od kiedy do kiedy grał w tych klubach (kontrakt encja)
 //TODO DTO - Data Transfer Object
@@ -23,9 +25,10 @@ public class Footballer {
     String name;
     @NotBlank
     String club;
-    @NotBlank
+    @NotNull
     int goals;
-    @NotBlank
+    @NotNull
+    @Min(value = 1, message = "Height of the footballer must be higher than zero !")
     int height;
 
     public Footballer(final String pesel, final String name, final String club, final int height) {

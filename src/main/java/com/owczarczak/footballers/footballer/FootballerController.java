@@ -2,6 +2,7 @@ package com.owczarczak.footballers.footballer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,20 +42,20 @@ public class FootballerController {
         return repository.get3HighestFootballers();
     }
 
-//    @GetMapping("/{name}")
-//    public List<Footballer> getFootballersByName(@RequestParam String name) {
-//        return repository.getFootballersByName(name);
-//    }
+    @GetMapping("/{name}")
+    public List<Footballer> getFootballersByName(@RequestParam String name) {
+        return repository.findByName(name);
+    }
 
     @PostMapping
-    ResponseEntity<Footballer> addFootballer(@RequestBody @Valid Footballer footballerToAdd) {
+    ResponseEntity<Footballer> addFootballer(@RequestBody @Validated Footballer footballerToAdd) {
         Footballer result = repository.save(footballerToAdd);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     //TODO Validacja
     @PutMapping("/{id}")
-    ResponseEntity<?> updateFootballer(@PathVariable int id, @RequestBody Footballer footballerToUpdate) {
+    ResponseEntity<?> updateFootballer(@PathVariable int id, @RequestBody @Validated Footballer footballerToUpdate) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
