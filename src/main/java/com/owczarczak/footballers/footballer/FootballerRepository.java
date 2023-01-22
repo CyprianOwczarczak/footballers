@@ -15,12 +15,12 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
             """, nativeQuery = true)
     List<Footballer> get3HighestFootballers();
 
-//    @Query(value = """
-//            select *
-//            from footballers
-//            where 'name' like '%search%'
-//            """, nativeQuery = true)
-//    List<Footballer> getFootballersByName(@Param("search") String name);
+    @Query(value = """
+            select *
+            from footballers
+            where 'name' like '%search%'
+            """, nativeQuery = true)
+    List<Footballer> getFootballersByName(@Param("search") String name);
 
-    List<Footballer> findByName(String name);
+    List<Footballer> findByName(@Param("name") String name);
 }

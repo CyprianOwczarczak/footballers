@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +13,8 @@ import java.util.Optional;
 @RequestMapping("/footballers")
 public class FootballerController {
 
-    //TODO change to service
     @Autowired
-    FootballerRepository repository;
+    FootballerService service;
 
     @GetMapping
     public String index(Footballer footballer) {
@@ -25,51 +23,40 @@ public class FootballerController {
 
     @GetMapping("/")
     public List<Footballer> getAllFootballers() {
-        List<Footballer> footballers = repository.findAll();
-        return footballers;
+        return service.getAllFootballers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Footballer>> getFootballer(@PathVariable int id) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(repository.findById(id));
+    public Optional<Footballer> getFootballerById(@PathVariable int id) {
+        return service.getFootballerById(id);
     }
 
     @GetMapping("/top3ByHeight")
     public List<Footballer> getHighest() {
-        return repository.get3HighestFootballers();
+        return service.get3HighestFootballers();
     }
 
     @GetMapping("/{name}")
     public List<Footballer> getFootballersByName(@RequestParam String name) {
-        return repository.findByName(name);
+        return service.getFootballersByName(name);
     }
 
     @PostMapping
     ResponseEntity<Footballer> addFootballer(@RequestBody @Validated Footballer footballerToAdd) {
-        Footballer result = repository.save(footballerToAdd);
+        Footballer result = service.addFootballer(footballerToAdd);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
-    //TODO Validacja
     @PutMapping("/{id}")
-    ResponseEntity<?> updateFootballer(@PathVariable int id, @RequestBody @Validated Footballer footballerToUpdate) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        footballerToUpdate.setId(id);
-        Footballer result = repository.save(footballerToUpdate);
-        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
+    Optional<Footballer> updateFootballer(@PathVariable int id, @RequestBody @Validated Footballer footballerToUpdate) {
+        return service.updateFootballer(id, footballerToUpdate);
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<Footballer> deleteFootballer(@PathVariable int id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        if (service.deleteFootballer(id)) {
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }
