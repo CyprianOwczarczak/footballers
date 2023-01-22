@@ -21,7 +21,7 @@ public class FootballerService {
         return repository.findAll();
     }
 
-    public Optional<Footballer> getFootballer(@PathVariable int id) {
+    public Optional<Footballer> getFootballerById(@PathVariable int id) {
         if (!repository.existsById(id)) {
             return Optional.empty();
         }
