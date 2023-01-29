@@ -8,9 +8,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class FootballerDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
     @NotBlank
     String pesel;
     @NotBlank
