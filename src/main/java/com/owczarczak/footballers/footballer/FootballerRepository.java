@@ -20,6 +20,7 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
             from footballers
             where 'name' like '%search%'
             """, nativeQuery = true)
+        //FIXME JPQL zamiast nativeQuery !
     List<Footballer> getFootballersByName(@Param("search") String name);
 
     List<Footballer> findByName(@Param("name") String name);

@@ -14,6 +14,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FootballerService {
 
+    //TODO DTO mają mieć buildery, i przepisywać ręcznie
+
     @Autowired
     FootballerRepository repository;
 
@@ -28,7 +30,7 @@ public class FootballerService {
         return repository.findById(id);
     }
 
-    public List<Footballer> get3HighestFootballers() {
+    public List<FootballerDTO> get3HighestFootballers() {
         return repository.get3HighestFootballers();
     }
 

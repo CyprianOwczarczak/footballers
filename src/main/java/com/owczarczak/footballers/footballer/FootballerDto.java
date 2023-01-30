@@ -8,16 +8,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class FootballerDto {
-    @NotBlank
-    String pesel;
-    @NotBlank
-    String name;
-    @NotBlank
-    String club;
-    @NotNull
-    int goals;
-    @NotNull
-    @Min(value = 1, message = "Height of the footballer must be higher than zero !")
-    int height;
+    private String pesel;
+    private String name;
+    private String club;
+    private int goals;
+    private int height;
 
 }
