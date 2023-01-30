@@ -13,6 +13,11 @@ import java.util.Optional;
 @RequestMapping("/footballers")
 public class FootballerController {
 
+    //TODO W osobnym branchu dodać footballera, który będziem iał encję klub, historię klubu, listę meczy i zobaczyć co zwróći RestController (zwróci wszysko, dlatego potrzebujemy DTO)
+
+    //TODO najpierw testy dla repozytoriów
+
+    //COntroller tylko rzeczy z HTTP związane
     @Autowired
     FootballerService service;
 
@@ -22,7 +27,8 @@ public class FootballerController {
     }
 
     @GetMapping("/")
-    public List<Footballer> getAllFootballers() {
+    public List<FootballerDTO> getAllFootballers() {
+        //TODO dodać sprawdzenie
         return service.getAllFootballers();
     }
 
@@ -43,7 +49,7 @@ public class FootballerController {
 
     @PostMapping
     ResponseEntity<Footballer> addFootballer(@RequestBody @Validated Footballer footballerToAdd) {
-        Footballer result = service.addFootballer(footballerToAdd);
+        FootballerDTO result = service.addFootballer(footballerToAdd); //TODO should return DTO
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
