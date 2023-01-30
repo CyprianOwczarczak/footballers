@@ -1,5 +1,10 @@
 package com.owczarczak.footballers.footballer;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -18,6 +23,9 @@ import javax.validation.constraints.NotNull;
 //TODO Validacja na wejściu do systemu
 @Entity
 @Table(name = "footballers")
+@Getter
+@Setter
+@AllArgsConstructor
 public class Footballer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
