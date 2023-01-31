@@ -44,55 +44,6 @@ public class Footballer {
     }
 
     public Footballer() {
-
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getClub() {
-        return club;
-    }
-
-    public int getGoals() {
-        return goals;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setClub(String club) {
-        this.club = club;
-    }
-
-    public void setGoals(int goals) {
-        this.goals = goals;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     @Override
