@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface FootballerRepository extends JpaRepository<Footballer, Integer> {
+public interface FootballerRepository extends JpaRepository<FootballerDto, Integer> {
 
     @Query("select * from footballers order by height desc limit 3")
     List<FootballerDto> get3HighestFootballers();

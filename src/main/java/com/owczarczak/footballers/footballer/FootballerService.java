@@ -14,40 +14,38 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FootballerService {
 
-    //TODO DTO mają mieć buildery, i przepisywać ręcznie
-
     @Autowired
     FootballerRepository repository;
 
-    public List<Footballer> getAllFootballers() {
+    public List<FootballerDto> getAllFootballers() {
         return repository.findAll();
     }
 
-    public Optional<Footballer> getFootballerById(@PathVariable int id) {
+    public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
         if (!repository.existsById(id)) {
             return Optional.empty();
         }
         return repository.findById(id);
     }
 
-    public List<FootballerDTO> get3HighestFootballers() {
+    public List<FootballerDto> get3HighestFootballers() {
         return repository.get3HighestFootballers();
     }
 
-    public List<Footballer> getFootballersByName(String name) {
+    public List<FootballerDto> getFootballersByName(String name) {
         return repository.findByName(name);
     }
 
-    public Footballer addFootballer(@RequestBody @Valid Footballer footballerToAdd) {
+    public FootballerDto addFootballer(@RequestBody @Valid FootballerDto footballerToAdd) {
         return repository.save(footballerToAdd);
     }
 
-    public Optional<Footballer> updateFootballer(@PathVariable int id, @RequestBody Footballer footballerToUpdate) {
+    public Optional<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody FootballerDto footballerToUpdate) {
         if (!repository.existsById(id)) {
             return Optional.empty();
         }
         footballerToUpdate.setId(id);
-        Footballer result = repository.save(footballerToUpdate);
+        FootballerDto result = repository.save(footballerToUpdate);
         return Optional.of(result);
     }
 

@@ -1,9 +1,6 @@
 package com.owczarczak.footballers.footballer;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +27,4 @@ public class FootballerDto {
     @NotNull
     @Min(value = 1, message = "Height of the footballer must be higher than zero !")
     private int height;
-
-
-
 }

@@ -13,3 +13,6 @@ Przejrzeć energy-data-viewer(testy też)
 Record poczytać co to jest
 
 (za pomocą MapStruct (konwertery)) -> na razie przepisywać ręcznie/ builder z Lomboka
+
+//TODO W osobnym branchu dodać footballera, który będzie miał encję klub, historię klubu, listę meczy i zobaczyć co zwróci RestController (zwróci wszysko, dlatego potrzebujemy DTO)
+//TODO testy najpierw dla repozytoriów
