@@ -16,11 +16,6 @@ public class FootballerController {
     @Autowired
     FootballerService service;
 
-    @GetMapping
-    public String index(FootballerDto footballer) {
-        return "Greetings !";
-    }
-
     @GetMapping("/")
     public List<FootballerDto> getAllFootballers() {
         return service.getAllFootballers();

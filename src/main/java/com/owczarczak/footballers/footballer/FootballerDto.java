@@ -10,21 +10,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class FootballerDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @NotBlank
     private String pesel;
-    @NotBlank
     private String name;
-    @NotBlank
     private String club;
-    @NotNull
     private int goals;
-    @NotNull
-    @Min(value = 1, message = "Height of the footballer must be higher than zero !")
     private int height;
 }

@@ -6,13 +6,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface FootballerRepository extends JpaRepository<FootballerDto, Integer> {
+public interface FootballerRepository extends JpaRepository<Footballer, Integer> {
 
+    //TODO Check if it works
     @Query("select * from footballers order by height desc limit 3")
-    List<FootballerDto> get3HighestFootballers();
+    List<Footballer> get3HighestFootballers();
 
     @Query("select * form footballers where 'name' like '%search%'")
-    List<FootballerDto> getFootballersByName(@Param("search") String name);
+    List<Footballer> getFootballersByName(@Param("search") String name);
 
-    List<FootballerDto> findByName(@Param("name") String name);
+    List<Footballer> findByName(@Param("name") String name);
 }
