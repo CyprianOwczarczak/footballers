@@ -16,19 +16,17 @@ public class FootballerController {
     @Autowired
     FootballerService service;
 
-    @GetMapping
-    public String index(FootballerDto footballer) {
-        return "Greetings !";
-    }
-
     @GetMapping("/")
     public List<FootballerDto> getAllFootballers() {
         return service.getAllFootballers();
     }
 
     @GetMapping("/{id}")
-    public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
-        return service.getFootballerById(id);
+    public ResponseEntity<FootballerDto> getFootballerById(@PathVariable int id) {
+        if (service.getFootballerById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/top3ByHeight")
@@ -48,8 +46,9 @@ public class FootballerController {
     }
 
     @PutMapping("/{id}")
-    Optional<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody @Validated FootballerDto footballerToUpdate) {
-        return service.updateFootballer(id, footballerToUpdate);
+    ResponseEntity<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody @Validated FootballerDto footballerToUpdate) {
+
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")

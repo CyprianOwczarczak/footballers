@@ -14,9 +14,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FootballerService {
 
+    //TODO Add mapping from Footballer --> FootballerDto
+
+//    private FootballerDto convertToDto(Footballer footballer) {
+//        FootballerDto footballerDto = modelMapper.map(post, PostDto.class);
+//        postDto.setSubmissionDate(post.getSubmissionDate(),
+//                userService.getCurrentUser().getPreference().getTimezone());
+//        return postDto;
+//    }
+
     @Autowired
     FootballerRepository repository;
 
+    //TODO the response is supposed to be mapped to DTO
     public List<FootballerDto> getAllFootballers() {
         return repository.findAll();
     }
