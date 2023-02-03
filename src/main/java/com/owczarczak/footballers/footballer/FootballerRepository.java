@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface FootballerRepository extends JpaRepository<Footballer, Integer> {
 
-    //TODO Check if it works
     @Query("from Footballer s order by s.height desc limit 3")
     List<Footballer> get3HighestFootballers();
 
     @Query("from Footballer s where s.name like '%search%'")
+
     List<Footballer> getFootballersByName(@Param("search") String name);
 
     List<Footballer> findByName(@Param("name") String name);
