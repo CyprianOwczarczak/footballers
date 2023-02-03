@@ -32,6 +32,7 @@ public class FootballerService {
     }
 
     public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
+
         if (!repository.existsById(id)) {
             return Optional.empty();
         }

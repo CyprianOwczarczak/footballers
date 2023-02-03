@@ -18,6 +18,7 @@ public class FootballerController {
 
     @GetMapping("/")
     public List<FootballerDto> getAllFootballers() {
+
         return service.getAllFootballers();
     }
 
@@ -31,11 +32,13 @@ public class FootballerController {
 
     @GetMapping("/top3ByHeight")
     public List<FootballerDto> getHighest() {
+
         return service.get3HighestFootballers();
     }
 
     @GetMapping("/{name}")
     public List<FootballerDto> getFootballersByName(@RequestParam String name) {
+
         return service.getFootballersByName(name);
     }
 
@@ -53,6 +56,7 @@ public class FootballerController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<FootballerDto> deleteFootballer(@PathVariable int id) {
+
         if (service.deleteFootballer(id)) {
             return ResponseEntity.ok().build();
         }
