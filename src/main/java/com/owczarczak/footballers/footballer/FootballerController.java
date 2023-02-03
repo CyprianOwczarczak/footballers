@@ -26,6 +26,7 @@ public class FootballerController {
         if (service.getFootballerById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        //FIXME change that to return a ResponseEntity with Footballer body
         return ResponseEntity.ok().build();
     }
 
@@ -47,7 +48,9 @@ public class FootballerController {
 
     @PutMapping("/{id}")
     ResponseEntity<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody @Validated FootballerDto footballerToUpdate) {
-
+        if (service.getFootballerById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().build();
     }
 
