@@ -12,7 +12,6 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
     List<Footballer> get3HighestFootballers();
 
     @Query("from Footballer s where s.name like '%search%'")
-
     List<Footballer> getFootballersByName(@Param("search") String name);
 
     List<Footballer> findByName(@Param("name") String name);

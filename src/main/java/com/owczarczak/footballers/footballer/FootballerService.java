@@ -25,23 +25,27 @@ public class FootballerService {
     }
 
     public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
-
         if (!repository.existsById(id)) {
             return Optional.empty();
         }
-        return repository.findById(id);
+        Optional<Footballer> footballer = repository.findById(id);
+        return Optional.ofNullable(mapper.toDto(footballer));
     }
 
     public List<FootballerDto> get3HighestFootballers() {
-        return repository.get3HighestFootballers();
+        List<Footballer> footballersList = repository.get3HighestFootballers();
+        return mapper.toDto(footballersList);
     }
 
     public List<FootballerDto> getFootballersByName(String name) {
-        return repository.findByName(name);
+        List<Footballer> footballerList = repository.findByName(name);
+        return mapper.toDto(footballerList);
     }
 
     public FootballerDto addFootballer(@RequestBody @Valid FootballerDto footballerToAdd) {
-        return repository.save(footballerToAdd);
+        Footballer newFootballer = mapper.toEntity(footballerToAdd);
+        Footballer footballer = repository.save(newFootballer);
+        return mapper.toDto(footballer);
     }
 
     public Optional<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody FootballerDto footballerToUpdate) {
@@ -49,8 +53,9 @@ public class FootballerService {
             return Optional.empty();
         }
         footballerToUpdate.setId(id);
-        FootballerDto result = repository.save(footballerToUpdate);
-        return Optional.of(result);
+        Footballer updatedFootballer = mapper.toEntity(footballerToUpdate);
+        Footballer footballer = repository.save(updatedFootballer);
+        return Optional.ofNullable(mapper.toDto(updatedFootballer));
     }
 
     public boolean deleteFootballer(@PathVariable int id) {

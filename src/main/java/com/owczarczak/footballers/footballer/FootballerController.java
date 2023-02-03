@@ -59,7 +59,6 @@ public class FootballerController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<FootballerDto> deleteFootballer(@PathVariable int id) {
-
         if (service.deleteFootballer(id)) {
             return ResponseEntity.ok().build();
         }
