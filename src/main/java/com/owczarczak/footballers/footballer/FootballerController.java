@@ -18,21 +18,28 @@ public class FootballerController {
 
     @GetMapping("/")
     public List<FootballerDto> getAllFootballers() {
+
         return service.getAllFootballers();
     }
 
     @GetMapping("/{id}")
-    public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
-        return service.getFootballerById(id);
+    public ResponseEntity<FootballerDto> getFootballerById(@PathVariable int id) {
+        if (service.getFootballerById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        //FIXME change that to return a ResponseEntity with Footballer body
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/top3ByHeight")
     public List<FootballerDto> getHighest() {
+
         return service.get3HighestFootballers();
     }
 
     @GetMapping("/{name}")
     public List<FootballerDto> getFootballersByName(@RequestParam String name) {
+
         return service.getFootballersByName(name);
     }
 
@@ -43,12 +50,16 @@ public class FootballerController {
     }
 
     @PutMapping("/{id}")
-    Optional<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody @Validated FootballerDto footballerToUpdate) {
-        return service.updateFootballer(id, footballerToUpdate);
+    ResponseEntity<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody @Validated FootballerDto footballerToUpdate) {
+        if (service.getFootballerById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<FootballerDto> deleteFootballer(@PathVariable int id) {
+
         if (service.deleteFootballer(id)) {
             return ResponseEntity.ok().build();
         }

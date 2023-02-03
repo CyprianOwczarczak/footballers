@@ -14,16 +14,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FootballerService {
 
-    //TODO Add mapping from Footballer --> FootballerDto
+    private final FootballerMapper mapper;
 
     @Autowired
     FootballerRepository repository;
 
     public List<FootballerDto> getAllFootballers() {
-        return repository.findAll();
+        List<Footballer> footballersList = repository.findAll();
+        return mapper.toDto(footballersList);
     }
 
     public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
+
         if (!repository.existsById(id)) {
             return Optional.empty();
         }
