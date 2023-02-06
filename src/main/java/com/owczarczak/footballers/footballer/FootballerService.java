@@ -14,7 +14,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FootballerService {
 
-    private final FootballerMapper mapper;
+//    @Autowired
+    FootballerMapper mapper;
 
     @Autowired
     FootballerRepository repository;
@@ -32,10 +33,10 @@ public class FootballerService {
         return Optional.ofNullable(mapper.toDto(footballer));
     }
 
-    public List<FootballerDto> get3HighestFootballers() {
-        List<Footballer> footballersList = repository.get3HighestFootballers();
-        return mapper.toDto(footballersList);
-    }
+//    public List<FootballerDto> get3HighestFootballers() {
+//        List<Footballer> footballersList = repository.get3HighestFootballers();
+//        return mapper.toDto(footballersList);
+//    }
 
     public List<FootballerDto> getFootballersByName(String name) {
         List<Footballer> footballerList = repository.findByName(name);

@@ -14,6 +14,5 @@ public interface FootballerMapper {
 
     FootballerDto toDto(Optional<Footballer> source);
 
-
     List<FootballerDto> toDto(List<Footballer> source);
 }

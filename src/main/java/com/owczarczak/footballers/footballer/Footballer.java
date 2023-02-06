@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
 
 
 
-//TODO Validacja na wejściu do systemu
 @Entity
 @Table(name = "footballers")
 @Getter

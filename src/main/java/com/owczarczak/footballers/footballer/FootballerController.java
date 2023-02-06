@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/footballers")
@@ -27,15 +26,14 @@ public class FootballerController {
         if (service.getFootballerById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        //FIXME change that to return a ResponseEntity with Footballer body
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/top3ByHeight")
-    public List<FootballerDto> getHighest() {
-
-        return service.get3HighestFootballers();
-    }
+//    @GetMapping("/top3ByHeight")
+//    public List<FootballerDto> getHighest() {
+//
+//        return service.get3HighestFootballers();
+//    }
 
     @GetMapping("/{name}")
     public List<FootballerDto> getFootballersByName(@RequestParam String name) {
