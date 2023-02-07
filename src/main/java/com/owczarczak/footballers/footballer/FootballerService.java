@@ -24,6 +24,39 @@ public class FootballerService {
         for (Footballer footballer : footballersList) {
             FootballerDto dtoToBeAdded = FootballerDto.builder()
                     .id(footballer.getId())
+                    .pesel(footballer.getPesel())
+                    .name(footballer.getName())
+                    .club(footballer.getClub())
+                    .goals(footballer.getGoals())
+                    .height(footballer.getHeight())
+                    .build();
+            dtos.add(dtoToBeAdded);
+        }
+        return dtos;
+    }
+
+    public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
+        if (!repository.existsById(id)) {
+            return Optional.empty();
+        } else {
+            Footballer footballer = repository.getReferenceById(id);
+            return Optional.ofNullable(FootballerDto.builder()
+                    .id(footballer.getId())
+                    .pesel(footballer.getPesel())
+                    .name(footballer.getName())
+                    .club(footballer.getClub())
+                    .goals(footballer.getGoals())
+                    .height(footballer.getHeight())
+                    .build());
+        }
+    }
+
+    public List<FootballerDto> get3HighestFootballers() {
+        List<Footballer> footballersList = repository.findTop3ByOrderByHeightDesc();
+        List<FootballerDto> dtos = new LinkedList<>();
+        for (Footballer footballer : footballersList) {
+            FootballerDto dtoToBeAdded = FootballerDto.builder()
+                    .id(footballer.getId())
                     .name(footballer.getName())
                     .pesel(footballer.getPesel())
                     .goals(footballer.getGoals())
@@ -34,35 +67,33 @@ public class FootballerService {
         return dtos;
     }
 
-    public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
-        throw new UnsupportedOperationException();
-//        if (!repository.existsById(id)) {
-//            return Optional.empty();
-//        }
-//        Optional<Footballer> footballer = repository.findById(id);
-//        return Optional.ofNullable(mapper.toDto(footballer));
-    }
-
-    public List<FootballerDto> get3HighestFootballers() {
-        throw new UnsupportedOperationException();
-//        List<Footballer> footballersList = repository.get3HighestFootballers();
-//        return mapper.toDto(footballersList);
-    }
-
     public List<FootballerDto> getFootballersByName(String name) {
-        throw new UnsupportedOperationException();
-//        List<Footballer> footballerList = repository.findByName(name);
-//        return mapper.toDto(footballerList);
+        List<Footballer> footballersList = repository.findByName(name);
+        List<FootballerDto> dtos = new LinkedList<>();
+        for (Footballer footballer : footballersList) {
+            FootballerDto dtoToBeAdded = FootballerDto.builder()
+                    .id(footballer.getId())
+                    .name(footballer.getName())
+                    .pesel(footballer.getPesel())
+                    .goals(footballer.getGoals())
+                    .height(footballer.getHeight())
+                    .build();
+            dtos.add(dtoToBeAdded);
+        }
+        return dtos;
     }
 
-    public FootballerDto addFootballer(@RequestBody @Valid FootballerDto footballerToAdd) {
-//        Footballer newFootballer = mapper.toEntity(footballerToAdd);
+    public FootballerDto addFootballer(@RequestBody @Valid FootballerDto footballerToBeAdded) {
+//        Footballer newFootballer =
+//                return repository.save(footballerToBeAdded);
 //        Footballer footballer = repository.save(newFootballer);
 //        return mapper.toDto(footballer);
         throw new UnsupportedOperationException();
+
     }
 
-    public Optional<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody FootballerDto footballerToUpdate) {
+    public Optional<FootballerDto> updateFootballer(@PathVariable int id,
+                                                    @RequestBody FootballerDto footballerToUpdate) {
 //        if (!repository.existsById(id)) {
 //            return Optional.empty();
 //        }
@@ -74,11 +105,10 @@ public class FootballerService {
     }
 
     public boolean deleteFootballer(@PathVariable int id) {
-//        if (!repository.existsById(id)) {
-//            return false;
-//        }
-//        repository.deleteById(id);
-//        return true;
-        throw new UnsupportedOperationException();
+        if (!repository.existsById(id)) {
+            return false;
+        }
+        repository.deleteById(id);
+        return true;
     }
 }
