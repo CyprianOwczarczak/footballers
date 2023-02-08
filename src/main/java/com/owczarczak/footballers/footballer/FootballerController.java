@@ -2,7 +2,6 @@ package com.owczarczak.footballers.footballer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -57,7 +56,7 @@ public class FootballerController {
         return service.getFootballersByName(name);
     }
 
-    @PostMapping
+    @PostMapping("/")
     ResponseEntity<FootballerDto> addFootballer(@RequestBody FootballerDto newFootballerDto) {
         FootballerDto result = service.addFootballer(newFootballerDto);
         return ResponseEntity
@@ -65,20 +64,25 @@ public class FootballerController {
                 .body(result);
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<FootballerDto> updateFootballer(@PathVariable int id,
-                                                   @RequestBody FootballerDto footballerToUpdate) {
-        if (service.getFootballerById(id).isEmpty()) {
+    @PutMapping("/")
+    ResponseEntity<FootballerDto> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
             return notFound().build();
+        } else {
+            Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+            return ok(result.get());
         }
-        return ok().build();
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<FootballerDto> deleteFootballer(@PathVariable int id) {
-        if (service.deleteFootballer(id)) {
-            return ok().build();
-        }
-        return notFound().build();
+    ResponseEntity deleteFootballer(@PathVariable int id) {
+        service.deleteFootballer(id);
+        return ok().build();
     }
+
+    //TODO
+    //Prezentacja porządna -> Adnotacje z przykładami w kodzie moimi działającymi
+    //Przykładowy program od zera któy weźmie obiekt klasy dziedziczące po tym samym i powie kto jest jego autorem (każdej klasy) (imie nazwisko data utworzenia,
+//    stworzyć trzy klasy które mają różnych autorów (@Author)
+    //Java 8 annotation tutorial --> Creating custom annotation in Java z Baeldunga
 }

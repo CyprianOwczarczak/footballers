@@ -106,40 +106,29 @@ public class FootballerService {
     }
 
     public Optional<FootballerDto> updateFootballer(int id, FootballerDto footballerToBeUpdated) {
-//        if (repository.existsById())
-
-//        Footballer updatedFootballer = Footballer.builder()
-//                .id(footballerToBeUpdated.getId())
-//                .pesel(footballerToBeUpdated.getPesel())
-//                .name(footballerToBeUpdated.getName())
-//                .goals(footballerToBeUpdated.getGoals())
-//                .height(footballerToBeUpdated.getHeight())
-//                .build();
-//        Footballer savedEntity = repository.save(updatedFootballer);
-//        return FootballerDto.builder()
-//                .id(savedEntity.getId())
-//                .pesel(savedEntity.getPesel())
-//                .name(savedEntity.getName())
-//                .goals(savedEntity.getGoals())
-//                .height(savedEntity.getHeight())
-//                .build();
-//
 //        if (!repository.existsById(id)) {
 //            return Optional.empty();
 //        }
-//        footballerToUpdate.setId(id);
-//        Footballer updatedFootballer = mapper.toEntity(footballerToUpdate);
-//        Footballer footballer = repository.save(updatedFootballer);
-//        return Optional.ofNullable(mapper.toDto(updatedFootballer));
-
-        throw new UnsupportedOperationException();
+        Footballer updatedFootballer = Footballer.builder()
+                .id(footballerToBeUpdated.getId())
+                .pesel(footballerToBeUpdated.getPesel())
+                .name(footballerToBeUpdated.getName())
+                .club(footballerToBeUpdated.getClub())
+                .goals(footballerToBeUpdated.getGoals())
+                .height(footballerToBeUpdated.getHeight())
+                .build();
+        Footballer savedEntity = repository.save(updatedFootballer);
+        return Optional.of(FootballerDto.builder()
+                .id(savedEntity.getId())
+                .pesel(savedEntity.getPesel())
+                .name(savedEntity.getName())
+                .club(savedEntity.getClub())
+                .goals(savedEntity.getGoals())
+                .height(savedEntity.getHeight())
+                .build());
     }
 
-    public boolean deleteFootballer(@PathVariable int id) {
-        if (!repository.existsById(id)) {
-            return false;
-        }
+    public void deleteFootballer(@PathVariable int id) {
         repository.deleteById(id);
-        return true;
     }
 }
