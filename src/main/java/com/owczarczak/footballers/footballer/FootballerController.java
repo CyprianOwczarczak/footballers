@@ -19,13 +19,24 @@ public class FootballerController {
     @Autowired
     FootballerService service;
 
+    @GetMapping(path = "/release/{id}", headers = {"version", "git_tag"}, params = "name")
+    public String testMethod(@PathVariable(value = "id") int id,
+                             @RequestHeader(value = "version") String version,
+                             @RequestHeader(value = "git_tag") String gitTag,
+                             @RequestParam(value = "name") String name) {
+        System.out.println(id);
+        System.out.println(version);
+        System.out.println(gitTag);
+        System.out.println(name);
+        return version;
+    }
+
     @GetMapping("/")
     public List<FootballerDto> getAllFootballers() {
-
         return service.getAllFootballers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<FootballerDto> getFootballerById(@PathVariable int id) {
         Optional<FootballerDto> foundDtoOptional = service.getFootballerById(id);
         if (foundDtoOptional.isEmpty()) {
@@ -35,26 +46,28 @@ public class FootballerController {
         }
     }
 
-    @GetMapping("/top3ByHeight")
-    public List<FootballerDto> getHighest() {
-        return service.get3HighestFootballers();
+    @GetMapping(path = "/topXByHeight/")
+    public List<FootballerDto> getHighest(@RequestParam(value = "pageNumber") int pageNumber,
+                                          @RequestParam(value = "numberOfPlayers") int numberOfPlayers) {
+        return service.getNewHighest(pageNumber, numberOfPlayers);
     }
 
-    @GetMapping("/{name}")
-    public List<FootballerDto> getFootballersByName(@RequestParam String name) {
+    @GetMapping("/byName/")
+    public List<FootballerDto> getFootballersByName(@RequestParam(value = "name") String name) {
         return service.getFootballersByName(name);
     }
 
     @PostMapping
-    ResponseEntity<FootballerDto> addFootballer(@RequestBody @Validated FootballerDto footballerToAdd) {
-        FootballerDto result = service.addFootballer(footballerToAdd);
+    ResponseEntity<FootballerDto> addFootballer(@RequestBody FootballerDto newFootballerDto) {
+        FootballerDto result = service.addFootballer(newFootballerDto);
         return ResponseEntity
                 .created(URI.create("/" + result.getId()))
                 .body(result);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<FootballerDto> updateFootballer(@PathVariable int id, @RequestBody @Validated FootballerDto footballerToUpdate) {
+    ResponseEntity<FootballerDto> updateFootballer(@PathVariable int id,
+                                                   @RequestBody FootballerDto footballerToUpdate) {
         if (service.getFootballerById(id).isEmpty()) {
             return notFound().build();
         }

@@ -2,11 +2,12 @@ package com.owczarczak.footballers.footballer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -51,14 +52,16 @@ public class FootballerService {
         }
     }
 
-    public List<FootballerDto> get3HighestFootballers() {
-        List<Footballer> footballersList = repository.findTop3ByOrderByHeightDesc();
+    public List<FootballerDto> getNewHighest(int pageNumber, int numberOfPlayers) {
+        Pageable pageable = PageRequest.of(pageNumber, numberOfPlayers);
+        Page<Footballer> footballersList = repository.findAll(pageable);
+
         List<FootballerDto> dtos = new LinkedList<>();
         for (Footballer footballer : footballersList) {
             FootballerDto dtoToBeAdded = FootballerDto.builder()
                     .id(footballer.getId())
-                    .name(footballer.getName())
                     .pesel(footballer.getPesel())
+                    .name(footballer.getName())
                     .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
@@ -73,8 +76,8 @@ public class FootballerService {
         for (Footballer footballer : footballersList) {
             FootballerDto dtoToBeAdded = FootballerDto.builder()
                     .id(footballer.getId())
-                    .name(footballer.getName())
                     .pesel(footballer.getPesel())
+                    .name(footballer.getName())
                     .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
@@ -83,17 +86,44 @@ public class FootballerService {
         return dtos;
     }
 
-    public FootballerDto addFootballer(@RequestBody @Valid FootballerDto footballerToBeAdded) {
-//        Footballer newFootballer =
-//                return repository.save(footballerToBeAdded);
-//        Footballer footballer = repository.save(newFootballer);
-//        return mapper.toDto(footballer);
-        throw new UnsupportedOperationException();
-
+    public FootballerDto addFootballer(FootballerDto footballerToBeAdded) {
+        Footballer newFootballer = Footballer.builder()
+                .pesel(footballerToBeAdded.getPesel())
+                .name(footballerToBeAdded.getName())
+                .club(footballerToBeAdded.getClub())
+                .goals(footballerToBeAdded.getGoals())
+                .height(footballerToBeAdded.getHeight())
+                .build();
+        Footballer savedEntity = repository.save(newFootballer);
+        return FootballerDto.builder()
+                .id(savedEntity.getId())
+                .pesel(savedEntity.getPesel())
+                .name(savedEntity.getName())
+                .club(savedEntity.getClub())
+                .goals(savedEntity.getGoals())
+                .height(savedEntity.getHeight())
+                .build();
     }
 
-    public Optional<FootballerDto> updateFootballer(@PathVariable int id,
-                                                    @RequestBody FootballerDto footballerToUpdate) {
+    public Optional<FootballerDto> updateFootballer(int id, FootballerDto footballerToBeUpdated) {
+//        if (repository.existsById())
+
+//        Footballer updatedFootballer = Footballer.builder()
+//                .id(footballerToBeUpdated.getId())
+//                .pesel(footballerToBeUpdated.getPesel())
+//                .name(footballerToBeUpdated.getName())
+//                .goals(footballerToBeUpdated.getGoals())
+//                .height(footballerToBeUpdated.getHeight())
+//                .build();
+//        Footballer savedEntity = repository.save(updatedFootballer);
+//        return FootballerDto.builder()
+//                .id(savedEntity.getId())
+//                .pesel(savedEntity.getPesel())
+//                .name(savedEntity.getName())
+//                .goals(savedEntity.getGoals())
+//                .height(savedEntity.getHeight())
+//                .build();
+//
 //        if (!repository.existsById(id)) {
 //            return Optional.empty();
 //        }
@@ -101,6 +131,7 @@ public class FootballerService {
 //        Footballer updatedFootballer = mapper.toEntity(footballerToUpdate);
 //        Footballer footballer = repository.save(updatedFootballer);
 //        return Optional.ofNullable(mapper.toDto(updatedFootballer));
+
         throw new UnsupportedOperationException();
     }
 
