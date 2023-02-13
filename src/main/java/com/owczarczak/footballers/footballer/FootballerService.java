@@ -2,11 +2,13 @@ package com.owczarczak.footballers.footballer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,43 +19,113 @@ public class FootballerService {
     @Autowired
     FootballerRepository repository;
 
-    public List<Footballer> getAllFootballers() {
-        return repository.findAll();
+    public List<FootballerDto> getAllFootballers() {
+        List<Footballer> footballersList = repository.findAll();
+        List<FootballerDto> dtos = new LinkedList<>();
+        for (Footballer footballer : footballersList) {
+            FootballerDto dtoToBeAdded = FootballerDto.builder()
+                    .id(footballer.getId())
+                    .pesel(footballer.getPesel())
+                    .name(footballer.getName())
+                    .club(footballer.getClub())
+                    .goals(footballer.getGoals())
+                    .height(footballer.getHeight())
+                    .build();
+            dtos.add(dtoToBeAdded);
+        }
+        return dtos;
     }
 
-    public Optional<Footballer> getFootballerById(@PathVariable int id) {
+    public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
         if (!repository.existsById(id)) {
             return Optional.empty();
+        } else {
+            Footballer footballer = repository.getReferenceById(id);
+            return Optional.ofNullable(FootballerDto.builder()
+                    .id(footballer.getId())
+                    .pesel(footballer.getPesel())
+                    .name(footballer.getName())
+                    .club(footballer.getClub())
+                    .goals(footballer.getGoals())
+                    .height(footballer.getHeight())
+                    .build());
         }
-        return repository.findById(id);
     }
 
-    public List<Footballer> get3HighestFootballers() {
-        return repository.get3HighestFootballers();
-    }
+    public List<FootballerDto> getXHighestFootballers(int pageNumber, int numberOfPlayers) {
+        Pageable pageable = PageRequest.of(pageNumber, numberOfPlayers);
+        Page<Footballer> footballersList = repository.findAllByOrderByHeightDesc(pageable);
 
-    public List<Footballer> getFootballersByName(String name) {
-        return repository.findByName(name);
-    }
-
-    public Footballer addFootballer(@RequestBody @Valid Footballer footballerToAdd) {
-        return repository.save(footballerToAdd);
-    }
-
-    public Optional<Footballer> updateFootballer(@PathVariable int id, @RequestBody Footballer footballerToUpdate) {
-        if (!repository.existsById(id)) {
-            return Optional.empty();
+        List<FootballerDto> dtos = new LinkedList<>();
+        for (Footballer footballer : footballersList) {
+            FootballerDto dtoToBeAdded = FootballerDto.builder()
+                    .id(footballer.getId())
+                    .pesel(footballer.getPesel())
+                    .name(footballer.getName())
+                    .goals(footballer.getGoals())
+                    .height(footballer.getHeight())
+                    .build();
+            dtos.add(dtoToBeAdded);
         }
-        footballerToUpdate.setId(id);
-        Footballer result = repository.save(footballerToUpdate);
-        return Optional.of(result);
+        return dtos;
     }
 
-    public boolean deleteFootballer(@PathVariable int id) {
-        if (!repository.existsById(id)) {
-            return false;
+    public List<FootballerDto> getFootballersByName(String name) {
+        List<Footballer> footballersList = repository.findByName(name);
+        List<FootballerDto> dtos = new LinkedList<>();
+        for (Footballer footballer : footballersList) {
+            FootballerDto dtoToBeAdded = FootballerDto.builder()
+                    .id(footballer.getId())
+                    .pesel(footballer.getPesel())
+                    .name(footballer.getName())
+                    .goals(footballer.getGoals())
+                    .height(footballer.getHeight())
+                    .build();
+            dtos.add(dtoToBeAdded);
         }
+        return dtos;
+    }
+
+    public FootballerDto addFootballer(FootballerDto footballerToBeAdded) {
+        Footballer newFootballer = Footballer.builder()
+                .pesel(footballerToBeAdded.getPesel())
+                .name(footballerToBeAdded.getName())
+                .club(footballerToBeAdded.getClub())
+                .goals(footballerToBeAdded.getGoals())
+                .height(footballerToBeAdded.getHeight())
+                .build();
+        Footballer savedEntity = repository.save(newFootballer);
+        return FootballerDto.builder()
+                .id(savedEntity.getId())
+                .pesel(savedEntity.getPesel())
+                .name(savedEntity.getName())
+                .club(savedEntity.getClub())
+                .goals(savedEntity.getGoals())
+                .height(savedEntity.getHeight())
+                .build();
+    }
+
+    public Optional<FootballerDto> updateFootballer(int id, FootballerDto footballerToBeUpdated) {
+        Footballer updatedFootballer = Footballer.builder()
+                .id(footballerToBeUpdated.getId())
+                .pesel(footballerToBeUpdated.getPesel())
+                .name(footballerToBeUpdated.getName())
+                .club(footballerToBeUpdated.getClub())
+                .goals(footballerToBeUpdated.getGoals())
+                .height(footballerToBeUpdated.getHeight())
+                .build();
+        Footballer savedEntity = repository.save(updatedFootballer);
+        return Optional.of(FootballerDto.builder()
+                .id(savedEntity.getId())
+                .pesel(savedEntity.getPesel())
+                .name(savedEntity.getName())
+                .club(savedEntity.getClub())
+                .goals(savedEntity.getGoals())
+                .height(savedEntity.getHeight())
+                .build());
+    }
+
+    public void deleteFootballer(@PathVariable int id) {
         repository.deleteById(id);
-        return true;
     }
 }
