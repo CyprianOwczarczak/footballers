@@ -25,3 +25,17 @@ Record poczytać co to jest
 // metody na dodawanie meczu w trakcie meczu, informacja czy był walkover w meczu)
 // Dodać metody do Footballera kto strzelił najwięcej bramek, najwięcej bramek dla danego zespołu, lista zespołów które strzelił najwięcej bramek
 
+///////////////////////////////////
+NOWE ZADANIE
+Dodanie testów automatycznych:
+    Obecnie nie ma testów automatycznych w aplikacji i testowanie jest możliwe jedynie za pomocą Postmana, nie ma możliwości
+sprawdzenia za pomocą Mavena. Chcemy mieć możliwość testowania aplikacji automatycznego.
+Testujemy Controller  tak żeby logika w Service też była przetestowana.
+
+    Acceptance criteria:
+1.Wszystkie endpoint aplikacji są przetestowane.
+2.Przetestowane są ścieżki pozytywne i negatywne.
+3.Kod się kompiluje za pomocą mavena, wszystkie testy przechodzą.
+
+bez mocków !
+https://www.baeldung.com/integration-testing-in-spring
