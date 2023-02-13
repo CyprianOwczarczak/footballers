@@ -18,18 +18,6 @@ public class FootballerController {
     @Autowired
     FootballerService service;
 
-    @GetMapping(path = "/release/{id}", headers = {"version", "git_tag"}, params = "name")
-    public String testMethod(@PathVariable(value = "id") int id,
-                             @RequestHeader(value = "version") String version,
-                             @RequestHeader(value = "git_tag") String gitTag,
-                             @RequestParam(value = "name") String name) {
-        System.out.println(id);
-        System.out.println(version);
-        System.out.println(gitTag);
-        System.out.println(name);
-        return version;
-    }
-
     @GetMapping("/")
     public List<FootballerDto> getAllFootballers() {
         return service.getAllFootballers();
@@ -48,7 +36,7 @@ public class FootballerController {
     @GetMapping(path = "/topXByHeight/")
     public List<FootballerDto> getHighest(@RequestParam(value = "pageNumber") int pageNumber,
                                           @RequestParam(value = "numberOfPlayers") int numberOfPlayers) {
-        return service.getNewHighest(pageNumber, numberOfPlayers);
+        return service.getXHighestFootballers(pageNumber, numberOfPlayers);
     }
 
     @GetMapping("/byName/")
@@ -79,10 +67,4 @@ public class FootballerController {
         service.deleteFootballer(id);
         return ok().build();
     }
-
-    //TODO
-    //Prezentacja porządna -> Adnotacje z przykładami w kodzie moimi działającymi
-    //Przykładowy program od zera któy weźmie obiekt klasy dziedziczące po tym samym i powie kto jest jego autorem (każdej klasy) (imie nazwisko data utworzenia,
-//    stworzyć trzy klasy które mają różnych autorów (@Author)
-    //Java 8 annotation tutorial --> Creating custom annotation in Java z Baeldunga
 }

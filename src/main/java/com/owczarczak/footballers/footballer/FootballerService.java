@@ -52,9 +52,9 @@ public class FootballerService {
         }
     }
 
-    public List<FootballerDto> getNewHighest(int pageNumber, int numberOfPlayers) {
+    public List<FootballerDto> getXHighestFootballers(int pageNumber, int numberOfPlayers) {
         Pageable pageable = PageRequest.of(pageNumber, numberOfPlayers);
-        Page<Footballer> footballersList = repository.findAll(pageable);
+        Page<Footballer> footballersList = repository.findAllByOrderByHeightDesc(pageable);
 
         List<FootballerDto> dtos = new LinkedList<>();
         for (Footballer footballer : footballersList) {
@@ -106,9 +106,6 @@ public class FootballerService {
     }
 
     public Optional<FootballerDto> updateFootballer(int id, FootballerDto footballerToBeUpdated) {
-//        if (!repository.existsById(id)) {
-//            return Optional.empty();
-//        }
         Footballer updatedFootballer = Footballer.builder()
                 .id(footballerToBeUpdated.getId())
                 .pesel(footballerToBeUpdated.getPesel())
