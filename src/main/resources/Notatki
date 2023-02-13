@@ -39,3 +39,8 @@ Testujemy Controller  tak żeby logika w Service też była przetestowana.
 
 bez mocków !
 https://www.baeldung.com/integration-testing-in-spring
+https://docs.spring.io/spring-boot/docs/1.5.2.RELEASE/reference/html/boot-features-testing.html
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = { ApplicationConfig.class })
+@WebAppConfiguration
+2 testy przynajmiej
