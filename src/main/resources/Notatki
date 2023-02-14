@@ -44,3 +44,7 @@ https://docs.spring.io/spring-boot/docs/1.5.2.RELEASE/reference/html/boot-featur
 @ContextConfiguration(classes = { ApplicationConfig.class })
 @WebAppConfiguration
 2 testy przynajmiej
+
+@Autowired -> nauczyć się tłumaczyć jak działa
+@BeforeAll @BeforeEach
+JsonPath

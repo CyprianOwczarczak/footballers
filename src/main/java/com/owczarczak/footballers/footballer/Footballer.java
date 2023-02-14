@@ -1,9 +1,6 @@
 package com.owczarczak.footballers.footballer;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Footballer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,14 +21,12 @@ public class Footballer {
     int goals;
     int height;
 
-    public Footballer(final String pesel, final String name, final String club, final int height) {
+    public Footballer(final String pesel, final String name, final String club, final int goals, final int height) {
         this.pesel = pesel;
         this.name = name;
         this.club = club;
+        this.goals = goals;
         this.height = height;
-    }
-
-    public Footballer() {
     }
 
     @Override
