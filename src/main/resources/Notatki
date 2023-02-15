@@ -48,3 +48,5 @@ https://docs.spring.io/spring-boot/docs/1.5.2.RELEASE/reference/html/boot-featur
 @Autowired -> nauczyć się tłumaczyć jak działa
 @BeforeAll @BeforeEach
 JsonPath
+
+Testować w mavenie !

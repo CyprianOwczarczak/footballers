@@ -62,6 +62,7 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
+                    .club(footballer.getClub())
                     .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
@@ -78,6 +79,7 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
+                    .club(footballer.getClub())
                     .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
