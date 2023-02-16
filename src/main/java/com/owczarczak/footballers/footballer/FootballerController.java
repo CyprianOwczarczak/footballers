@@ -8,8 +8,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.ResponseEntity.notFound;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/footballers")
@@ -49,23 +48,27 @@ public class FootballerController {
         if (service.existsByPesel(newFootballerDto.getPesel())) {
             return ResponseEntity.badRequest().build();
         }
+        if (newFootballerDto.getPesel().isEmpty() || newFootballerDto.getName().isEmpty() || newFootballerDto.getHeight() == 0) {
+            return ResponseEntity.badRequest().build();
+        }
         FootballerDto result = service.addFootballer(newFootballerDto);
         return ResponseEntity
                 .created(URI.create("/" + result.getId()))
                 .body(result);
     }
-//
-//    @PutMapping("/")
-//    ResponseEntity<FootballerDto> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
-//        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
-//            return notFound().build();
-//        } else if (footballerToUpdate.getPesel().isEmpty()
-//                || footballerToUpdate.getName().isEmpty() || footballerToUpdate.getHeight() ){
-//        } else {
-//            Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-//            return ok(result.get());
-//        }
-//    }
+
+    @PutMapping("/")
+    ResponseEntity<FootballerDto> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
+            return notFound().build();
+        } else if (footballerToUpdate.getPesel() == null
+                || footballerToUpdate.getName() == null || footballerToUpdate.getHeight() == 0) {
+            return badRequest().build();
+        } else {
+            Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+            return ok(result.get());
+        }
+    }
 
     @DeleteMapping("/{id}")
     ResponseEntity deleteFootballer(@PathVariable int id) {

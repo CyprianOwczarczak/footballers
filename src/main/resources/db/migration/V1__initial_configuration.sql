@@ -1,3 +1,5 @@
+drop table if exists footballers;
+
 create table footballers (
 	id serial,
 	pesel varchar(255) not null,
