@@ -46,6 +46,9 @@ public class FootballerController {
 
     @PostMapping("/")
     ResponseEntity<FootballerDto> addFootballer(@RequestBody FootballerDto newFootballerDto) {
+        if (service.existsByPesel(newFootballerDto.getPesel())) {
+            return ResponseEntity.badRequest().build();
+        }
         FootballerDto result = service.addFootballer(newFootballerDto);
         return ResponseEntity
                 .created(URI.create("/" + result.getId()))

@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.footballer;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -30,11 +32,10 @@ class FootballerControllerTest {
         repository.deleteAll();
     }
 
-    //TODO przerobić zwracanie każdego z footballerów na metodę (getFootballer1, etc.)
-    // Przerobić JsonPath na metodę z tablicą obiektów
+    //TODO Przerobić JsonPath na metodę z tablicą obiektów
 
     private static Footballer getFootballer1() {
-        return new Footballer("111111", "testPlayer", "testClub", 10, 150);
+        return new Footballer("111111", "testPlayer1", "testClub", 10, 150);
     }
 
     private static Footballer getFootballer2() {
@@ -42,7 +43,11 @@ class FootballerControllerTest {
     }
 
     private static Footballer getFootballer3() {
-        return new Footballer("333333", "testPlayer2", "testClub3", 30, 170);
+        return new Footballer("333333", "testPlayer3", "testClub3", 30, 170);
+    }
+
+    private static Footballer getFootballer4() {
+        return new Footballer("444444", "testPlayer3", "testClub3", 30, 170);
     }
 
     @Test
@@ -54,9 +59,14 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should get all footballers")
     void shouldGetAllFootballers() throws Exception {
+        repository.save(getFootballer1());
+        repository.save(getFootballer2());
+        repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful());
+                .andExpectAll(status().is2xxSuccessful(),
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(3)));
     }
 
     // Should get a footballer by id --> return 2xx successful code, only one object
@@ -64,9 +74,17 @@ class FootballerControllerTest {
     @DisplayName("Should get a footballer by id")
     void shouldGetFootballerById() throws Exception {
         repository.save(getFootballer1());
-        this.mockMvc.perform(get("/footballers/1"))
+        repository.save(getFootballer2());
+        int footballerToBeReturned = repository.save(getFootballer3()).getId();
+        this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
                 .andDo(print())
-                .andExpectAll(status().is2xxSuccessful());
+                .andExpectAll(status().isOk(),
+                        jsonPath("$.pesel", is("333333")),
+                        jsonPath("$.name", is("testPlayer3")),
+                        jsonPath("$.club", is("testClub3")),
+                        jsonPath("$.goals", is(30)),
+                        jsonPath("$.height", is(170))
+                );
     }
 
     // Should fail to get footballer by id -->return 4xx not found
@@ -75,7 +93,7 @@ class FootballerControllerTest {
     void shouldNotGetFootballerById() throws Exception {
         this.mockMvc.perform(get("/footballers/5432"))
                 .andDo(print())
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isNotFound());
     }
 
     // Should get footballers by name --> check if the list size is correct
@@ -83,10 +101,15 @@ class FootballerControllerTest {
     @DisplayName("Should get footballers by name")
     void shouldGetFootballersByName() throws Exception {
         repository.save(getFootballer1());
-        //Get footballersList and check the size
-        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer"))
+        repository.save(getFootballer2());
+        repository.save(getFootballer3());
+
+        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer1"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful());
+                .andExpectAll(status().is2xxSuccessful(),
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(1))
+                );
     }
 
     //Should get multiple footballers by name, check the size of the list and parameters with jsonPath
@@ -96,9 +119,11 @@ class FootballerControllerTest {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
         repository.save(getFootballer3());
-        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer"))
+        repository.save(getFootballer4());
+        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer3"))
                 .andDo(print())
                 .andExpectAll(status().is2xxSuccessful(),
+                        jsonPath("$").isArray(),
                         jsonPath("$", hasSize(2)));
     }
 
@@ -106,6 +131,9 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should not get any footballers by name")
     void shouldNotGetAnyFootballersByName() throws Exception {
+        repository.save(getFootballer1());
+        repository.save(getFootballer2());
+        repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/byName/?name=xyz"))
                 .andDo(print())
                 .andExpectAll(
@@ -118,26 +146,50 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should add a footballer")
     void shouldAddFootballer() throws Exception {
-        int returnedFootballerId = repository.save(getFootballer1()).getId();
-        this.mockMvc.perform(post("/footballers/" + returnedFootballerId))
+        String request = """
+                {
+                "pesel":"333333",
+                "name":"testPlayer3",
+                "club":"testClub3",
+                "goals":30,
+                "height":170
+                }
+                """;
+
+        this.mockMvc.perform(post("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
                 .andDo(print())
                 .andExpectAll(status().isCreated(),
-                        jsonPath("$.pesel", is("111111")),
-                        jsonPath("$.name", is("testPlayer")),
-                        jsonPath("$.club", is("testClub")),
-                        jsonPath("$.goals", is(10)),
-                        jsonPath("$.height", is(150))
+                        jsonPath("$").isMap(),
+                        jsonPath("$.pesel", is("333333")),
+                        jsonPath("$.name", is("testPlayer3")),
+                        jsonPath("$.club", is("testClub3")),
+                        jsonPath("$.goals", is(30)),
+                        jsonPath("$.height", is(170))
                 );
     }
 
     // Should fail to add a footballer -->  footballer not added, wrong body passed or the id already exists
     @Test
-    @DisplayName("Should fail to add a footballer")
-    void shouldNotAddFootballer() throws Exception {
-        int returnedFootballerId = repository.save(getFootballer1()).getId();
-        this.mockMvc.perform(post("/footballers/" + returnedFootballerId))
+    @DisplayName("Should not add a footballer when pesel exists")
+    void shouldNotAddFootballerWhenPeselExists() throws Exception {
+        repository.save(getFootballer3());
+        String request = """
+                {
+                "pesel":"333333",
+                "name":"testPlayer3",
+                "club":"testClub3",
+                "goals":30,
+                "height":170
+                }
+                """;
+
+        this.mockMvc.perform(post("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
                 .andDo(print())
-                .andExpectAll(status().is4xxClientError()
+                .andExpectAll(status().isBadRequest()
                 );
     }
 
@@ -189,7 +241,6 @@ class FootballerControllerTest {
                         jsonPath("$[1].goals", is(20)),
                         jsonPath("$[1].height", is(160))
                 );
-
     }
 
     //     Should update a footballer --> return 2xx successful, footballer exists with new data
@@ -228,7 +279,7 @@ class FootballerControllerTest {
     //         Should fail to update a footballer --> return 4xx not found, footballer with that id doesn't exist
     @Test
     @DisplayName("Should fail to update footballer")
-    void shouldNotToUpdateFootballer() throws Exception {
+    void shouldNotUpdateFootballerWhenIdDoesntExist() throws Exception {
         repository.save(getFootballer1());
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
 
@@ -249,7 +300,8 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(
-                        status().isNotFound());
+                        status().isNotFound(),
+                        jsonPath("$").doesNotExist());
     }
 
     // Should delete a footballer --> return 2xx, check if footballer with that id doesn't exist anymore
@@ -261,8 +313,10 @@ class FootballerControllerTest {
         repository.save(getFootballer3());
         this.mockMvc.perform(delete("/footballers/" + footballerToBeDeleted))
                 .andDo(print())
-                .andExpectAll(status().is2xxSuccessful()
+                .andExpectAll(status().is2xxSuccessful(),
+                        jsonPath("$").doesNotExist()
                 );
+        Assertions.assertFalse(repository.existsById(footballerToBeDeleted));
     }
 
     // Should fail to delete a footballer --> footballer with that id doesn't exist already,
@@ -271,11 +325,11 @@ class FootballerControllerTest {
     @DisplayName("Should not delete a footballer")
     void shouldNotDeleteFootballer() throws Exception {
         repository.save(getFootballer1());
-        repository.save(getFootballer2());
-        int footballerToBeDeleted = repository.save(getFootballer3()).getId();
-        this.mockMvc.perform(delete("/footballers/" + footballerToBeDeleted + 100))
+        int footballerToBeDeleted = repository.save(getFootballer2()).getId();
+        footballerToBeDeleted += 100;
+        this.mockMvc.perform(delete("/footballers/" + footballerToBeDeleted))
                 .andDo(print())
-                .andExpectAll(status().is2xxSuccessful()
+                .andExpectAll(jsonPath("$").doesNotExist()
                 );
     }
 }

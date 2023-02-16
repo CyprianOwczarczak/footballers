@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -127,7 +128,13 @@ public class FootballerService {
                 .build());
     }
 
+@Transactional
     public void deleteFootballer(@PathVariable int id) {
-        repository.deleteById(id);
+//        repository.deleteById();
+        repository.deleteAllById(id);
+    }
+
+    public boolean existsByPesel(String pesel) {
+        return repository.existsByPesel(pesel);
     }
 }
