@@ -54,16 +54,18 @@ public class FootballerController {
                 .created(URI.create("/" + result.getId()))
                 .body(result);
     }
-
-    @PutMapping("/")
-    ResponseEntity<FootballerDto> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
-        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
-            return notFound().build();
-        } else {
-            Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-            return ok(result.get());
-        }
-    }
+//
+//    @PutMapping("/")
+//    ResponseEntity<FootballerDto> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+//        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
+//            return notFound().build();
+//        } else if (footballerToUpdate.getPesel().isEmpty()
+//                || footballerToUpdate.getName().isEmpty() || footballerToUpdate.getHeight() ){
+//        } else {
+//            Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+//            return ok(result.get());
+//        }
+//    }
 
     @DeleteMapping("/{id}")
     ResponseEntity deleteFootballer(@PathVariable int id) {

@@ -51,3 +51,8 @@ JsonPath
 
 Testować w mavenie !
 
+Flyway --> usunąć zawartość schematu, zobaczyć co trzyma flywayowa baza danych,
+dopisać walidacje czy odpowiedni pesel podany itp,
+walidować też metodę put w controllerze (sprawdzać czy request jest poprawny, jeśli nie to rzucać BadRequest)
+Dokumentacja Spring Data --> notatki
+
