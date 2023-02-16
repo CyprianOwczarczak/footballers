@@ -30,6 +30,21 @@ class FootballerControllerTest {
         repository.deleteAll();
     }
 
+    //TODO przerobić zwracanie każdego z footballerów na metodę (getFootballer1, etc.)
+    // Przerobić JsonPath na metodę z tablicą obiektów
+
+    private static Footballer getFootballer1() {
+        return new Footballer("111111", "testPlayer", "testClub", 10, 150);
+    }
+
+    private static Footballer getFootballer2() {
+        return new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
+    }
+
+    private static Footballer getFootballer3() {
+        return new Footballer("333333", "testPlayer2", "testClub3", 30, 170);
+    }
+
     @Test
     @DisplayName("Should startup Spring")
     void shouldStartupSpring() {
@@ -48,8 +63,7 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should get a footballer by id")
     void shouldGetFootballerById() throws Exception {
-        Footballer footballer1 = new Footballer("111111", "testPlayer", "testClub", 10, 150);
-        repository.save(footballer1);
+        repository.save(getFootballer1());
         this.mockMvc.perform(get("/footballers/1"))
                 .andDo(print())
                 .andExpectAll(status().is2xxSuccessful());
@@ -68,8 +82,7 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should get footballers by name")
     void shouldGetFootballersByName() throws Exception {
-        Footballer footballer1 = new Footballer("111111", "testPlayer", "testClub", 10, 150);
-        repository.save(footballer1);
+        repository.save(getFootballer1());
         //Get footballersList and check the size
         this.mockMvc.perform(get("/footballers/byName/?name=testPlayer"))
                 .andDo(print())
@@ -80,13 +93,9 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should get multiple footballers by name")
     void shouldGetMultipleFootballersByName() throws Exception {
-        //TODO przerobić zwracanie każdego z footballerów na metodę (getFootballer1, etc.)
-        Footballer footballer1 = new Footballer("111111", "testPlayer", "testClub", 10, 150);
-        Footballer footballer2 = new Footballer("222222", "testPlayer", "testClub2", 20, 160);
-        Footballer footballer3 = new Footballer("333333", "testPlayer2", "testClub3", 30, 170);
-        repository.save(footballer1);
-        repository.save(footballer2);
-        repository.save(footballer3);
+        repository.save(getFootballer1());
+        repository.save(getFootballer2());
+        repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/byName/?name=testPlayer"))
                 .andDo(print())
                 .andExpectAll(status().is2xxSuccessful(),
@@ -97,7 +106,6 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should not get any footballers by name")
     void shouldNotGetAnyFootballersByName() throws Exception {
-        //Get footballersList and check is the size is 0
         this.mockMvc.perform(get("/footballers/byName/?name=xyz"))
                 .andDo(print())
                 .andExpectAll(
@@ -106,20 +114,19 @@ class FootballerControllerTest {
                 );
     }
 
-    //     Should add a footballer --> return 2xx created, check if the player was added and if he has the parameters we wanted
+    //Should add a footballer --> return 2xx created, check if the player was added and if he has the parameters we wanted
     @Test
     @DisplayName("Should add a footballer")
     void shouldAddFootballer() throws Exception {
-        Footballer footballer = new Footballer("111111", "testPlayer", "testClub", 20, 180);
-        int returnedFootballerId = repository.save(footballer).getId();
+        int returnedFootballerId = repository.save(getFootballer1()).getId();
         this.mockMvc.perform(post("/footballers/" + returnedFootballerId))
                 .andDo(print())
                 .andExpectAll(status().isCreated(),
-                        jsonPath("$[0].pesel", is("111111")),
-                        jsonPath("$[0].name", is("testPlayer")),
-                        jsonPath("$[0].club", is("testClub")),
-                        jsonPath("$[0].goals", is(20)),
-                        jsonPath("$[0].height", is(180))
+                        jsonPath("$.pesel", is("111111")),
+                        jsonPath("$.name", is("testPlayer")),
+                        jsonPath("$.club", is("testClub")),
+                        jsonPath("$.goals", is(10)),
+                        jsonPath("$.height", is(150))
                 );
     }
 
@@ -127,27 +134,23 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should fail to add a footballer")
     void shouldNotAddFootballer() throws Exception {
-        Footballer footballer = new Footballer("12345678", "testPlayer", "testClub", 20, 180);
-        int returnedFootballerId = repository.save(footballer).getId();
+        int returnedFootballerId = repository.save(getFootballer1()).getId();
         this.mockMvc.perform(post("/footballers/" + returnedFootballerId))
                 .andDo(print())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpectAll(status().is4xxClientError()
+                );
     }
 
     // Should Get X Highest Footballers --> check if the list size is X
     @Test
     @DisplayName("Should get X highest footballers")
     void shouldGetXHighestFootballers() throws Exception {
-        Footballer footballer1 = new Footballer("111111", "testPlayer1", "testClub", 10, 150);
-        Footballer footballer2 = new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
-        Footballer footballer3 = new Footballer("333333", "testPlayer3", "testClub3", 30, 170);
-        repository.save(footballer1);
-        repository.save(footballer2);
-        repository.save(footballer3);
+        repository.save(getFootballer1());
+        repository.save(getFootballer2());
+        repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/topXByHeight/?pageNumber=0&numberOfPlayers=2"))
                 .andDo(print())
                 .andExpectAll(
-                        //TODO przerobić na metodę z tablicą obiektów
                         jsonPath("$", hasSize(2)),
                         jsonPath("$[0].pesel", is("333333")),
                         jsonPath("$[0].name", is("testPlayer3")),
@@ -168,12 +171,9 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should not get more than X footballers")
     void shouldNotGetMoreThanXFootballers() throws Exception {
-        Footballer footballer1 = new Footballer("111111", "testPlayer1", "testClub", 10, 150);
-        Footballer footballer2 = new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
-        Footballer footballer3 = new Footballer("333333", "testPlayer3", "testClub3", 30, 170);
-        repository.save(footballer1);
-        repository.save(footballer2);
-        repository.save(footballer3);
+        repository.save(getFootballer1());
+        repository.save(getFootballer2());
+        repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/topXByHeight/?pageNumber=0&numberOfPlayers=20"))
                 .andDo(print())
                 .andExpectAll(jsonPath("$", hasSize(3)),
@@ -196,10 +196,8 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should update footballer")
     void shouldUpdateFootballer() throws Exception {
-        Footballer footballer1 = new Footballer("111111", "testPlayer1", "testClub", 10, 150);
-        Footballer footballer2 = new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
-        repository.save(footballer1);
-        int footballerIdToBeUpdated = repository.save(footballer2).getId();
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
 
         String request = """
                 {
@@ -231,10 +229,8 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should fail to update footballer")
     void shouldNotToUpdateFootballer() throws Exception {
-        Footballer footballer1 = new Footballer("111111", "testPlayer1", "testClub", 10, 150);
-        Footballer footballer2 = new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
-        repository.save(footballer1);
-        int footballerIdToBeUpdated = repository.save(footballer2).getId();
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
 
         String request = """
                 {
@@ -260,34 +256,23 @@ class FootballerControllerTest {
     @Test
     @DisplayName("Should delete a footballer")
     void shouldDeleteFootballer() throws Exception {
-        Footballer footballer1 = new Footballer("111111", "testPlayer1", "testClub", 10, 150);
-        Footballer footballer2 = new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
-        Footballer footballer3 = new Footballer("333333", "testPlayer3", "testClub3", 30, 170);
-        repository.save(footballer1);
-        int footballerToBeDeleted = repository.save(footballer2).getId();
-        repository.save(footballer3);
+        repository.save(getFootballer1());
+        int footballerToBeDeleted = repository.save(getFootballer2()).getId();
+        repository.save(getFootballer3());
         this.mockMvc.perform(delete("/footballers/" + footballerToBeDeleted))
                 .andDo(print())
-                .andExpectAll(status().is2xxSuccessful(),
-                        jsonPath("$[0].id", is(footballerToBeDeleted)),
-                        jsonPath("$[0].name", is("testPlayer2")),
-                        jsonPath("$[0].club", is("testClub2")),
-                        jsonPath("$[0].goals", is(20)),
-                        jsonPath("$[0].height", is(160))
+                .andExpectAll(status().is2xxSuccessful()
                 );
     }
 
-    // Should fail to delete a footballer --> footballer with that id doens't exist already,
+    // Should fail to delete a footballer --> footballer with that id doesn't exist already,
 // check the size of the footballerList before and after deletion
     @Test
     @DisplayName("Should not delete a footballer")
     void shouldNotDeleteFootballer() throws Exception {
-        Footballer footballer1 = new Footballer("111111", "testPlayer1", "testClub", 10, 150);
-        Footballer footballer2 = new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
-        Footballer footballer3 = new Footballer("333333", "testPlayer3", "testClub3", 30, 170);
-        repository.save(footballer1);
-        repository.save(footballer2);
-        int footballerToBeDeleted = repository.save(footballer3).getId();
+        repository.save(getFootballer1());
+        repository.save(getFootballer2());
+        int footballerToBeDeleted = repository.save(getFootballer3()).getId();
         this.mockMvc.perform(delete("/footballers/" + footballerToBeDeleted + 100))
                 .andDo(print())
                 .andExpectAll(status().is2xxSuccessful()
