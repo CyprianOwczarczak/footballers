@@ -33,6 +33,18 @@ class FootballerControllerTest {
 
     //TODO Przerobić JsonPath na metodę z tablicą obiektów
 
+//    private static MockMvcResultMatchers[] returnJson() {
+//
+//
+//    }
+
+//    jsonPath("$").isMap(),
+//    jsonPath("$.pesel", is("333333")),
+//    jsonPath("$.name", is("testPlayer3")),
+//    jsonPath("$.club", is("testClub3")),
+//    jsonPath("$.goals", is(30)),
+//    jsonPath("$.height", is(170))
+
     private static Footballer getFootballer1() {
         return new Footballer("111111", "testPlayer1", "testClub", 10, 150);
     }
@@ -334,52 +346,10 @@ class FootballerControllerTest {
 
     //Should not add a footballer when pesel is not passed
     @Test
-    @DisplayName("Should not add footballer when pesel is not passed")
-    void shouldNotAddFootballerWhenPeselIsNotPassed() throws Exception {
+    @DisplayName("Should not add footballer when pesel, name and height is not valid")
+    void shouldNotAddFootballerWhenPeselAndNameAndHeightIsNotValid() throws Exception {
         String request = """
                 {
-                "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30,
-                "height":170
-                }
-                """;
-        this.mockMvc.perform(post("/footballers/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andDo(print())
-                .andExpectAll(status().isBadRequest(),
-                        content().string("You have to provide a pesel !"));
-    }
-
-    //Should not add a footballer when name is not passed
-    @Test
-    @DisplayName("Should not add footballer when name is not passed")
-    void shouldNotAddFootballerWhenNameIsNotPassed() throws Exception {
-        String request = """
-                {
-                "pesel":"333333",
-                "club":"testClub3",
-                "goals":30,
-                "height":170
-                }
-                """;
-        this.mockMvc.perform(post("/footballers/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andDo(print())
-                .andExpectAll(status().isBadRequest(),
-                        content().string("You have to provide a name !"));
-    }
-
-    //Should not add a footballer when height is not passed
-    @Test
-    @DisplayName("Should not add footballer when height is not passed")
-    void shouldNotAddFootballerWhenHeightIsNotPassed() throws Exception {
-        String request = """
-                {
-                "pesel":"333333",
-                "name":"testPlayer3",
                 "club":"testClub3",
                 "goals":30
                 }
@@ -389,70 +359,19 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isBadRequest(),
-                        content().string("You have to provide a footballer height !"));
+                        content().string("[\"You have to provide a pesel !\"," +
+                                "\"You have to provide a name !\",\"You have to provide height !\"]"));
     }
 
-    //Should not add a footballer when pesel is not passed
+    //Should fail to update a footballer if the parameters passed are no valid
     @Test
-    @DisplayName("Should not add footballer when pesel is not passed")
-    void shouldNotUpdateFootballerWhenPeselIsNotPassed() throws Exception {
+    @DisplayName("Should not update footballer when pesel, name and height is not valid")
+    void shouldNotUpdateFootballerWhenPeselAndNameAndHeightIsNotPassed() throws Exception {
         repository.save(getFootballer1());
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
         String request = """
                 {
                 "id":footballer.id,
-                "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30,
-                "height":170
-                }
-                """.
-                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
-
-        this.mockMvc.perform(put("/footballers/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andDo(print())
-                .andExpectAll(status().isBadRequest(),
-                        content().string("You have to provide a pesel !"));
-    }
-
-    //Should not add a footballer when name is not passed
-    @Test
-    @DisplayName("Should not add footballer when name is not passed")
-    void shouldNotUpdateFootballerWhenNameIsNotPassed() throws Exception {
-        repository.save(getFootballer1());
-        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
-        String request = """
-                {
-                "id":footballer.id,
-                "pesel":"333333",
-                "club":"testClub3",
-                "goals":30,
-                "height":170
-                }
-                """.
-                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
-
-        this.mockMvc.perform(put("/footballers/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andDo(print())
-                .andExpectAll(status().isBadRequest(),
-                        content().string("You have to provide a name !"));
-    }
-
-    //Should not add a footballer when height is not passed
-    @Test
-    @DisplayName("Should not add footballer when height is not passed")
-    void shouldNotUpdateFootballerWhenHeightIsNotPassed() throws Exception {
-        repository.save(getFootballer1());
-        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
-        String request = """
-                {
-                "id":footballer.id,
-                "pesel":"333333",
-                "name":"testPlayer3",
                 "club":"testClub3",
                 "goals":30
                 }
@@ -464,6 +383,6 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isBadRequest(),
-                        content().string("You have to provide a footballer height !"));
+                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
     }
 }
