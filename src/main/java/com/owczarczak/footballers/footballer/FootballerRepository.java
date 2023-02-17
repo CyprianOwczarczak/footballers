@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface FootballerRepository extends JpaRepository<Footballer, Integer> {
 
-    //Derived queries --> read
+    //todo Derived queries --> read
+    // poczytać o JPQL --> przerobić na JPQL
+
     Page<Footballer> findAllByOrderByHeightDesc(Pageable pageable);
 
     List<Footballer> findByName(String name);

@@ -49,6 +49,8 @@ public class FootballerController {
     ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
         ArrayList<String> errorList = new ArrayList<>();
 
+        //todo wydzielić metodę walidacja przy dodawaniu i updateowaniu (żeby nie było wszystko w jednej metodzie)
+
         if (service.existsByPesel(newFootballerDto.getPesel())) {
             return ResponseEntity.badRequest().build();
         }
@@ -74,6 +76,8 @@ public class FootballerController {
     ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
         ArrayList<String> errorList = new ArrayList<>();
 
+        //todo wydzielić metodę walidacja przy dodawaniu i updateowaniu (żeby nie było wszystko w jednej metodzie)
+
         if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
             return notFound().build();
         }
@@ -90,7 +94,6 @@ public class FootballerController {
         if (!errorList.isEmpty()) {
             return badRequest().body(errorList);
         }
-
         Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
         return ok(result.get());
     }

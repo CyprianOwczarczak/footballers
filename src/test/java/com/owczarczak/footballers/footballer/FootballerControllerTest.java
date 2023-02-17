@@ -344,6 +344,8 @@ class FootballerControllerTest {
                 );
     }
 
+    //todo dodać sprawdzenie do każdego osobnego przypadku
+
     //Should not add a footballer when pesel is not passed
     @Test
     @DisplayName("Should not add footballer when pesel, name and height is not valid")
@@ -359,6 +361,7 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isBadRequest(),
+                        //przerobić na 3"""
                         content().string("[\"You have to provide a pesel !\"," +
                                 "\"You have to provide a name !\",\"You have to provide height !\"]"));
     }
