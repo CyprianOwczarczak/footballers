@@ -44,30 +44,39 @@ public class FootballerController {
     }
 
     @PostMapping("/")
-    ResponseEntity<FootballerDto> addFootballer(@RequestBody FootballerDto newFootballerDto) {
+    ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
+
         if (service.existsByPesel(newFootballerDto.getPesel())) {
             return ResponseEntity.badRequest().build();
+        } else if (newFootballerDto.getPesel() == null) {
+            return ResponseEntity.badRequest().body("You have to provide a pesel !");
+        } else if (newFootballerDto.getName() == null) {
+            return ResponseEntity.badRequest().body("You have to provide a name !");
+        } else if (newFootballerDto.getHeight() == 0) {
+            return ResponseEntity.badRequest().body("You have to provide a footballer height !");
+        } else {
+            FootballerDto result = service.addFootballer(newFootballerDto);
+            return ResponseEntity
+                    .created(URI.create("/" + result.getId()))
+                    .body(result);
         }
-        if (newFootballerDto.getPesel().isEmpty() || newFootballerDto.getName().isEmpty() || newFootballerDto.getHeight() == 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        FootballerDto result = service.addFootballer(newFootballerDto);
-        return ResponseEntity
-                .created(URI.create("/" + result.getId()))
-                .body(result);
     }
 
     @PutMapping("/")
-    ResponseEntity<FootballerDto> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
         if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
             return notFound().build();
-        } else if (footballerToUpdate.getPesel() == null
-                || footballerToUpdate.getName() == null || footballerToUpdate.getHeight() == 0) {
-            return badRequest().build();
+        } else if (footballerToUpdate.getPesel() == null) {
+            return badRequest().body("You have to provide a pesel !");
+        } else if (footballerToUpdate.getName() == null) {
+            return badRequest().body("You have to provide a name !");
+        } else if (footballerToUpdate.getHeight() == 0) {
+            return badRequest().body("You have to provide a footballer height !");
         } else {
             Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
             return ok(result.get());
         }
+
     }
 
     @DeleteMapping("/{id}")

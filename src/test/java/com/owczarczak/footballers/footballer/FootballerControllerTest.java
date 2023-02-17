@@ -14,8 +14,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -322,8 +321,8 @@ class FootballerControllerTest {
     // Should fail to delete a footballer --> footballer with that id doesn't exist already,
 // check the size of the footballerList before and after deletion
     @Test
-    @DisplayName("Should not delete a footballer")
-    void shouldNotDeleteFootballer() throws Exception {
+    @DisplayName("Should not delete a footballer when id doesn't exist")
+    void shouldNotDeleteFootballerWhenIdDoesntExist() throws Exception {
         repository.save(getFootballer1());
         int footballerToBeDeleted = repository.save(getFootballer2()).getId();
         footballerToBeDeleted += 100;
@@ -331,5 +330,140 @@ class FootballerControllerTest {
                 .andDo(print())
                 .andExpectAll(jsonPath("$").doesNotExist()
                 );
+    }
+
+    //Should not add a footballer when pesel is not passed
+    @Test
+    @DisplayName("Should not add footballer when pesel is not passed")
+    void shouldNotAddFootballerWhenPeselIsNotPassed() throws Exception {
+        String request = """
+                {
+                "name":"testPlayer3",
+                "club":"testClub3",
+                "goals":30,
+                "height":170
+                }
+                """;
+        this.mockMvc.perform(post("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("You have to provide a pesel !"));
+    }
+
+    //Should not add a footballer when name is not passed
+    @Test
+    @DisplayName("Should not add footballer when name is not passed")
+    void shouldNotAddFootballerWhenNameIsNotPassed() throws Exception {
+        String request = """
+                {
+                "pesel":"333333",
+                "club":"testClub3",
+                "goals":30,
+                "height":170
+                }
+                """;
+        this.mockMvc.perform(post("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("You have to provide a name !"));
+    }
+
+    //Should not add a footballer when height is not passed
+    @Test
+    @DisplayName("Should not add footballer when height is not passed")
+    void shouldNotAddFootballerWhenHeightIsNotPassed() throws Exception {
+        String request = """
+                {
+                "pesel":"333333",
+                "name":"testPlayer3",
+                "club":"testClub3",
+                "goals":30
+                }
+                """;
+        this.mockMvc.perform(post("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("You have to provide a footballer height !"));
+    }
+
+    //Should not add a footballer when pesel is not passed
+    @Test
+    @DisplayName("Should not add footballer when pesel is not passed")
+    void shouldNotUpdateFootballerWhenPeselIsNotPassed() throws Exception {
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
+        String request = """
+                {
+                "id":footballer.id,
+                "name":"testPlayer3",
+                "club":"testClub3",
+                "goals":30,
+                "height":170
+                }
+                """.
+                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
+
+        this.mockMvc.perform(put("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("You have to provide a pesel !"));
+    }
+
+    //Should not add a footballer when name is not passed
+    @Test
+    @DisplayName("Should not add footballer when name is not passed")
+    void shouldNotUpdateFootballerWhenNameIsNotPassed() throws Exception {
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
+        String request = """
+                {
+                "id":footballer.id,
+                "pesel":"333333",
+                "club":"testClub3",
+                "goals":30,
+                "height":170
+                }
+                """.
+                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
+
+        this.mockMvc.perform(put("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("You have to provide a name !"));
+    }
+
+    //Should not add a footballer when height is not passed
+    @Test
+    @DisplayName("Should not add footballer when height is not passed")
+    void shouldNotUpdateFootballerWhenHeightIsNotPassed() throws Exception {
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
+        String request = """
+                {
+                "id":footballer.id,
+                "pesel":"333333",
+                "name":"testPlayer3",
+                "club":"testClub3",
+                "goals":30
+                }
+                """.
+                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
+
+        this.mockMvc.perform(put("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("You have to provide a footballer height !"));
     }
 }
