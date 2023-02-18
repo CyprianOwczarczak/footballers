@@ -451,17 +451,19 @@ class FootballerControllerTest {
                         content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
     }
 
-    //Should fail to update a footballer if the parameters passed are not provided
+    //Should fail to update a footballer if pesel is not provided
     @Test
-    @DisplayName("Should not update footballer when pesel, name and height is not provided")
+    @DisplayName("Should not update footballer when pesel is not provided")
     void shouldNotUpdateFootballerWhenPeselIsNotProvided() throws Exception {
         repository.save(getFootballer1());
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
         String request = """
                 {
                 "id":footballer.id,
+                "name":"testPlayer3",
                 "club":"testClub3",
-                "goals":30
+                "goals":30,
+                "height":170
                 }
                 """.
                 replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
@@ -471,19 +473,22 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isBadRequest(),
-                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
+                        content().string("""
+                                ["You have to provide a pesel !"]"""));
     }
 
     @Test
-    @DisplayName("Should not update footballer when pesel is not provided")
+    @DisplayName("Should not update footballer when name is not provided")
     void shouldNotUpdateFootballerWhenNameIsNotProvided() throws Exception {
         repository.save(getFootballer1());
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
         String request = """
                 {
                 "id":footballer.id,
+                "pesel":"333333",
                 "club":"testClub3",
-                "goals":30
+                "goals":30,
+                "height":170
                 }
                 """.
                 replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
@@ -493,17 +498,20 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isBadRequest(),
-                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
+                        content().string("""
+                                ["You have to provide a name !"]"""));
     }
 
     @Test
-    @DisplayName("Should not update footballer when pesel, name and height is not provided")
+    @DisplayName("Should not update footballer when height is not provided")
     void shouldNotUpdateFootballerWhenHeightIsNotProvided() throws Exception {
         repository.save(getFootballer1());
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
         String request = """
                 {
                 "id":footballer.id,
+                "name":"testPlayer3",
+                "pesel":"333333",
                 "club":"testClub3",
                 "goals":30
                 }
@@ -515,12 +523,13 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isBadRequest(),
-                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
+                        content().string("""
+                                ["You have to provide height !"]"""));
     }
 
     //TODO add a check for id in the Controller
     @Test
-    @DisplayName("Should not update footballer when pesel, name and height is not provided")
+    @DisplayName("Should not update footballer when id is not provided")
     void shouldNotUpdateFootballerWhenIdIsNotProvided() throws Exception {
         repository.save(getFootballer1());
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();

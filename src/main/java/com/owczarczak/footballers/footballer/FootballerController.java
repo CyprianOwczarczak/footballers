@@ -45,41 +45,20 @@ public class FootballerController {
         return service.getFootballersByName(name);
     }
 
-    @PostMapping("/")
-    ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
-        ArrayList<String> errorList = new ArrayList<>();
-
-        ResponseEntity<?> build = checkFieldsValidation(service.existsByPesel(newFootballerDto.getPesel()),
-                ResponseEntity.badRequest().build(), newFootballerDto, errorList, ResponseEntity.badRequest());
-        if (build != null) return build;
-        FootballerDto result = service.addFootballer(newFootballerDto);
-        return ResponseEntity
-                .created(URI.create("/" + result.getId()))
-                .body(result);
-    }
-
-    //TODO add check if Id is provided !
-    @PutMapping("/")
-    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
-        ArrayList<String> errorList = new ArrayList<>();
-
-        ResponseEntity<?> build = checkFieldsValidation(service.getFootballerById(footballerToUpdate.getId()).isEmpty(),
-                notFound().build(), footballerToUpdate, errorList, badRequest());
-        if (build != null) return build;
-        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-        return ok(result.get());
-    }
-
     @DeleteMapping("/{id}")
     ResponseEntity deleteFootballer(@PathVariable int id) {
         service.deleteFootballer(id);
         return ok().build();
     }
 
-    private ResponseEntity<?> checkFieldsValidation(boolean existsBy, ResponseEntity<Object> httpCode,
-                                                    FootballerDto newFootballerDto, ArrayList<String> errorList, BodyBuilder badRequest) {
-        if (existsBy) {
-            return httpCode;
+    @PostMapping("/")
+    ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
+        ArrayList<String> errorList = new ArrayList<>();
+
+        //todo wydzielić metodę walidacja przy dodawaniu i updateowaniu (żeby nie było wszystko w jednej metodzie)
+
+        if (service.existsByPesel(newFootballerDto.getPesel())) {
+            return ResponseEntity.badRequest().build();
         }
         if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
             errorList.add("You have to provide a pesel !");
@@ -91,8 +70,57 @@ public class FootballerController {
             errorList.add("You have to provide height !");
         }
         if (!errorList.isEmpty()) {
-            return badRequest.body(errorList);
+            return ResponseEntity.badRequest().body(errorList);
         }
-        return null;
+        FootballerDto result = service.addFootballer(newFootballerDto);
+        return ResponseEntity
+                .created(URI.create("/" + result.getId()))
+                .body(result);
     }
+
+    @PutMapping("/")
+    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+        ArrayList<String> errorList = new ArrayList<>();
+
+        //todo wydzielić metodę walidacja przy dodawaniu i updateowaniu (żeby nie było wszystko w jednej metodzie)
+
+        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
+            return notFound().build();
+        }
+
+        if (StringUtils.isEmpty(footballerToUpdate.getPesel())) {
+            errorList.add("You have to provide a pesel !");
+        }
+        if (StringUtils.isEmpty(footballerToUpdate.getName())) {
+            errorList.add("You have to provide a name !");
+        }
+        if (footballerToUpdate.getHeight() == 0) {
+            errorList.add("You have to provide height !");
+        }
+        if (!errorList.isEmpty()) {
+            return badRequest().body(errorList);
+        }
+        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+        return ok(result.get());
+    }
+
+//    private ResponseEntity<?> checkFieldsValidation(boolean existsBy, ResponseEntity<Object> httpCode,
+//                                                    FootballerDto newFootballerDto, ArrayList<String> errorList, BodyBuilder badRequest) {
+//        if (existsBy) {
+//            return httpCode;
+//        }
+//        if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
+//            errorList.add("You have to provide a pesel !");
+//        }
+//        if (StringUtils.isEmpty(newFootballerDto.getName())) {
+//            errorList.add("You have to provide a name !");
+//        }
+//        if (newFootballerDto.getHeight() == 0) {
+//            errorList.add("You have to provide height !");
+//        }
+//        if (!errorList.isEmpty()) {
+//            return badRequest.body(errorList);
+//        }
+//        return null;
+//    }
 }
