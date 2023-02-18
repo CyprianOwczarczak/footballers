@@ -49,9 +49,8 @@ public class FootballerController {
     ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
         ArrayList<String> errorList = new ArrayList<>();
 
-        //todo wydzielić metodę walidacja przy dodawaniu i updateowaniu (żeby nie było wszystko w jednej metodzie)
-
-        ResponseEntity<?> build = checkFieldsValidation(service.existsByPesel(newFootballerDto.getPesel()), ResponseEntity.badRequest().build(), newFootballerDto, errorList, ResponseEntity.badRequest());
+        ResponseEntity<?> build = checkFieldsValidation(service.existsByPesel(newFootballerDto.getPesel()),
+                ResponseEntity.badRequest().build(), newFootballerDto, errorList, ResponseEntity.badRequest());
         if (build != null) return build;
         FootballerDto result = service.addFootballer(newFootballerDto);
         return ResponseEntity
@@ -59,9 +58,28 @@ public class FootballerController {
                 .body(result);
     }
 
-    private ResponseEntity<?> checkFieldsValidation(boolean service, ResponseEntity<Object> build, FootballerDto newFootballerDto, ArrayList<String> errorList, BodyBuilder badRequest) {
-        if (service) {
-            return build;
+    //TODO add check if Id is provided !
+    @PutMapping("/")
+    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+        ArrayList<String> errorList = new ArrayList<>();
+
+        ResponseEntity<?> build = checkFieldsValidation(service.getFootballerById(footballerToUpdate.getId()).isEmpty(),
+                notFound().build(), footballerToUpdate, errorList, badRequest());
+        if (build != null) return build;
+        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+        return ok(result.get());
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteFootballer(@PathVariable int id) {
+        service.deleteFootballer(id);
+        return ok().build();
+    }
+
+    private ResponseEntity<?> checkFieldsValidation(boolean existsBy, ResponseEntity<Object> httpCode,
+                                                    FootballerDto newFootballerDto, ArrayList<String> errorList, BodyBuilder badRequest) {
+        if (existsBy) {
+            return httpCode;
         }
         if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
             errorList.add("You have to provide a pesel !");
@@ -76,23 +94,5 @@ public class FootballerController {
             return badRequest.body(errorList);
         }
         return null;
-    }
-
-    @PutMapping("/")
-    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
-        ArrayList<String> errorList = new ArrayList<>();
-
-        //todo wydzielić metodę walidacja przy dodawaniu i updateowaniu (żeby nie było wszystko w jednej metodzie)
-
-        ResponseEntity<?> build = checkFieldsValidation(service.getFootballerById(footballerToUpdate.getId()).isEmpty(), notFound().build(), footballerToUpdate, errorList, badRequest());
-        if (build != null) return build;
-        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-        return ok(result.get());
-    }
-
-    @DeleteMapping("/{id}")
-    ResponseEntity deleteFootballer(@PathVariable int id) {
-        service.deleteFootballer(id);
-        return ok().build();
     }
 }

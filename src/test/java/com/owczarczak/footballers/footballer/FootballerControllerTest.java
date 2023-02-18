@@ -346,10 +346,10 @@ class FootballerControllerTest {
 
     //todo dodać sprawdzenie do każdego osobnego przypadku
 
-    //Should not add a footballer when pesel is not passed
+    //Should not add a footballer when pesel, name and height is not passed
     @Test
-    @DisplayName("Should not add footballer when pesel, name and height is not valid")
-    void shouldNotAddFootballerWhenPeselAndNameAndHeightIsNotValid() throws Exception {
+    @DisplayName("Should not add footballer when pesel, name and height is not provided")
+    void shouldNotAddFootballerWhenPeselAndNameAndHeightIsNotProvided() throws Exception {
         String request = """
                 {
                 "club":"testClub3",
@@ -361,15 +361,167 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isBadRequest(),
-                        //przerobić na 3"""
-                        content().string("[\"You have to provide a pesel !\"," +
-                                "\"You have to provide a name !\",\"You have to provide height !\"]"));
+                        content().string("""
+                                ["You have to provide a pesel !","You have to provide a name !","You have to provide height !"]"""));
     }
 
-    //Should fail to update a footballer if the parameters passed are no valid
+    //Should not add a footballer when pesel is not provided
     @Test
-    @DisplayName("Should not update footballer when pesel, name and height is not valid")
-    void shouldNotUpdateFootballerWhenPeselAndNameAndHeightIsNotPassed() throws Exception {
+    @DisplayName("Should not add footballer when pesel is not provided")
+    void shouldNotAddFootballerWhenPeselIsNotProvided() throws Exception {
+        String request = """
+                {
+                "name":"testPlayer3",
+                "club":"testClub3",
+                "goals":30,
+                "height":170
+                }
+                """;
+        this.mockMvc.perform(post("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a pesel !"]"""));
+    }
+
+    //Should not add a footballer when pesel is not provided
+    @Test
+    @DisplayName("Should not add footballer when name is not provided")
+    void shouldNotAddFootballerWhenNameIsNotProvided() throws Exception {
+        String request = """
+                {
+                "pesel":"333333",
+                "club":"testClub3",
+                "goals":30,
+                "height":170
+                }
+                """;
+        this.mockMvc.perform(post("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a name !"]"""));
+    }
+
+    //Should not add a footballer when pesel is not provided
+    @Test
+    @DisplayName("Should not add footballer when height is not provided")
+    void shouldNotAddFootballerWhenHeightIsNotProvided() throws Exception {
+        String request = """
+                {
+                "pesel":"333333",
+                "name":"testPlayer3",
+                "club":"testClub3",
+                "goals":30
+                }
+                """;
+        this.mockMvc.perform(post("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide height !"]"""));
+    }
+
+    //TODO Add id to checklist
+    @Test
+    @DisplayName("Should not update footballer when pesel, name and height is not provided")
+    void shouldNotUpdateFootballerWhenPeselAndNameAndHeightIsNotProvided() throws Exception {
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
+        String request = """
+                {
+                "id":footballer.id,
+                "club":"testClub3",
+                "goals":30
+                }
+                """.
+                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
+
+        this.mockMvc.perform(put("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
+    }
+
+    //Should fail to update a footballer if the parameters passed are not provided
+    @Test
+    @DisplayName("Should not update footballer when pesel, name and height is not provided")
+    void shouldNotUpdateFootballerWhenPeselIsNotProvided() throws Exception {
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
+        String request = """
+                {
+                "id":footballer.id,
+                "club":"testClub3",
+                "goals":30
+                }
+                """.
+                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
+
+        this.mockMvc.perform(put("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
+    }
+
+    @Test
+    @DisplayName("Should not update footballer when pesel is not provided")
+    void shouldNotUpdateFootballerWhenNameIsNotProvided() throws Exception {
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
+        String request = """
+                {
+                "id":footballer.id,
+                "club":"testClub3",
+                "goals":30
+                }
+                """.
+                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
+
+        this.mockMvc.perform(put("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
+    }
+
+    @Test
+    @DisplayName("Should not update footballer when pesel, name and height is not provided")
+    void shouldNotUpdateFootballerWhenHeightIsNotProvided() throws Exception {
+        repository.save(getFootballer1());
+        int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
+        String request = """
+                {
+                "id":footballer.id,
+                "club":"testClub3",
+                "goals":30
+                }
+                """.
+                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
+
+        this.mockMvc.perform(put("/footballers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
+    }
+
+    //TODO add a check for id in the Controller
+    @Test
+    @DisplayName("Should not update footballer when pesel, name and height is not provided")
+    void shouldNotUpdateFootballerWhenIdIsNotProvided() throws Exception {
         repository.save(getFootballer1());
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
         String request = """
