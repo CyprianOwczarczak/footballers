@@ -66,7 +66,6 @@ class FootballerControllerTest {
     void shouldStartupSpring() {
     }
 
-    // Should get all footballers --> return 2xx successful, check list size
     @Test
     @DisplayName("Should get all footballers")
     void shouldGetAllFootballers() throws Exception {
@@ -80,7 +79,6 @@ class FootballerControllerTest {
                         jsonPath("$", hasSize(3)));
     }
 
-    // Should get a footballer by id --> return 2xx successful code, only one object
     @Test
     @DisplayName("Should get a footballer by id")
     void shouldGetFootballerById() throws Exception {
@@ -98,7 +96,6 @@ class FootballerControllerTest {
                 );
     }
 
-    // Should fail to get footballer by id -->return 4xx not found
     @Test
     @DisplayName("Should fail to get footballer by id")
     void shouldNotGetFootballerById() throws Exception {
@@ -107,7 +104,6 @@ class FootballerControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    // Should get footballers by name --> check if the list size is correct
     @Test
     @DisplayName("Should get footballers by name")
     void shouldGetFootballersByName() throws Exception {
@@ -123,7 +119,6 @@ class FootballerControllerTest {
                 );
     }
 
-    //Should get multiple footballers by name, check the size of the list and parameters with jsonPath
     @Test
     @DisplayName("Should get multiple footballers by name")
     void shouldGetMultipleFootballersByName() throws Exception {
@@ -138,7 +133,6 @@ class FootballerControllerTest {
                         jsonPath("$", hasSize(2)));
     }
 
-    //Should not get any footballers by name --> check if the list is empty
     @Test
     @DisplayName("Should not get any footballers by name")
     void shouldNotGetAnyFootballersByName() throws Exception {
@@ -153,7 +147,6 @@ class FootballerControllerTest {
                 );
     }
 
-    //Should add a footballer --> return 2xx created, check if the player was added and if he has the parameters we wanted
     @Test
     @DisplayName("Should add a footballer")
     void shouldAddFootballer() throws Exception {
@@ -181,7 +174,6 @@ class FootballerControllerTest {
                 );
     }
 
-    // Should fail to add a footballer -->  footballer not added, wrong body passed or the id already exists
     @Test
     @DisplayName("Should not add a footballer when pesel exists")
     void shouldNotAddFootballerWhenPeselExists() throws Exception {
@@ -204,7 +196,6 @@ class FootballerControllerTest {
                 );
     }
 
-    // Should Get X Highest Footballers --> check if the list size is X
     @Test
     @DisplayName("Should get X highest footballers")
     void shouldGetXHighestFootballers() throws Exception {
@@ -229,8 +220,6 @@ class FootballerControllerTest {
                 );
     }
 
-    // Shouldn't get more than X footballers --> check if it doesn't return more footballers
-    // than there are on a list/ doesn't duplicate
     @Test
     @DisplayName("Should not get more than X footballers")
     void shouldNotGetMoreThanXFootballers() throws Exception {
@@ -254,7 +243,6 @@ class FootballerControllerTest {
                 );
     }
 
-    //     Should update a footballer --> return 2xx successful, footballer exists with new data
     @Test
     @DisplayName("Should update footballer")
     void shouldUpdateFootballer() throws Exception {
@@ -287,7 +275,6 @@ class FootballerControllerTest {
                 );
     }
 
-    //         Should fail to update a footballer --> return 4xx not found, footballer with that id doesn't exist
     @Test
     @DisplayName("Should fail to update footballer")
     void shouldNotUpdateFootballerWhenIdDoesntExist() throws Exception {
@@ -315,7 +302,6 @@ class FootballerControllerTest {
                         jsonPath("$").doesNotExist());
     }
 
-    // Should delete a footballer --> return 2xx, check if footballer with that id doesn't exist anymore
     @Test
     @DisplayName("Should delete a footballer")
     void shouldDeleteFootballer() throws Exception {
@@ -330,8 +316,6 @@ class FootballerControllerTest {
         Assertions.assertFalse(repository.existsById(footballerToBeDeleted));
     }
 
-    // Should fail to delete a footballer --> footballer with that id doesn't exist already,
-// check the size of the footballerList before and after deletion
     @Test
     @DisplayName("Should not delete a footballer when id doesn't exist")
     void shouldNotDeleteFootballerWhenIdDoesntExist() throws Exception {
@@ -344,9 +328,6 @@ class FootballerControllerTest {
                 );
     }
 
-    //todo dodać sprawdzenie do każdego osobnego przypadku
-
-    //Should not add a footballer when pesel, name and height is not passed
     @Test
     @DisplayName("Should not add footballer when pesel, name and height is not provided")
     void shouldNotAddFootballerWhenPeselAndNameAndHeightIsNotProvided() throws Exception {
@@ -365,7 +346,6 @@ class FootballerControllerTest {
                                 ["You have to provide a pesel !","You have to provide a name !","You have to provide height !"]"""));
     }
 
-    //Should not add a footballer when pesel is not provided
     @Test
     @DisplayName("Should not add footballer when pesel is not provided")
     void shouldNotAddFootballerWhenPeselIsNotProvided() throws Exception {
@@ -386,7 +366,6 @@ class FootballerControllerTest {
                                 ["You have to provide a pesel !"]"""));
     }
 
-    //Should not add a footballer when pesel is not provided
     @Test
     @DisplayName("Should not add footballer when name is not provided")
     void shouldNotAddFootballerWhenNameIsNotProvided() throws Exception {
@@ -407,7 +386,6 @@ class FootballerControllerTest {
                                 ["You have to provide a name !"]"""));
     }
 
-    //Should not add a footballer when pesel is not provided
     @Test
     @DisplayName("Should not add footballer when height is not provided")
     void shouldNotAddFootballerWhenHeightIsNotProvided() throws Exception {
@@ -428,7 +406,6 @@ class FootballerControllerTest {
                                 ["You have to provide height !"]"""));
     }
 
-    //TODO Add id to checklist
     @Test
     @DisplayName("Should not update footballer when pesel, name and height is not provided")
     void shouldNotUpdateFootballerWhenPeselAndNameAndHeightIsNotProvided() throws Exception {
@@ -451,7 +428,6 @@ class FootballerControllerTest {
                         content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
     }
 
-    //Should fail to update a footballer if pesel is not provided
     @Test
     @DisplayName("Should not update footballer when pesel is not provided")
     void shouldNotUpdateFootballerWhenPeselIsNotProvided() throws Exception {
@@ -527,7 +503,6 @@ class FootballerControllerTest {
                                 ["You have to provide height !"]"""));
     }
 
-    //TODO add a check for id in the Controller
     @Test
     @DisplayName("Should not update footballer when id is not provided")
     void shouldNotUpdateFootballerWhenIdIsNotProvided() throws Exception {
@@ -535,9 +510,11 @@ class FootballerControllerTest {
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
         String request = """
                 {
-                "id":footballer.id,
+                "name":"testPlayer3",
+                "pesel":"333333",
                 "club":"testClub3",
-                "goals":30
+                "goals":30,
+                "height":170
                 }
                 """.
                 replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
@@ -546,7 +523,6 @@ class FootballerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andDo(print())
-                .andExpectAll(status().isBadRequest(),
-                        content().string("[\"You have to provide a pesel !\",\"You have to provide a name !\",\"You have to provide height !\"]"));
+                .andExpectAll(status().isNotFound());
     }
 }

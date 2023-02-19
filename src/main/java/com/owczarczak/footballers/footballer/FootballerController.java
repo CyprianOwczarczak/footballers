@@ -55,8 +55,15 @@ public class FootballerController {
     ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
         ArrayList<String> errorList = new ArrayList<>();
 
-        //todo wydzielić metodę walidacja przy dodawaniu i updateowaniu (żeby nie było wszystko w jednej metodzie)
+        ResponseEntity<?> getResponseCode = getAddedHttpCode(newFootballerDto, errorList);
+        if (getResponseCode != null) return getResponseCode;
+        FootballerDto result = service.addFootballer(newFootballerDto);
+        return ResponseEntity
+                .created(URI.create("/" + result.getId()))
+                .body(result);
+    }
 
+    private ResponseEntity<?> getAddedHttpCode(FootballerDto newFootballerDto, ArrayList<String> errorList) {
         if (service.existsByPesel(newFootballerDto.getPesel())) {
             return ResponseEntity.badRequest().build();
         }
@@ -72,22 +79,24 @@ public class FootballerController {
         if (!errorList.isEmpty()) {
             return ResponseEntity.badRequest().body(errorList);
         }
-        FootballerDto result = service.addFootballer(newFootballerDto);
-        return ResponseEntity
-                .created(URI.create("/" + result.getId()))
-                .body(result);
+        return null;
     }
 
     @PutMapping("/")
     ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
         ArrayList<String> errorList = new ArrayList<>();
 
-        //todo wydzielić metodę walidacja przy dodawaniu i updateowaniu (żeby nie było wszystko w jednej metodzie)
+        ResponseEntity<?> getResponseCode = getUpdatedHttpCode(footballerToUpdate, errorList);
+        if (getResponseCode != null) return getResponseCode;
 
+        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+        return ok(result.get());
+    }
+
+    private ResponseEntity<?> getUpdatedHttpCode(FootballerDto footballerToUpdate, ArrayList<String> errorList) {
         if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
             return notFound().build();
         }
-
         if (StringUtils.isEmpty(footballerToUpdate.getPesel())) {
             errorList.add("You have to provide a pesel !");
         }
@@ -100,27 +109,6 @@ public class FootballerController {
         if (!errorList.isEmpty()) {
             return badRequest().body(errorList);
         }
-        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-        return ok(result.get());
+        return null;
     }
-
-//    private ResponseEntity<?> checkFieldsValidation(boolean existsBy, ResponseEntity<Object> httpCode,
-//                                                    FootballerDto newFootballerDto, ArrayList<String> errorList, BodyBuilder badRequest) {
-//        if (existsBy) {
-//            return httpCode;
-//        }
-//        if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
-//            errorList.add("You have to provide a pesel !");
-//        }
-//        if (StringUtils.isEmpty(newFootballerDto.getName())) {
-//            errorList.add("You have to provide a name !");
-//        }
-//        if (newFootballerDto.getHeight() == 0) {
-//            errorList.add("You have to provide height !");
-//        }
-//        if (!errorList.isEmpty()) {
-//            return badRequest.body(errorList);
-//        }
-//        return null;
-//    }
 }
