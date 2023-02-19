@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -72,11 +73,15 @@ class FootballerControllerTest {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
         repository.save(getFootballer3());
+        testConditions(status().is2xxSuccessful() ,3);
+    }
+
+    private void testConditions(ResultMatcher statusCode, int arraySize) throws Exception {
         this.mockMvc.perform(get("/footballers/"))
                 .andDo(print())
-                .andExpectAll(status().is2xxSuccessful(),
+                .andExpectAll(statusCode,
                         jsonPath("$").isArray(),
-                        jsonPath("$", hasSize(3)));
+                        jsonPath("$", hasSize(arraySize)));
     }
 
     @Test
@@ -85,6 +90,10 @@ class FootballerControllerTest {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
         int footballerToBeReturned = repository.save(getFootballer3()).getId();
+        testConditions(footballerToBeReturned);
+    }
+
+    private void testConditions(int footballerToBeReturned) throws Exception {
         this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
                 .andDo(print())
                 .andExpectAll(status().isOk(),
@@ -110,13 +119,14 @@ class FootballerControllerTest {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
         repository.save(getFootballer3());
+        testConditions(status().is2xxSuccessful(), 1);
 
-        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer1"))
-                .andDo(print())
-                .andExpectAll(status().is2xxSuccessful(),
-                        jsonPath("$").isArray(),
-                        jsonPath("$", hasSize(1))
-                );
+//        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer1"))
+//                .andDo(print())
+//                .andExpectAll(status().is2xxSuccessful(),
+//                        jsonPath("$").isArray(),
+//                        jsonPath("$", hasSize(1))
+//                );
     }
 
     @Test
