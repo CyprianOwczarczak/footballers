@@ -55,7 +55,7 @@ public class FootballerController {
     ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
         ArrayList<String> errorList = new ArrayList<>();
 
-        ResponseEntity<?> getResponseCode = getAddedHttpCode(newFootballerDto, errorList);
+        ResponseEntity<?> getResponseCode = getHttpCode(newFootballerDto, errorList, badRequest().build());
         if (getResponseCode != null) return getResponseCode;
         FootballerDto result = service.addFootballer(newFootballerDto);
         return ResponseEntity
@@ -63,9 +63,23 @@ public class FootballerController {
                 .body(result);
     }
 
-    private ResponseEntity<?> getAddedHttpCode(FootballerDto newFootballerDto, ArrayList<String> errorList) {
+    @PutMapping("/")
+    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+        ArrayList<String> errorList = new ArrayList<>();
+        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
+            return notFound().build();
+        }
+
+        ResponseEntity<?> getResponseCode = getHttpCode(footballerToUpdate, errorList, notFound().build());
+        if (getResponseCode != null) return getResponseCode;
+
+        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+        return ok(result.get());
+    }
+
+    private ResponseEntity<?> getHttpCode(FootballerDto newFootballerDto, ArrayList<String> errorList, ResponseEntity responseEntity) {
         if (service.existsByPesel(newFootballerDto.getPesel())) {
-            return ResponseEntity.badRequest().build();
+            return responseEntity;
         }
         if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
             errorList.add("You have to provide a pesel !");
@@ -74,36 +88,6 @@ public class FootballerController {
             errorList.add("You have to provide a name !");
         }
         if (newFootballerDto.getHeight() == 0) {
-            errorList.add("You have to provide height !");
-        }
-        if (!errorList.isEmpty()) {
-            return ResponseEntity.badRequest().body(errorList);
-        }
-        return null;
-    }
-
-    @PutMapping("/")
-    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
-        ArrayList<String> errorList = new ArrayList<>();
-
-        ResponseEntity<?> getResponseCode = getUpdatedHttpCode(footballerToUpdate, errorList);
-        if (getResponseCode != null) return getResponseCode;
-
-        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-        return ok(result.get());
-    }
-
-    private ResponseEntity<?> getUpdatedHttpCode(FootballerDto footballerToUpdate, ArrayList<String> errorList) {
-        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
-            return notFound().build();
-        }
-        if (StringUtils.isEmpty(footballerToUpdate.getPesel())) {
-            errorList.add("You have to provide a pesel !");
-        }
-        if (StringUtils.isEmpty(footballerToUpdate.getName())) {
-            errorList.add("You have to provide a name !");
-        }
-        if (footballerToUpdate.getHeight() == 0) {
             errorList.add("You have to provide height !");
         }
         if (!errorList.isEmpty()) {
