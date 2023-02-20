@@ -10,10 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -36,41 +35,6 @@ class FootballerControllerTest {
         repository.deleteAll();
     }
 
-    //TODO Przerobić JsonPath na metodę z tablicą obiektów
-
-    private static Footballer getFootballer1() {
-        return new Footballer("111111", "testPlayer1", "testClub", 10, 150);
-    }
-
-    private static Footballer getFootballer2() {
-        return new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
-    }
-
-    private static Footballer getFootballer3() {
-        return new Footballer("333333", "testPlayer3", "testClub3", 30, 170);
-    }
-
-    private static Footballer getFootballer4() {
-        return new Footballer("444444", "testPlayer3", "testClub3", 30, 170);
-    }
-
-    private ResultMatcher[] getJsonArray() {
-    //1. Utwórz listę
-        ArrayList<ResultMatcher> result = new ArrayList<>();
-    //2. Dodaj dane do listy ResultMatcher
-        result.add(jsonPath("$.pesel", is("333333")));
-        result.add(jsonPath("$.name", is("testPlayer3")));
-        result.add(jsonPath("$.club", is("testClub3")));
-        result.add(jsonPath("$.goals", is(30)));
-        result.add(jsonPath("$.height", is(170)));
-    //3. Przerób listę na tablicę
-//        List.of(result).toArray();
-        ResultMatcher[] toBeReturned = result.toArray(new ResultMatcher[0]);
-    //4. Zwróc tablicę
-        return toBeReturned;
-
-    }
-
     @Test
     @DisplayName("Should startup Spring")
     void shouldStartupSpring() {
@@ -89,29 +53,28 @@ class FootballerControllerTest {
                         jsonPath("$", hasSize(3)));
     }
 
-    private void testConditions(ResultMatcher statusCode, int arraySize) throws Exception {
-        this.mockMvc.perform(get("/footballers/"))
-                .andDo(print())
-                .andExpectAll(statusCode,
-                        jsonPath("$").isArray(),
-                        jsonPath("$", hasSize(arraySize)));
-    }
+    //todo prepaere pull request,
+    // prepare database extended with club entity
+    //flyway migration V2 (with club) --> name, year of creation etc,
+    //create a branch from this branch
+    //make it possible to note in which years which footballer played in which club, how much he earned,
+    //add matches entity, so we can show: who played , which clubs, which footballers, what was the score,
+    // where did they play
 
     @Test
     @DisplayName("Should get a footballer by id")
     void shouldGetFootballerById() throws Exception {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
+        ResultMatcher[] result = getJsonValidationRules();
+        //todo why doesnt it work, pass a parameter to check both status and this
+
         int footballerToBeReturned = repository.save(getFootballer3()).getId();
         this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
                 .andDo(print())
-                .andExpectAll(status().isOk(),
-                        jsonPath("$.pesel", is("333333")),
-                        jsonPath("$.name", is("testPlayer3")),
-                        jsonPath("$.club", is("testClub3")),
-                        jsonPath("$.goals", is(30)),
-                        jsonPath("$.height", is(170))
-                );
+                .andExpect(status().isOk())
+                .andExpect(ResultMatcher.matchAll(result)
+    );
     }
 
     @Test
@@ -542,5 +505,37 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isNotFound());
+    }
+
+    private static Footballer getFootballer1() {
+        return new Footballer("111111", "testPlayer1", "testClub", 10, 150);
+    }
+
+    private static Footballer getFootballer2() {
+        return new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
+    }
+
+    private static Footballer getFootballer3() {
+        return new Footballer("333333", "testPlayer3", "testClub3", 30, 170);
+    }
+
+    private static Footballer getFootballer4() {
+        return new Footballer("444444", "testPlayer3", "testClub3", 30, 170);
+    }
+
+    private ResultMatcher[] getJsonValidationRules(MockMvcResultMatchers statusCode) {
+        //1. Utwórz listę
+        ArrayList<ResultMatcher> result = new ArrayList<>();
+
+        //2. Dodaj dane do listy ResultMatcher
+        result.add((ResultMatcher) jsonPath(statusCode.toString()));
+        result.add(jsonPath("$.pesel", is("333333")));
+        result.add(jsonPath("$.name", is("testPlayer3")));
+        result.add(jsonPath("$.club", is("testClub3")));
+        result.add(jsonPath("$.goals", is(30)));
+        result.add(jsonPath("$.height", is(170)));
+
+        //3. Przerób listę na tablicę + zwróc listę
+        return result.toArray(new ResultMatcher[0]);
     }
 }
