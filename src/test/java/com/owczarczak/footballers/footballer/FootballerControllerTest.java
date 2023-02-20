@@ -12,6 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -51,41 +54,22 @@ class FootballerControllerTest {
         return new Footballer("444444", "testPlayer3", "testClub3", 30, 170);
     }
 
-//    private void testConditions(ResultMatcher statusCode, MockHttpServletRequestBuilder requestBuilder, int arraySize) throws Exception {
-//        this.mockMvc.perform(requestBuilder)
-//                .andDo(print())
-//                .andExpectAll(statusCode,
-//                        jsonPath("$").isArray(),
-//                        jsonPath("$", hasSize(arraySize)));
-//    }
-//
-//    private void testConditions(int footballerToBeReturned) throws Exception {
-//        this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
-//                .andDo(print())
-//                .andExpectAll(status().isOk(),
-//                        jsonPath("$.pesel", is("333333")),
-//                        jsonPath("$.name", is("testPlayer3")),
-//                        jsonPath("$.club", is("testClub3")),
-//                        jsonPath("$.goals", is(30)),
-//                        jsonPath("$.height", is(170))
-//                );
-//    }
-//
-//    private void testConditionsArray(MockHttpServletRequestBuilder requestBuilder, int arraySize) throws Exception {
-//        this.mockMvc.perform(requestBuilder)
-//                .andDo(print())
-//                .andExpectAll(
-//                        jsonPath("$", hasSize(arraySize)),
-//                        jsonPath("$[0].pesel", is("333333")),
-//                        jsonPath("$[0].name", is("testPlayer3")),
-//                        jsonPath("$[0].club", is("testClub3")),
-//                        jsonPath("$[0].goals", is(30)),
-//                        jsonPath("$[0].height", is(170)));
-//    }
+    private ResultMatcher[] getJsonArray() {
+    //1. Utwórz listę
+        ArrayList<ResultMatcher> result = new ArrayList<>();
+    //2. Dodaj dane do listy ResultMatcher
+        result.add(jsonPath("$.pesel", is("333333")));
+        result.add(jsonPath("$.name", is("testPlayer3")));
+        result.add(jsonPath("$.club", is("testClub3")));
+        result.add(jsonPath("$.goals", is(30)));
+        result.add(jsonPath("$.height", is(170)));
+    //3. Przerób listę na tablicę
+//        List.of(result).toArray();
+        ResultMatcher[] toBeReturned = result.toArray(new ResultMatcher[0]);
+    //4. Zwróc tablicę
+        return toBeReturned;
 
-//    private ResultMatcher[] getJsonArray() {
-//
-//    }
+    }
 
     @Test
     @DisplayName("Should startup Spring")
