@@ -19,7 +19,16 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
     @Query("SELECT f FROM Footballer f WHERE f.name = :name")
     List<Footballer> findByName(@Param("name") String name);
 
-    @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END FROM Footballer f WHERE f.pesel = :pesel")
+    @Query("""
+            SELECT
+            CASE 
+                WHEN COUNT(f) > 0 THEN true 
+                ELSE false 
+            END 
+            FROM Footballer f 
+            WHERE 
+            f.pesel = :pesel
+            """)
     boolean existsByPesel(@Param("pesel") String pesel);
 
     @Modifying

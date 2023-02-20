@@ -53,10 +53,14 @@ public class FootballerController {
 
     @PostMapping("/")
     ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
-        ArrayList<String> errorList = new ArrayList<>();
+        if (service.existsByPesel(newFootballerDto.getPesel())) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        ResponseEntity<?> getResponseCode = getHttpCode(newFootballerDto, errorList, badRequest().build());
-        if (getResponseCode != null) return getResponseCode;
+        ArrayList<String> errorList = returnErrorList(newFootballerDto);
+        if (!errorList.isEmpty()) {
+            return ResponseEntity.badRequest().body(errorList);
+        }
         FootballerDto result = service.addFootballer(newFootballerDto);
         return ResponseEntity
                 .created(URI.create("/" + result.getId()))
@@ -65,22 +69,21 @@ public class FootballerController {
 
     @PutMapping("/")
     ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
-        ArrayList<String> errorList = new ArrayList<>();
         if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
             return notFound().build();
         }
 
-        ResponseEntity<?> getResponseCode = getHttpCode(footballerToUpdate, errorList, notFound().build());
-        if (getResponseCode != null) return getResponseCode;
-
+        ArrayList<String> errorList = returnErrorList(footballerToUpdate);
+        if (!errorList.isEmpty()) {
+            return badRequest().body(errorList);
+        }
         Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
         return ok(result.get());
     }
 
-    private ResponseEntity<?> getHttpCode(FootballerDto newFootballerDto, ArrayList<String> errorList, ResponseEntity responseEntity) {
-        if (service.existsByPesel(newFootballerDto.getPesel())) {
-            return responseEntity;
-        }
+    private ArrayList<String> returnErrorList(FootballerDto newFootballerDto) {
+        ArrayList<String> errorList = new ArrayList<>();
+
         if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
             errorList.add("You have to provide a pesel !");
         }
@@ -90,9 +93,6 @@ public class FootballerController {
         if (newFootballerDto.getHeight() == 0) {
             errorList.add("You have to provide height !");
         }
-        if (!errorList.isEmpty()) {
-            return badRequest().body(errorList);
-        }
-        return null;
+        return errorList;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -50,6 +51,42 @@ class FootballerControllerTest {
         return new Footballer("444444", "testPlayer3", "testClub3", 30, 170);
     }
 
+//    private void testConditions(ResultMatcher statusCode, MockHttpServletRequestBuilder requestBuilder, int arraySize) throws Exception {
+//        this.mockMvc.perform(requestBuilder)
+//                .andDo(print())
+//                .andExpectAll(statusCode,
+//                        jsonPath("$").isArray(),
+//                        jsonPath("$", hasSize(arraySize)));
+//    }
+//
+//    private void testConditions(int footballerToBeReturned) throws Exception {
+//        this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
+//                .andDo(print())
+//                .andExpectAll(status().isOk(),
+//                        jsonPath("$.pesel", is("333333")),
+//                        jsonPath("$.name", is("testPlayer3")),
+//                        jsonPath("$.club", is("testClub3")),
+//                        jsonPath("$.goals", is(30)),
+//                        jsonPath("$.height", is(170))
+//                );
+//    }
+//
+//    private void testConditionsArray(MockHttpServletRequestBuilder requestBuilder, int arraySize) throws Exception {
+//        this.mockMvc.perform(requestBuilder)
+//                .andDo(print())
+//                .andExpectAll(
+//                        jsonPath("$", hasSize(arraySize)),
+//                        jsonPath("$[0].pesel", is("333333")),
+//                        jsonPath("$[0].name", is("testPlayer3")),
+//                        jsonPath("$[0].club", is("testClub3")),
+//                        jsonPath("$[0].goals", is(30)),
+//                        jsonPath("$[0].height", is(170)));
+//    }
+
+//    private ResultMatcher[] getJsonArray() {
+//
+//    }
+
     @Test
     @DisplayName("Should startup Spring")
     void shouldStartupSpring() {
@@ -61,7 +98,11 @@ class FootballerControllerTest {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
         repository.save(getFootballer3());
-        testConditions(status().is2xxSuccessful() ,3);
+        this.mockMvc.perform(get("/footballers/"))
+                .andDo(print())
+                .andExpectAll(status().is2xxSuccessful(),
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(3)));
     }
 
     private void testConditions(ResultMatcher statusCode, int arraySize) throws Exception {
@@ -78,10 +119,6 @@ class FootballerControllerTest {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
         int footballerToBeReturned = repository.save(getFootballer3()).getId();
-        testConditions(footballerToBeReturned);
-    }
-
-    private void testConditions(int footballerToBeReturned) throws Exception {
         this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
                 .andDo(print())
                 .andExpectAll(status().isOk(),
@@ -107,14 +144,13 @@ class FootballerControllerTest {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
         repository.save(getFootballer3());
-        testConditions(status().is2xxSuccessful(), 3);
 
-//        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer1"))
-//                .andDo(print())
-//                .andExpectAll(status().is2xxSuccessful(),
-//                        jsonPath("$").isArray(),
-//                        jsonPath("$", hasSize(1))
-//                );
+        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer1"))
+                .andDo(print())
+                .andExpectAll(status().is2xxSuccessful(),
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(1))
+                );
     }
 
     @Test
