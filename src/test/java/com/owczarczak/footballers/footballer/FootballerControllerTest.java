@@ -34,18 +34,6 @@ class FootballerControllerTest {
 
     //TODO Przerobić JsonPath na metodę z tablicą obiektów
 
-//    private static MockMvcResultMatchers[] returnJson() {
-//
-//
-//    }
-
-//    jsonPath("$").isMap(),
-//    jsonPath("$.pesel", is("333333")),
-//    jsonPath("$.name", is("testPlayer3")),
-//    jsonPath("$.club", is("testClub3")),
-//    jsonPath("$.goals", is(30)),
-//    jsonPath("$.height", is(170))
-
     private static Footballer getFootballer1() {
         return new Footballer("111111", "testPlayer1", "testClub", 10, 150);
     }
@@ -119,7 +107,7 @@ class FootballerControllerTest {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
         repository.save(getFootballer3());
-        testConditions(status().is2xxSuccessful(), 1);
+        testConditions(status().is2xxSuccessful(), 3);
 
 //        this.mockMvc.perform(get("/footballers/byName/?name=testPlayer1"))
 //                .andDo(print())
