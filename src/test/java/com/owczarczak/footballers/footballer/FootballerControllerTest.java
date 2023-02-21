@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 
@@ -53,28 +52,17 @@ class FootballerControllerTest {
                         jsonPath("$", hasSize(3)));
     }
 
-    //todo prepaere pull request,
-    // prepare database extended with club entity
-    //flyway migration V2 (with club) --> name, year of creation etc,
-    //create a branch from this branch
-    //make it possible to note in which years which footballer played in which club, how much he earned,
-    //add matches entity, so we can show: who played , which clubs, which footballers, what was the score,
-    // where did they play
-
     @Test
     @DisplayName("Should get a footballer by id")
     void shouldGetFootballerById() throws Exception {
         repository.save(getFootballer1());
         repository.save(getFootballer2());
-        ResultMatcher[] result = getJsonValidationRules();
-        //todo why doesnt it work, pass a parameter to check both status and this
 
         int footballerToBeReturned = repository.save(getFootballer3()).getId();
         this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(ResultMatcher.matchAll(result)
-    );
+                .andExpectAll(getJsonValidationRules());
     }
 
     @Test
@@ -146,13 +134,8 @@ class FootballerControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(status().isCreated(),
-                        jsonPath("$").isMap(),
-                        jsonPath("$.pesel", is("333333")),
-                        jsonPath("$.name", is("testPlayer3")),
-                        jsonPath("$.club", is("testClub3")),
-                        jsonPath("$.goals", is(30)),
-                        jsonPath("$.height", is(170))
-                );
+                        jsonPath("$").isMap())
+                .andExpectAll(getJsonValidationRules());
     }
 
     @Test
@@ -185,20 +168,8 @@ class FootballerControllerTest {
         repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/topXByHeight/?pageNumber=0&numberOfPlayers=2"))
                 .andDo(print())
-                .andExpectAll(
-                        jsonPath("$", hasSize(2)),
-                        jsonPath("$[0].pesel", is("333333")),
-                        jsonPath("$[0].name", is("testPlayer3")),
-                        jsonPath("$[0].club", is("testClub3")),
-                        jsonPath("$[0].goals", is(30)),
-                        jsonPath("$[0].height", is(170)),
-
-                        jsonPath("$[1].pesel", is("222222")),
-                        jsonPath("$[1].name", is("testPlayer2")),
-                        jsonPath("$[1].club", is("testClub2")),
-                        jsonPath("$[1].goals", is(20)),
-                        jsonPath("$[1].height", is(160))
-                );
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpectAll(getJsonArrayValidationRules());
     }
 
     @Test
@@ -209,19 +180,8 @@ class FootballerControllerTest {
         repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/topXByHeight/?pageNumber=0&numberOfPlayers=20"))
                 .andDo(print())
-                .andExpectAll(jsonPath("$", hasSize(3)),
-                        jsonPath("$[0].pesel", is("333333")),
-                        jsonPath("$[0].name", is("testPlayer3")),
-                        jsonPath("$[0].club", is("testClub3")),
-                        jsonPath("$[0].goals", is(30)),
-                        jsonPath("$[0].height", is(170)),
-
-                        jsonPath("$[1].pesel", is("222222")),
-                        jsonPath("$[1].name", is("testPlayer2")),
-                        jsonPath("$[1].club", is("testClub2")),
-                        jsonPath("$[1].goals", is(20)),
-                        jsonPath("$[1].height", is(160))
-                );
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpectAll(getJsonArrayValidationRules());
     }
 
     @Test
@@ -246,14 +206,9 @@ class FootballerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andDo(print())
-                .andExpectAll(
-                        jsonPath("$").isMap(),
-                        jsonPath("$.pesel", is("333333")),
-                        jsonPath("$.name", is("testPlayer3")),
-                        jsonPath("$.club", is("testClub3")),
-                        jsonPath("$.goals", is(30)),
-                        jsonPath("$.height", is(170))
-                );
+                .andExpect(
+                        jsonPath("$").isMap())
+                .andExpectAll(getJsonValidationRules());
     }
 
     @Test
@@ -523,17 +478,37 @@ class FootballerControllerTest {
         return new Footballer("444444", "testPlayer3", "testClub3", 30, 170);
     }
 
-    private ResultMatcher[] getJsonValidationRules(MockMvcResultMatchers statusCode) {
+    private static ResultMatcher[] getJsonValidationRules() {
         //1. Utwórz listę
         ArrayList<ResultMatcher> result = new ArrayList<>();
 
         //2. Dodaj dane do listy ResultMatcher
-        result.add((ResultMatcher) jsonPath(statusCode.toString()));
         result.add(jsonPath("$.pesel", is("333333")));
         result.add(jsonPath("$.name", is("testPlayer3")));
         result.add(jsonPath("$.club", is("testClub3")));
         result.add(jsonPath("$.goals", is(30)));
         result.add(jsonPath("$.height", is(170)));
+
+        //3. Przerób listę na tablicę + zwróc listę
+        return result.toArray(new ResultMatcher[0]);
+    }
+
+    private static ResultMatcher[] getJsonArrayValidationRules() {
+        //1. Utwórz listę
+        ArrayList<ResultMatcher> result = new ArrayList<>();
+
+        //2. Dodaj dane do listy ResultMatcher
+        result.add(jsonPath("$[0].pesel", is("333333")));
+        result.add(jsonPath("$[0].name", is("testPlayer3")));
+        result.add(jsonPath("$[0].club", is("testClub3")));
+        result.add(jsonPath("$[0].goals", is(30)));
+        result.add(jsonPath("$[0].height", is(170)));
+
+        result.add(jsonPath("$[1].pesel", is("222222")));
+        result.add(jsonPath("$[1].name", is("testPlayer2")));
+        result.add(jsonPath("$[1].club", is("testClub2")));
+        result.add(jsonPath("$[1].goals", is(20)));
+        result.add(jsonPath("$[1].height", is(160)));
 
         //3. Przerób listę na tablicę + zwróc listę
         return result.toArray(new ResultMatcher[0]);
