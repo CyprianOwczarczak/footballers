@@ -1,5 +1,7 @@
+drop table if exists clubs;
+
 create table clubs(
 	id serial ,
-	clubName varchar(255),
-	dateOfCreation date
+	club_name varchar(255),
+	date_of_creation date
 );

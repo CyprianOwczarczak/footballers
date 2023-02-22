@@ -16,6 +16,8 @@ public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @Column(name = "club_name")
     String clubName;
+    @Column(name = "date_of_creation", columnDefinition = "DATE")
     Date dateOfCreation;
 }

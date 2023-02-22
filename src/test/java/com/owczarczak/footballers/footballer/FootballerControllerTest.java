@@ -12,12 +12,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,9 +53,7 @@ class FootballerControllerTest {
         repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/"))
                 .andDo(print())
-                .andExpectAll(status().is2xxSuccessful(),
-                        jsonPath("$").isArray(),
-                        jsonPath("$", hasSize(3)));
+                .andExpectAll(getJsonValidationRules(3));
     }
 
     @Test
@@ -61,7 +65,6 @@ class FootballerControllerTest {
         int footballerToBeReturned = repository.save(getFootballer3()).getId();
         this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
                 .andDo(print())
-                .andExpect(status().isOk())
                 .andExpectAll(getJsonValidationRules());
     }
 
@@ -82,10 +85,7 @@ class FootballerControllerTest {
 
         this.mockMvc.perform(get("/footballers/byName/?name=testPlayer1"))
                 .andDo(print())
-                .andExpectAll(status().is2xxSuccessful(),
-                        jsonPath("$").isArray(),
-                        jsonPath("$", hasSize(1))
-                );
+                .andExpectAll(getJsonValidationRules(1));
     }
 
     @Test
@@ -97,9 +97,7 @@ class FootballerControllerTest {
         repository.save(getFootballer4());
         this.mockMvc.perform(get("/footballers/byName/?name=testPlayer3"))
                 .andDo(print())
-                .andExpectAll(status().is2xxSuccessful(),
-                        jsonPath("$").isArray(),
-                        jsonPath("$", hasSize(2)));
+                .andExpectAll(getJsonValidationRules(2));
     }
 
     @Test
@@ -110,10 +108,7 @@ class FootballerControllerTest {
         repository.save(getFootballer3());
         this.mockMvc.perform(get("/footballers/byName/?name=xyz"))
                 .andDo(print())
-                .andExpectAll(
-                        jsonPath("$").isArray(),
-                        jsonPath("$", hasSize(0))
-                );
+                .andExpectAll(getJsonValidationRules(0));
     }
 
     @Test
@@ -156,8 +151,7 @@ class FootballerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andDo(print())
-                .andExpectAll(status().isBadRequest()
-                );
+                .andExpectAll(status().isBadRequest());
     }
 
     @Test
@@ -480,7 +474,7 @@ class FootballerControllerTest {
 
     private static ResultMatcher[] getJsonValidationRules() {
         //1. Utwórz listę
-        ArrayList<ResultMatcher> result = new ArrayList<>();
+        List<ResultMatcher> result = new ArrayList<>();
 
         //2. Dodaj dane do listy ResultMatcher
         result.add(jsonPath("$.pesel", is("333333")));
@@ -493,9 +487,22 @@ class FootballerControllerTest {
         return result.toArray(new ResultMatcher[0]);
     }
 
+    private static ResultMatcher[] getJsonValidationRules(int arraySize) {
+        //1. Utwórz listę
+        List<ResultMatcher> result = new ArrayList<>();
+
+        //2. Dodaj dane do listy ResultMatcher
+        result.add(status().isOk());
+        result.add(jsonPath("$").isArray());
+        result.add(jsonPath("$", hasSize(arraySize)));
+
+        //3. Przerób listę na tablicę + zwróc listę
+        return result.toArray(new ResultMatcher[0]);
+    }
+
     private static ResultMatcher[] getJsonArrayValidationRules() {
         //1. Utwórz listę
-        ArrayList<ResultMatcher> result = new ArrayList<>();
+        List<ResultMatcher> result = new ArrayList<>();
 
         //2. Dodaj dane do listy ResultMatcher
         result.add(jsonPath("$[0].pesel", is("333333")));

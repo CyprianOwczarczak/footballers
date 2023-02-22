@@ -21,12 +21,12 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
 
     @Query("""
             SELECT
-            CASE 
-                WHEN COUNT(f) > 0 THEN true 
-                ELSE false 
-            END 
-            FROM Footballer f 
-            WHERE 
+            CASE
+                WHEN COUNT(f) > 0 THEN true
+                ELSE false
+            END
+            FROM Footballer f
+            WHERE
             f.pesel = :pesel
             """)
     boolean existsByPesel(@Param("pesel") String pesel);
