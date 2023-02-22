@@ -55,7 +55,7 @@ public class FootballerService {
 
     public List<FootballerDto> getXHighestFootballers(int pageNumber, int numberOfPlayers) {
         Pageable pageable = PageRequest.of(pageNumber, numberOfPlayers);
-        Page<Footballer> footballersList = repository.findAllByOrderByHeightDesc(pageable);
+        Page<Footballer> footballersList = repository.findAllByOrderBxyHeightDesc(pageable);
 
         List<FootballerDto> dtos = new LinkedList<>();
         for (Footballer footballer : footballersList) {
@@ -130,7 +130,6 @@ public class FootballerService {
 
 @Transactional
     public void deleteFootballer(@PathVariable int id) {
-//        repository.deleteById();
         repository.deleteAllById(id);
     }
 

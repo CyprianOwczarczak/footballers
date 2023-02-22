@@ -57,7 +57,7 @@ public class FootballerController {
             return ResponseEntity.badRequest().build();
         }
 
-        ArrayList<String> errorList = returnErrorList(newFootballerDto);
+        List<String> errorList = returnErrorList(newFootballerDto);
         if (!errorList.isEmpty()) {
             return ResponseEntity.badRequest().body(errorList);
         }
@@ -73,7 +73,7 @@ public class FootballerController {
             return notFound().build();
         }
 
-        ArrayList<String> errorList = returnErrorList(footballerToUpdate);
+        List<String> errorList = returnErrorList(footballerToUpdate);
         if (!errorList.isEmpty()) {
             return badRequest().body(errorList);
         }
@@ -81,8 +81,8 @@ public class FootballerController {
         return ok(result.get());
     }
 
-    private ArrayList<String> returnErrorList(FootballerDto newFootballerDto) {
-        ArrayList<String> errorList = new ArrayList<>();
+    private List<String> returnErrorList(FootballerDto newFootballerDto) {
+        List<String> errorList = new ArrayList<>();
 
         if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
             errorList.add("You have to provide a pesel !");
