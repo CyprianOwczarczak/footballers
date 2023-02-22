@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,7 @@ public class FootballerService {
 
     public List<FootballerDto> getXHighestFootballers(int pageNumber, int numberOfPlayers) {
         Pageable pageable = PageRequest.of(pageNumber, numberOfPlayers);
-        Page<Footballer> footballersList = repository.findAllByOrderByHeightDesc(pageable);
+        Page<Footballer> footballersList = repository.findAllByOrderBxyHeightDesc(pageable);
 
         List<FootballerDto> dtos = new LinkedList<>();
         for (Footballer footballer : footballersList) {
@@ -62,6 +63,7 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
+                    .club(footballer.getClub())
                     .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
@@ -78,6 +80,7 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
+                    .club(footballer.getClub())
                     .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
@@ -125,7 +128,12 @@ public class FootballerService {
                 .build());
     }
 
+@Transactional
     public void deleteFootballer(@PathVariable int id) {
-        repository.deleteById(id);
+        repository.deleteAllById(id);
+    }
+
+    public boolean existsByPesel(String pesel) {
+        return repository.existsByPesel(pesel);
     }
 }

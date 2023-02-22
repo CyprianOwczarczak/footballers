@@ -1,15 +1,16 @@
 package com.owczarczak.footballers.footballer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.ResponseEntity.notFound;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/footballers")
@@ -44,8 +45,22 @@ public class FootballerController {
         return service.getFootballersByName(name);
     }
 
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteFootballer(@PathVariable int id) {
+        service.deleteFootballer(id);
+        return ok().build();
+    }
+
     @PostMapping("/")
-    ResponseEntity<FootballerDto> addFootballer(@RequestBody FootballerDto newFootballerDto) {
+    ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
+        if (service.existsByPesel(newFootballerDto.getPesel())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<String> errorList = returnErrorList(newFootballerDto);
+        if (!errorList.isEmpty()) {
+            return ResponseEntity.badRequest().body(errorList);
+        }
         FootballerDto result = service.addFootballer(newFootballerDto);
         return ResponseEntity
                 .created(URI.create("/" + result.getId()))
@@ -53,18 +68,31 @@ public class FootballerController {
     }
 
     @PutMapping("/")
-    ResponseEntity<FootballerDto> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
         if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
             return notFound().build();
-        } else {
-            Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-            return ok(result.get());
         }
+
+        List<String> errorList = returnErrorList(footballerToUpdate);
+        if (!errorList.isEmpty()) {
+            return badRequest().body(errorList);
+        }
+        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+        return ok(result.get());
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity deleteFootballer(@PathVariable int id) {
-        service.deleteFootballer(id);
-        return ok().build();
+    private List<String> returnErrorList(FootballerDto newFootballerDto) {
+        List<String> errorList = new ArrayList<>();
+
+        if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
+            errorList.add("You have to provide a pesel !");
+        }
+        if (StringUtils.isEmpty(newFootballerDto.getName())) {
+            errorList.add("You have to provide a name !");
+        }
+        if (newFootballerDto.getHeight() == 0) {
+            errorList.add("You have to provide height !");
+        }
+        return errorList;
     }
 }

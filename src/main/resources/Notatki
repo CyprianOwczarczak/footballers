@@ -25,3 +25,42 @@ Record poczytać co to jest
 // metody na dodawanie meczu w trakcie meczu, informacja czy był walkover w meczu)
 // Dodać metody do Footballera kto strzelił najwięcej bramek, najwięcej bramek dla danego zespołu, lista zespołów które strzelił najwięcej bramek
 
+///////////////////////////////////
+NOWE ZADANIE
+Dodanie testów automatycznych:
+    Obecnie nie ma testów automatycznych w aplikacji i testowanie jest możliwe jedynie za pomocą Postmana, nie ma możliwości
+sprawdzenia za pomocą Mavena. Chcemy mieć możliwość testowania aplikacji automatycznego.
+Testujemy Controller  tak żeby logika w Service też była przetestowana.
+
+    Acceptance criteria:
+1.Wszystkie endpoint aplikacji są przetestowane.
+2.Przetestowane są ścieżki pozytywne i negatywne.
+3.Kod się kompiluje za pomocą mavena, wszystkie testy przechodzą.
+
+bez mocków !
+https://www.baeldung.com/integration-testing-in-spring
+https://docs.spring.io/spring-boot/docs/1.5.2.RELEASE/reference/html/boot-features-testing.html
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = { ApplicationConfig.class })
+@WebAppConfiguration
+2 testy przynajmiej
+
+@Autowired -> nauczyć się tłumaczyć jak działa
+@BeforeAll @BeforeEach
+JsonPath
+
+Testować w mavenie !
+
+Flyway --> usunąć zawartość schematu, zobaczyć co trzyma flywayowa baza danych,
+dopisać walidacje czy odpowiedni pesel podany itp,
+walidować też metodę put w controllerze (sprawdzać czy request jest poprawny, jeśli nie to rzucać BadRequest)
+Dokumentacja Spring Data --> notatki
+
+
+    //todo prepaere pull request,
+    // prepare database extended with club entity
+    //flyway migration V2 (with club) --> name, year of creation etc,
+    //create a branch from this branch
+    //make it possible to note in which years which footballer played in which club, how much he earned,
+    //add matches entity, so we can show: who played , which clubs, which footballers, what was the score,
+    // where did they play
