@@ -9,7 +9,7 @@ import java.util.List;
 
 //@Entity
 @Builder
-@Table(name = "club_representations")
+@Table(name = "club_representation")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,6 +19,6 @@ public class ClubRepresentation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int match;
-    private List<Footballer> footballerList;
+    private List<Footballer> footballersList;
     private Club club;
 }

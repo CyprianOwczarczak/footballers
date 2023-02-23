@@ -9,3 +9,4 @@ spring:
       ddl-auto: validate
   flyway:
     fail-on-missing-locations: true
+    baselineOnMigrate : true

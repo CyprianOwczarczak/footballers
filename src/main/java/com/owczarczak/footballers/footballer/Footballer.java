@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Builder
 @Entity
-@Table(name = "footballers")
+@Table(name = "footballer")
 @Getter
 @Setter
 @AllArgsConstructor

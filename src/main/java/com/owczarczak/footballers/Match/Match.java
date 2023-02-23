@@ -8,7 +8,7 @@ import java.time.Instant;
 
 //@Entity
 @Builder
-@Table(name = "matches")
+@Table(name = "match")
 @Getter
 @Setter
 @AllArgsConstructor

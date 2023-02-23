@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @Entity
 @Builder
-@Table(name = "clubs")
+@Table(name = "club")
 @Getter
 @Setter
 @AllArgsConstructor

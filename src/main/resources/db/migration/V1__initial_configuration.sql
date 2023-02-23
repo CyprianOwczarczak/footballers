@@ -1,6 +1,4 @@
-drop table if exists footballers;
-
-create table footballers (
+create table footballer (
 	id serial,
 	pesel varchar(255) not null,
 	name varchar(255) not null,
