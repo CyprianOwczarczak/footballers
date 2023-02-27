@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.Instant;
 
-//@Entity
+@Entity
 @Builder
 @Table(name = "match")
 @Getter
@@ -18,9 +18,12 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private Club hostTeam;
-    private Club guestTeam;
-    private String score;
+    @ManyToOne
+    @JoinColumn(name = "host_representation_id")
+    private Club hostRepresentationId;
+    @ManyToOne
+    @JoinColumn(name = "guest_representation_id")
+    private Club guestRepresentationId;
     private String nameOfReferee;
     private Instant date;
 }

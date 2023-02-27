@@ -17,14 +17,14 @@ public class Footballer {
     int id;
     String pesel;
     String name;
-    String club;
+//    String club;
     int goals;
     int height;
 
     public Footballer(final String pesel, final String name, final String club, final int goals, final int height) {
         this.pesel = pesel;
         this.name = name;
-        this.club = club;
+//        this.club = club;
         this.goals = goals;
         this.height = height;
     }
@@ -35,7 +35,7 @@ public class Footballer {
                 "id=" + id +
                 ", pesel='" + pesel + '\'' +
                 ", name='" + name + '\'' +
-                ", club='" + club + '\'' +
+//                ", club='" + club + '\'' +
                 ", goals=" + goals +
                 ", height=" + height +
                 '}';

@@ -15,7 +15,7 @@ public class FootballerDto {
     int id;
     private String pesel;
     private String name;
-    private String club;
+//    private String club;
     private int goals;
     private int height;
 }
