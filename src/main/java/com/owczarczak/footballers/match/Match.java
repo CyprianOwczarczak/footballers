@@ -28,6 +28,7 @@ public class Match {
     private ClubRepresentation guest;
     private String nameOfReferee;
     private Instant date;
-    @OneToMany(mappedBy = "match")
+   @OneToMany
+   @JoinColumn(name = "match_id" )
     private List<Score> scores;
 }

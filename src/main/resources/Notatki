@@ -68,3 +68,10 @@ Dokumentacja Spring Data --> notatki
      where did they play
 w pgAdminie zrobić tabelki, tak żeby można było odpytać, porobić joiny, umieścić dane przykładowe, przetestować
 Jak będzie działać to przenieść do migracji, zrobić kilka tabelek na raz w jednej migracji
+
+
+27.02
+1. Dodać repozytoria do encji
+2. Napisać testy zapisywania na nowych encjach
+3. Sprawdzić czy faktycznie są zapisywane w bazie danych
+

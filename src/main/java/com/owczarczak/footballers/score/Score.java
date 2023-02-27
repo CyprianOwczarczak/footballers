@@ -20,9 +20,5 @@ public class Score {
     @OneToOne
     @JoinColumn(name = "footballer_id")
     private Footballer footballer;
-
-    @ManyToOne
-    @JoinColumn(name = "match_id")
-    private Match match;
     private int minuteScored;
 }
