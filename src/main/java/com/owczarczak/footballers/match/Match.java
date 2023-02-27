@@ -1,10 +1,12 @@
-package com.owczarczak.footballers.Match;
+package com.owczarczak.footballers.match;
 
-import com.owczarczak.footballers.club.Club;
+import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
+import com.owczarczak.footballers.score.Score;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Builder
@@ -18,12 +20,14 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "host_representation_id")
-    private Club hostRepresentationId;
-    @ManyToOne
+    private ClubRepresentation host;
+    @OneToOne
     @JoinColumn(name = "guest_representation_id")
-    private Club guestRepresentationId;
+    private ClubRepresentation guest;
     private String nameOfReferee;
     private Instant date;
+    @OneToMany(mappedBy = "match")
+    private List<Score> scores;
 }

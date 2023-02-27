@@ -1,32 +1,28 @@
-package com.owczarczak.footballers.contract;
+package com.owczarczak.footballers.score;
 
-import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.footballer.Footballer;
+import com.owczarczak.footballers.match.Match;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 
 @Entity
 @Builder
-@Table(name = "contract")
+@Table(name = "score")
 @Getter
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Contract {
+public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
-    @JoinColumn(name = "club_id")
-    private Club club;
-
     @OneToOne
     @JoinColumn(name = "footballer_id")
     private Footballer footballer;
 
-    private Instant contractStart;
-    private Instant contractEnd;
-    private int salary;
+    @ManyToOne
+    @JoinColumn(name = "match_id")
+    private Match match;
+    private int minuteScored;
 }

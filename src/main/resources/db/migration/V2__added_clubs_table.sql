@@ -66,6 +66,7 @@ create table club_representation_footballer(
 );
 
 create table score(
+    id serial,
 	match_id int not null,
 	footballer_id int not null,
 	minute_scored int,
@@ -73,16 +74,6 @@ create table score(
 	constraint fk_footballer foreign key(footballer_id) references footballer(id)
 );
 ---------- THE END OF TABLES CREATION ----------
-
-
--- SELECT
-select * from footballer;
-select * from club;
-select * from contract;
-select * from club_representation;
-select * from match;
-select * from club_representation_footballer;
-select * from score;
 
 -- Footballer initial data
 INSERT INTO footballer VALUES (default, '111111', 'Lewandowski', 10, 150);
@@ -183,13 +174,13 @@ INSERT INTO match VALUES (default, 11, 14, 'Example Referee3', '2021-03-21 10:10
 
 
 -- Score initial data
-INSERT INTO score VALUES (1, 1, 20);
-INSERT INTO score VALUES (1, 2, 30);
-INSERT INTO score VALUES (1, 6, 40);
-
-INSERT INTO score VALUES (2, 7, 60);
-INSERT INTO score VALUES (2, 9, 65);
-INSERT INTO score VALUES (2, 2, 70);
-INSERT INTO score VALUES (2, 2, 80);
-
-INSERT INTO score VALUES (2, 1, 25);
+--INSERT INTO score VALUES (default, 1, 1, 20);
+--INSERT INTO score VALUES (default, 1, 2, 30);
+--INSERT INTO score VALUES (default, 1, 6, 40);
+--
+--INSERT INTO score VALUES default, 2, 7, 60);
+--INSERT INTO score VALUES (default, 2, 9, 65);
+--INSERT INTO score VALUES (default, 2, 2, 70);
+--INSERT INTO score VALUES (default, 2, 2, 80);
+--
+--INSERT INTO score VALUES (default, 2, 1, 25);
