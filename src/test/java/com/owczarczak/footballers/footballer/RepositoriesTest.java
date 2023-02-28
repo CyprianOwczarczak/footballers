@@ -12,8 +12,9 @@ import com.owczarczak.footballers.score.Score;
 import com.owczarczak.footballers.score.ScoreRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -113,6 +114,65 @@ public class RepositoriesTest {
         Score score = new Score(matchToAddScore, footballerToAddScore, 40);
         scoreRepository.save(score);
     }
+
+    @Test
+    public void shouldAddContractToTheExistingFootballer() {
+        //Creating example clubs
+        Club club1 = new Club("ClubFromMatch13", Instant.now(), Collections.emptyList());
+
+        //Creating example footballers
+        Footballer footballer = new Footballer("100002", "ExampleFootballerScore", 80, 230);
+
+        Contract contract = new Contract(club1, footballer, Instant.EPOCH, Instant.now(), 10000);
+        contractRepository.save(contract);
+    }
+
+    @Test
+    public void addClubRepresentationToTheExistingMatch() {
+        //Get an existing match
+        Optional<Match> matchOptional = matchRepository.findById(5);
+        Match matchToAddRepresentation = matchOptional.get();
+
+        //Create new club
+        Club club1 = new Club("ClubFromMatch12", Instant.now(), Collections.emptyList());
+
+        //Create new club representation
+        ClubRepresentation clubRepresentation = new ClubRepresentation(club1, Collections.emptyList());
+        matchToAddRepresentation.setHost(clubRepresentation);
+    }
+
+    @Test
+    public void shouldSaveMatchWithRepresentationsFootballersAndScoresAtOnce() {
+        Match match = new Match();
+        matchRepository.save(match);
+    }
+
+
+    //////////Repository Queries///////////
+    @Test
+    public void shouldGetAllContractsOrderedBySalary() {
+        Pageable pageable = PageRequest.of(0, 5);
+        contractRepository.findAllByOrderBySalaryDesc(pageable);
+    }
+
+    @Test
+    public void shouldGetClubsByName() {
+        clubRepository.findByName("Barcelona");
+    }
+
+
+    @Test
+    public void shouldGetAllClubsPageable() {
+        Pageable pageable = PageRequest.of(0, 5);
+        clubRepository.findAllByOrderByCreatedDesc(pageable);
+    }
+
+//    @Test
+//    public void shouldgetClubById() {
+//        clubRepresentationRepository.findClubByClubId(5);
+//    }
+
+//////////The end of repository queries//////////
 
     @Test
     public void shouldGetAllClubs() {
