@@ -9,21 +9,16 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Builder
 @Table(name = "match")
-@Getter
-@Setter
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "host_representation_id")
     private ClubRepresentation host;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "guest_representation_id")
     private ClubRepresentation guest;
     private String nameOfReferee;
@@ -31,4 +26,63 @@ public class Match {
    @OneToMany
    @JoinColumn(name = "match_id" )
     private List<Score> scores;
+
+    public Match() {
+    }
+
+    public Match(ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, Instant date, List<Score> scores) {
+        this.host = host;
+        this.guest = guest;
+        this.nameOfReferee = nameOfReferee;
+        this.date = date;
+        this.scores = scores;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ClubRepresentation getHost() {
+        return host;
+    }
+
+    public void setHost(ClubRepresentation host) {
+        this.host = host;
+    }
+
+    public ClubRepresentation getGuest() {
+        return guest;
+    }
+
+    public void setGuest(ClubRepresentation guest) {
+        this.guest = guest;
+    }
+
+    public String getNameOfReferee() {
+        return nameOfReferee;
+    }
+
+    public void setNameOfReferee(String nameOfReferee) {
+        this.nameOfReferee = nameOfReferee;
+    }
+
+    public Instant getDate() {
+        return date;
+    }
+
+    public void setDate(Instant date) {
+        this.date = date;
+    }
+
+    public List<Score> getScores() {
+        return scores;
+    }
+
+    public void setScores(List<Score> scores) {
+        this.scores = scores;
+    }
 }

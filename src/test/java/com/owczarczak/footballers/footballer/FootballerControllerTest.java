@@ -457,19 +457,19 @@ class FootballerControllerTest {
     }
 
     private static Footballer getFootballer1() {
-        return new Footballer("111111", "testPlayer1", "testClub", 10, 150);
+        return new Footballer("111111", "testPlayer1", 10, 150);
     }
 
     private static Footballer getFootballer2() {
-        return new Footballer("222222", "testPlayer2", "testClub2", 20, 160);
+        return new Footballer("222222", "testPlayer2", 20, 160);
     }
 
     private static Footballer getFootballer3() {
-        return new Footballer("333333", "testPlayer3", "testClub3", 30, 170);
+        return new Footballer("333333", "testPlayer3",30, 170);
     }
 
     private static Footballer getFootballer4() {
-        return new Footballer("444444", "testPlayer3", "testClub3", 30, 170);
+        return new Footballer("444444", "testPlayer3",30, 170);
     }
 
     private static ResultMatcher[] getJsonValidationRules() {

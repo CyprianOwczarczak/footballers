@@ -8,25 +8,51 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Builder
 @Table(name = "club_representation")
-@Getter
-@Setter
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class ClubRepresentation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "club_id")
     private Club club;
-    @ManyToMany
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "club_representation_footballer",
             joinColumns = @JoinColumn(name = "club_representation_id"),
             inverseJoinColumns = @JoinColumn(name = "footballer_id"))
     List<Footballer> footballerList;
-//    @OneToOne(mappedBy = )
-//    @JoinColumn
-//    private Match match;
+
+    public ClubRepresentation() {
+    }
+
+    public ClubRepresentation(Club club, List<Footballer> footballerList) {
+        this.club = club;
+        this.footballerList = footballerList;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Club getClub() {
+        return club;
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
+    }
+
+    public List<Footballer> getFootballerList() {
+        return footballerList;
+    }
+
+    public void setFootballerList(List<Footballer> footballerList) {
+        this.footballerList = footballerList;
+    }
 }

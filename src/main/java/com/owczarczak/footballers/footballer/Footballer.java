@@ -5,7 +5,6 @@ import com.owczarczak.footballers.contract.Contract;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -25,10 +24,11 @@ public class Footballer {
     int height;
     @OneToMany(mappedBy = "footballer")
     Set<Contract> contractList;
+
     @ManyToMany(mappedBy = "footballerList")
     Set<ClubRepresentation> representationList;
 
-    public Footballer(final String pesel, final String name, final String club, final int goals, final int height) {
+    public Footballer(final String pesel, final String name, final int goals, final int height) {
         this.pesel = pesel;
         this.name = name;
         this.goals = goals;

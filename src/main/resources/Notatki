@@ -75,3 +75,15 @@ Jak będzie działać to przenieść do migracji, zrobić kilka tabelek na raz w
 2. Napisać testy zapisywania na nowych encjach
 3. Sprawdzić czy faktycznie są zapisywane w bazie danych
 
+4.Przetestować save, get,
+
+
+28.02
+Napisać więcej testów na wszystkie encje, sprawdzić czy używać CASCADE
+Za jednym razem zapisać mecz z reprezentacjami, piłkarzami i golami, piłkarzy i reprezentację klubów pobrać zew wcześniej zapisanych danych
+Następna metoda testowa: mając mecz w bazie danych dopisywać gole do tegoż meczu
+DUŻO TESTÓW (z 30 przynajmniej) na wszystkie możliwe sposoby
+
+Repozytoria query pisać w JPQL-u albo derived query ewentualnie
+Query w JPQL (nie native) przerobione z postgresa,
+Dodać testy do tych nowych Query z repozytoriów

@@ -8,12 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ClubRepository extends JpaRepository<Club, Integer> {
-//    @Query("SELECT c FROM club c ORDER BY c.name")
-//    Page<Club> findAllOrderByName(Pageable pageable);
 
-    @Query(value = """
-            select *
-            from club where 
-            """, nativeQuery = true)
-    List<Club> findAllClubsSortByName();
+//    @Query(value = """
+//            select *
+//            from club where
+//            """, nativeQuery = true)
+//    List<Club> findAllClubsSortByName();
 }
