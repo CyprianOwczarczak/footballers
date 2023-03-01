@@ -18,10 +18,12 @@ public class Footballer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
     String pesel;
     String name;
     int goals;
     int height;
+
     @OneToMany(mappedBy = "footballer")
     Set<Contract> contractList;
 

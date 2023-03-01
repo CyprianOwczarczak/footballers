@@ -272,15 +272,11 @@ public class RepositoriesTest {
         clubRepository.findAllByOrderByCreatedDesc(pageable);
     }
 
-//    @Test
-//    public void shouldGetMatchesByRefereeName() {
-//        Match getmatchRepository.findByName("Example Referee");
-//    }
+    @Test
+    public void shouldGetAllClubsThatPlayedMoreThan3Matches() {
+        clubRepository.findAllClubsWhichPlayedMoreThan3Matches();
+    }
 
-//    @Test
-//    public void shouldgetClubById() {
-//        clubRepresentationRepository.findClubByClubId(5);
-//    }
 
 //////////The end of repository queries//////////
 
