@@ -8,6 +8,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MatchRepository extends JpaRepository<Match, Integer> {
-//    @Query("SELECT m FROM Match m WHERE m.name_of_referee = :name")
-//    Match findByName(@Param("name") String name);
+    @Query("SELECT m FROM Match m WHERE m.nameOfReferee = :name")
+    Match findByName(@Param("name") String name);
+
+    //Get a match with the most goals scored
+//    @Query("select m from match m where ")
+//    Match findByMostScores();
 }

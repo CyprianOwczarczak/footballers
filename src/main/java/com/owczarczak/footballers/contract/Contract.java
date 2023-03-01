@@ -13,16 +13,19 @@ public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+
+    @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(name = "footballer_id")
     private Footballer footballer;
 
     private Instant contractStart;
+
     private Instant contractEnd;
+
     private int salary;
 
     public Contract() {

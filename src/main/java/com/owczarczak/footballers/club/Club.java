@@ -13,7 +13,9 @@ public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
+
     private Instant created;
 
     @OneToMany(mappedBy = "club")

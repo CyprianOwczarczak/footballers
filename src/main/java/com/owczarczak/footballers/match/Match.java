@@ -2,7 +2,6 @@ package com.owczarczak.footballers.match;
 
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.score.Score;
-import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -15,16 +14,21 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "host_representation_id")
     private ClubRepresentation host;
+
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "guest_representation_id")
     private ClubRepresentation guest;
+
     private String nameOfReferee;
+
     private Instant date;
-   @OneToMany
-   @JoinColumn(name = "match_id" )
+
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinColumn(name = "match_id")
     private List<Score> scores;
 
     public Match() {

@@ -14,11 +14,11 @@ public class ClubRepresentation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(name = "club_representation_footballer",
             joinColumns = @JoinColumn(name = "club_representation_id"),
             inverseJoinColumns = @JoinColumn(name = "footballer_id"))

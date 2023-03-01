@@ -2,10 +2,8 @@ package com.owczarczak.footballers.score;
 
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.match.Match;
-import lombok.*;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Table(name = "score")
@@ -19,9 +17,9 @@ public class Score {
     private Match match;
 
     @OneToOne
-            (cascade = CascadeType.MERGE)
     @JoinColumn(name = "footballer_id")
     private Footballer footballer;
+
     private int minuteScored;
 
     public Score() {

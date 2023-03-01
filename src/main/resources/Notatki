@@ -80,10 +80,24 @@ Jak będzie działać to przenieść do migracji, zrobić kilka tabelek na raz w
 
 28.02
 Napisać więcej testów na wszystkie encje, sprawdzić czy używać CASCADE
-Za jednym razem zapisać mecz z reprezentacjami, piłkarzami i golami, piłkarzy i reprezentację klubów pobrać zew wcześniej zapisanych danych
+
+Za jednym razem zapisać mecz z reprezentacjami, piłkarzami i golami, piłkarzy
+i reprezentację klubów pobrać zew wcześniej zapisanych danych
+
 Następna metoda testowa: mając mecz w bazie danych dopisywać gole do tegoż meczu
 DUŻO TESTÓW (z 30 przynajmniej) na wszystkie możliwe sposoby
 
 Repozytoria query pisać w JPQL-u albo derived query ewentualnie
 Query w JPQL (nie native) przerobione z postgresa,
 Dodać testy do tych nowych Query z repozytoriów
+
+1.03
+Przeczytać o LazyInitializationException
+Query w JPQL przez kilka tabel z Joinami i przetestować je
+- Wszystkie kluby które zagrały więcej niż 3 mecze
+- Średnia liczba goli zdobyta przez każdego zawodnika na mecz np.Piłkarz1 zdobył 6,5 gola na mecz (i wypisać wszystkich)
+- Który piłkarz pojawił się w największej liczbie meczów
+- Średnia długość kontraktów piłkarzy w danym zespole
+- Średnia liczba bramek zdobytych przez piłkarzy w trakcie kontraktu trwającego mniej niż np. rok
+
+Wypisać sobie dane których używałem do sprawdzenia testów (co powinno być wynikiem itp)

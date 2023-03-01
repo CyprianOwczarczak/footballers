@@ -10,12 +10,16 @@ import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.match.MatchRepository;
 import com.owczarczak.footballers.score.Score;
 import com.owczarczak.footballers.score.ScoreRepository;
+import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Commit;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -115,7 +119,9 @@ public class RepositoriesTest {
         scoreRepository.save(score);
     }
 
+    //Add a Contract to
     @Test
+    @DisplayName("Should add a contract to the existing footballer")
     public void shouldAddContractToTheExistingFootballer() {
         //Creating example clubs
         Club club1 = new Club("ClubFromMatch13", Instant.now(), Collections.emptyList());
@@ -125,6 +131,106 @@ public class RepositoriesTest {
 
         Contract contract = new Contract(club1, footballer, Instant.EPOCH, Instant.now(), 10000);
         contractRepository.save(contract);
+    }
+
+    //    Za jednym razem zapisać mecz z reprezentacjami, piłkarzami i golami, piłkarzy
+//    i reprezentację klubów pobrać ze wcześniej zapisanych danych, dodać tych piłkarzy do reprezentacji klubu
+    @Test
+    @DisplayName("Should add a new match with new representations with already existing footballers and with new scores")
+    public void shouldAddNewMatchWithNewRepresentationsWithAlreadyExistingFootballers() {
+        //Get existing footballers from the database
+        Optional<Footballer> footballerOptional1 = footballerRepository.findById(1);
+        Optional<Footballer> footballerOptional2 = footballerRepository.findById(5);
+        Footballer footballerForRepresentation1 = footballerOptional1.get();
+        Footballer footballerForRepresentation2 = footballerOptional2.get();
+
+        //Get existing Clubs from the database
+        // -- it didn't work because we used Cascade.PERSIST in the ClubRepresentation which tried to save the existing club
+        Optional<Club> clubOptional1 = clubRepository.findById(1);
+        Optional<Club> clubOptional2 = clubRepository.findById(2);
+        Club club1 = clubOptional1.get();
+        Club club2 = clubOptional2.get();
+
+        //Create new ClubRepresentations -- it didn't work because the Cascade.PERSIST tried to save
+        ClubRepresentation clubRepresentation1 = new ClubRepresentation(club1, List.of(footballerForRepresentation1));
+        ClubRepresentation clubRepresentation2 = new ClubRepresentation(club2, List.of(footballerForRepresentation2));
+
+        //Add new Match without saving it to the database yet (we need it to set Scores to this match)
+//        matchRepository.save(match);
+        Match match = new Match(clubRepresentation1, clubRepresentation2,
+                "Referee MatchWithExistingClubs", Instant.now(), Collections.emptyList());
+
+        //Add a few new Scores for that match
+        Score score1 = new Score(match, footballerForRepresentation1, 20);
+        Score score2 = new Score(match, footballerForRepresentation1, 40);
+        Score score3 = new Score(match, footballerForRepresentation2, 60);
+
+        //Now we can set Score list for the match and save it to the database
+        match.setScores(List.of(score1, score2, score3));
+        matchRepository.save(match);
+    }
+
+    //Istniejący mecz z punktami, reprezentacjami itd.  aktualizuje sędziego
+    @Test
+    @DisplayName("Should update referee name of an existing match")
+    public void shoudUpdateRefereeNameOfExistingMatch() {
+        //Get an existing match
+        Optional<Match> matchOptional = matchRepository.findById(19);
+        Match match = matchOptional.get();
+
+        //Change the nameOfReferee and save to database
+        match.setNameOfReferee("ChangedName Referee");
+        matchRepository.save(match);
+    }
+
+    //Do istniejącego meczu dodać gole (Dwustronna relacja ! --> dodać "score" do meczu oraz mecz do score
+    @Test
+    @DisplayName("Should add a goal to an existing match")
+    @Transactional
+    @Commit
+    public void shouldAddGoalToExistingMatch() {
+        //Get an existing match
+        Optional<Match> matchOptional = matchRepository.findById(19);
+        Match match = matchOptional.get();
+
+        //Get an existing foootballer
+        Optional<Footballer> footballerOptional = footballerRepository.findById(1);
+        Footballer footballer = footballerOptional.get();
+
+        //Create a new Score object
+        Score scoreToAdd = new Score(match, footballer, 10);
+
+        //Get current Score list and update it with a new Score object
+        List<Score> scoreList = match.getScores();
+        scoreList.add(scoreToAdd);
+
+        matchRepository.save(match);
+    }
+
+    //Zaktualizować clubRepresentation w istniejącym meczu
+    @Test
+    public void shouldUpdateClubRepresentationInExistingMatch() {
+        //Get an existing match
+        Optional<Match> matchOptional = matchRepository.findById(1);
+        Match match = matchOptional.get();
+
+        //Get an existing club to add to clubRepresentation
+        Optional<Club> clubOptional = clubRepository.findById(10);
+        Club club = clubOptional.get();
+
+        //Get existing footballers to add to clubRepresentation
+        Optional<Footballer> footballerOptional1 = footballerRepository.findById(3);
+        Footballer footballer1 = footballerOptional1.get();
+        Optional<Footballer> footballerOptional2 = footballerRepository.findById(4);
+        Footballer footballer2 = footballerOptional2.get();
+
+        //Create new ClubRepresentation to update the match with
+        ClubRepresentation clubRepresentation = new ClubRepresentation(club, List.of(footballer1, footballer2));
+        clubRepresentationRepository.save(clubRepresentation); //Without save it won't work
+
+        //Set the Host representation to a new object
+        match.setHost(clubRepresentation);
+        matchRepository.save(match);
     }
 
     @Test
@@ -160,12 +266,16 @@ public class RepositoriesTest {
         clubRepository.findByName("Barcelona");
     }
 
-
     @Test
     public void shouldGetAllClubsPageable() {
         Pageable pageable = PageRequest.of(0, 5);
         clubRepository.findAllByOrderByCreatedDesc(pageable);
     }
+
+//    @Test
+//    public void shouldGetMatchesByRefereeName() {
+//        Match getmatchRepository.findByName("Example Referee");
+//    }
 
 //    @Test
 //    public void shouldgetClubById() {
