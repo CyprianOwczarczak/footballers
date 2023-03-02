@@ -28,8 +28,6 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
-//                    .club(footballer.getClub())
-                    .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
             dtos.add(dtoToBeAdded);
@@ -46,8 +44,6 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
-//                    .club(footballer.getClub())
-                    .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build());
         }
@@ -63,8 +59,6 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
-//                    .club(footballer.getClub())
-                    .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
             dtos.add(dtoToBeAdded);
@@ -80,8 +74,6 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
-//                    .club(footballer.getClub())
-                    .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
             dtos.add(dtoToBeAdded);
@@ -93,8 +85,6 @@ public class FootballerService {
         Footballer newFootballer = Footballer.builder()
                 .pesel(footballerToBeAdded.getPesel())
                 .name(footballerToBeAdded.getName())
-//                .club(footballerToBeAdded.getClub())
-                .goals(footballerToBeAdded.getGoals())
                 .height(footballerToBeAdded.getHeight())
                 .build();
         Footballer savedEntity = repository.save(newFootballer);
@@ -102,8 +92,6 @@ public class FootballerService {
                 .id(savedEntity.getId())
                 .pesel(savedEntity.getPesel())
                 .name(savedEntity.getName())
-//                .club(savedEntity.getClub())
-                .goals(savedEntity.getGoals())
                 .height(savedEntity.getHeight())
                 .build();
     }
@@ -113,8 +101,6 @@ public class FootballerService {
                 .id(footballerToBeUpdated.getId())
                 .pesel(footballerToBeUpdated.getPesel())
                 .name(footballerToBeUpdated.getName())
-//                .club(footballerToBeUpdated.getClub())
-                .goals(footballerToBeUpdated.getGoals())
                 .height(footballerToBeUpdated.getHeight())
                 .build();
         Footballer savedEntity = repository.save(updatedFootballer);
@@ -122,8 +108,6 @@ public class FootballerService {
                 .id(savedEntity.getId())
                 .pesel(savedEntity.getPesel())
                 .name(savedEntity.getName())
-//                .club(savedEntity.getClub())
-                .goals(savedEntity.getGoals())
                 .height(savedEntity.getHeight())
                 .build());
     }

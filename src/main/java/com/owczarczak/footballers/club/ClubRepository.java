@@ -17,11 +17,11 @@ public interface ClubRepository extends JpaRepository<Club, Integer> {
 
     //        - Wszystkie kluby które zagrały więcej niż 3 mecze
     @Query("""
-            select c, count(cr.id)
+            select c
             from Club c
             join ClubRepresentation cr
-            on cr.id = c.id
-            where count(cr.id) > 3
+            on cr.club = c.id
+            where (select count(cr.id) from cr) > 3
             group by c.id
              """)
     List<Club> findAllClubsWhichPlayedMoreThan3Matches();

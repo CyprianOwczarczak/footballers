@@ -21,7 +21,6 @@ public class Footballer {
 
     String pesel;
     String name;
-    int goals;
     int height;
 
     @OneToMany(mappedBy = "footballer")
@@ -33,7 +32,6 @@ public class Footballer {
     public Footballer(final String pesel, final String name, final int goals, final int height) {
         this.pesel = pesel;
         this.name = name;
-        this.goals = goals;
         this.height = height;
     }
 
@@ -43,7 +41,6 @@ public class Footballer {
                 "id=" + id +
                 ", pesel='" + pesel + '\'' +
                 ", name='" + name + '\'' +
-                ", goals=" + goals +
                 ", height=" + height +
                 '}';
     }

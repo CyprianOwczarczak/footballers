@@ -93,6 +93,8 @@ Dodać testy do tych nowych Query z repozytoriów
 
 1.03
 Przeczytać o LazyInitializationException
+Wywołać (napisać kod) LazyInitializationException
+
 Query w JPQL przez kilka tabel z Joinami i przetestować je
 - Wszystkie kluby które zagrały więcej niż 3 mecze
 - Średnia liczba goli zdobyta przez każdego zawodnika na mecz np.Piłkarz1 zdobył 6,5 gola na mecz (i wypisać wszystkich)

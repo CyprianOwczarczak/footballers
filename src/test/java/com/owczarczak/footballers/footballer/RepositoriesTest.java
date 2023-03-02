@@ -10,7 +10,8 @@ import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.match.MatchRepository;
 import com.owczarczak.footballers.score.Score;
 import com.owczarczak.footballers.score.ScoreRepository;
-import org.checkerframework.checker.units.qual.C;
+import org.hibernate.LazyInitializationException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.test.annotation.Commit;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -207,6 +209,21 @@ public class RepositoriesTest {
         matchRepository.save(match);
     }
 
+    @Test
+    public void shouldThrowLazyInitializationException() {
+        //Get an existing Club
+        Optional<Club> clubOptional = clubRepository.findById(4);
+        Club club = clubOptional.get();
+
+        //Get an existing Contract to add to the contractList
+        Optional<Contract> contractOptional = contractRepository.findById(9);
+        Contract contract = contractOptional.get();
+
+        //Try to add a Contract to existing contractList of a Club (through Bag
+        List<Contract> contractList = club.getContractList();
+        Assertions.assertThrows(LazyInitializationException.class, () -> contractList.add(contract));
+    }
+
     //Zaktualizować clubRepresentation w istniejącym meczu
     @Test
     public void shouldUpdateClubRepresentationInExistingMatch() {
@@ -274,9 +291,27 @@ public class RepositoriesTest {
 
     @Test
     public void shouldGetAllClubsThatPlayedMoreThan3Matches() {
-        clubRepository.findAllClubsWhichPlayedMoreThan3Matches();
+        List<Club> clubRepresentationList = clubRepository.findAllClubsWhichPlayedMoreThan3Matches();
+        Assertions.assertEquals(3, clubRepresentationList.size());
     }
 
+//    @Test
+//    public void shouldGetAverageFootballerGoalsWhenTheirContractIsShorterThanYear() {
+////        Instant start = Instant.from(LocalDate.of(2020, 1, 1));
+//        Instant start = Instant.now().minus(3, ChronoUnit.YEARS);
+//        Instant end = Instant.now();
+//
+//        List<Double> meanGoals = contractRepository.getMeanGoalsScoredByFootballersDuringContractLastingLessThanYear(
+//                start, end
+//        );
+//        Assertions.assertEquals(20, meanGoals.get(0));
+//    }
+
+//    @Test
+//    public void testtest() {
+//        List<Object[]> obj = contractRepository.getAvgGoalsPerMatchForFootballer();
+//        System.out.println(obj);
+//    }
 
 //////////The end of repository queries//////////
 
