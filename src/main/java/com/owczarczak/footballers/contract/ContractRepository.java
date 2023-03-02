@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.club.Club;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,16 +16,22 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
     Page<Contract> findAllByOrderBySalaryDesc(Pageable pageable);
 
 //- Średnia długość kontraktów piłkarzy w danym zespole
-//    @Query("""
-//            select
-//            from Contract c
-//            """)
-//    double getMeanLenghtOfContractsInClub(Club club);
+    //Fixme how to calculate the average Instant
+    @Query("""
+            select f.name, avg(con.contractEnd - con.contractStart)
+            from Footballer f
+            join Contract con
+            on con.footballer = f
+            join Club c
+            on con.club = :searchedClub
+            group by f.name
+            """)
+    Instant getMeanLenghtOfContractsInClub(@Param("searchedClub") Club club);
 
     //- Średnia liczba bramek zdobytych przez piłkarzy w trakcie kontraktu trwającego mniej niż np. rok
 //    select new java.lang.Double(avg(f.goals))
 
-//
+
 //    @Query("""
 //            select (avg(f.goals))
 //            from Footballer f
@@ -37,20 +44,15 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
 
 
 //    Średnia liczba goli per mecz dla zawodnika
+    //Fixme returns empty rows
     @Query("""
-            select f.name
-            from Footballer
+            select f.name, count(s.id)/count(m.id)
+            from Footballer f
             join Score s
             on s.footballer = f
-            group by f.name
+            join Match m
+            on s.match = m
+            group by f.id
             """)
-    List<Object[]> getAvgGoalsPerMatchForFootballer();
-
-
-//    @Query("""
-//            select avg(c.salary), c.footballer.name
-//            from Contract c
-//            group by c.footballer.name
-//            """)
-//    List<Object[]> getAvgValue();
+    List<Double> getAvgGoalsPerMatchForFootballer();
 }

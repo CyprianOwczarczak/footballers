@@ -22,7 +22,6 @@ import org.springframework.test.annotation.Commit;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -307,11 +306,20 @@ public class RepositoriesTest {
 //        Assertions.assertEquals(20, meanGoals.get(0));
 //    }
 
-//    @Test
-//    public void testtest() {
-//        List<Object[]> obj = contractRepository.getAvgGoalsPerMatchForFootballer();
-//        System.out.println(obj);
-//    }
+    @Test
+    public void shouldGetAvgGoalsPerMatchForFootballer() {
+        List<Double> obj = contractRepository.getAvgGoalsPerMatchForFootballer();
+        System.out.println(obj);
+    }
+
+    @Test
+    public void shouldGetMeanLengthOfContractsInClub() {
+        //Get existing Club from the database
+        Optional<Club> clubOptional = clubRepository.findById(4);
+        Club club = clubOptional.get();
+
+        contractRepository.getMeanLenghtOfContractsInClub(club);
+    }
 
 //////////The end of repository queries//////////
 
