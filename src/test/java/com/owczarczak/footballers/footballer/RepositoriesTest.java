@@ -263,6 +263,14 @@ public class RepositoriesTest {
         matchToAddRepresentation.setHost(clubRepresentation);
     }
 
+    //TODO Jak utworzyć Optionala z obiektem który jest nullem, przejrzeć dokumentację RTFM
+
+    @Test
+    public void test() {
+        String nullString = null;
+        Optional<String> not =
+    }
+
     @Test
     public void shouldSaveMatchWithRepresentationsFootballersAndScoresAtOnce() {
         Match match = new Match();
@@ -308,8 +316,9 @@ public class RepositoriesTest {
 
     @Test
     public void shouldGetAvgGoalsPerMatchForFootballer() {
-        List<Double> obj = contractRepository.getAvgGoalsPerMatchForFootballer();
-        System.out.println(obj);
+        List<Object> obj = contractRepository.getAvgGoalsPerMatchForFootballer();
+        System.out.println("Test chekc");
+        //Zwraca Listę tablic obiektów
     }
 
     @Test
@@ -319,6 +328,11 @@ public class RepositoriesTest {
         Club club = clubOptional.get();
 
         contractRepository.getMeanLenghtOfContractsInClub(club);
+    }
+
+    @Test
+    public void shouldShowWhichFootballerPlayedInMostMatches() {
+        footballerRepository.whichFootballerPlayedInTheBiggestAmountOfMatches();
     }
 
 //////////The end of repository queries//////////

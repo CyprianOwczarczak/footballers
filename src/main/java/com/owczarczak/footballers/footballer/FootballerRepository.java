@@ -35,16 +35,17 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
     @Query("DELETE FROM Footballer f WHERE f.id = :id")
     void deleteAllById(@Param("id") int id);
 
-////- Który piłkarz pojawił się w największej liczbie meczów
-//    @Query("""
-//            select f
-//            from Footballer f
-//            """)
-////    join ClubRepresentation cr
-//
-//    Footballer whichFootballerPlayedInTheBiggestAmountOfMatches();
-//
-//
+//- Który piłkarz pojawił się w największej liczbie meczów
+    @Query("""
+            select f
+            from Footballer f
+            join Contract c
+            on c.footballer = f
+            """)
+
+    Footballer whichFootballerPlayedInTheBiggestAmountOfMatches();
+
+
 ////- Średnia liczba goli zdobyta przez każdego zawodnika na mecz np.Piłkarz1 zdobył 6,5 gola na mecz (i wypisać wszystkich)
 //    @Query("""
 //            select f
