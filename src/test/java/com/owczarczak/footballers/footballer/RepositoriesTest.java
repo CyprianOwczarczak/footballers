@@ -264,12 +264,13 @@ public class RepositoriesTest {
     }
 
     //TODO Jak utworzyć Optionala z obiektem który jest nullem, przejrzeć dokumentację RTFM
-
-    @Test
-    public void test() {
-        String nullString = null;
-        Optional<String> not =
-    }
+//    @Test
+//    public void testOptional() {
+//        String nullString = null;
+////        Optional<String> not =
+//        System.out.println(Optional.ofNullable(nullString));
+//
+//    }
 
     @Test
     public void shouldSaveMatchWithRepresentationsFootballersAndScoresAtOnce() {
@@ -314,25 +315,36 @@ public class RepositoriesTest {
 //        Assertions.assertEquals(20, meanGoals.get(0));
 //    }
 
-    @Test
-    public void shouldGetAvgGoalsPerMatchForFootballer() {
-        List<Object> obj = contractRepository.getAvgGoalsPerMatchForFootballer();
-        System.out.println("Test chekc");
-        //Zwraca Listę tablic obiektów
-    }
+//    @Test
+//    public void shouldGetAvgGoalsPerMatchForFootballer() {
+//        List<Object> returnedGoals = contractRepository.getAvgGoalsPerMatchForFootballer();
+//        // Should I return only the double here ?
+//        System.out.println("Test chekc");
+//        //Zwraca Listę tablic obiektów
+//    }
 
     @Test
     public void shouldGetMeanLengthOfContractsInClub() {
         //Get existing Club from the database
         Optional<Club> clubOptional = clubRepository.findById(4);
         Club club = clubOptional.get();
+        int clubId = club.getId();
 
-        contractRepository.getMeanLenghtOfContractsInClub(club);
+        contractRepository.getMeanLenghtOfContractsInClub(clubId);
     }
+
 
     @Test
     public void shouldShowWhichFootballerPlayedInMostMatches() {
         footballerRepository.whichFootballerPlayedInTheBiggestAmountOfMatches();
+    }
+
+
+
+    @Test
+    public void shouldGetListOfContractsForFootballer() {
+        List<Object> returnedList = contractRepository.getListOfContractsForSpecificFootballer(10);
+        Assertions.assertEquals(4, returnedList.size());
     }
 
 //////////The end of repository queries//////////

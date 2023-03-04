@@ -7,36 +7,42 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.Instant;
 import java.util.List;
 
 public interface ContractRepository extends JpaRepository<Contract, Integer> {
-    //This query gets Contracts and orders them by salary
-    @Query("SELECT c FROM Contract c ORDER BY c.salary DESC")
-    Page<Contract> findAllByOrderBySalaryDesc(Pageable pageable);
 
-    //todo JPQL -> Lista kontraktów dla danego zawodnika (podajemy id zawodnika jako parametr)
+    //todo JPQL Done
+    @Query("""
+            select c
+            from Contract c
+            join Footballer f
+            on c.footballer = f
+            where f.id = :fId
+            """)
+    List<Object> getListOfContractsForSpecificFootballer(@Param("fId") int fId);
 
 
 
-//- Średnia długość kontraktów piłkarzy w danym zespole
+    //- Średnia długość kontraktów piłkarzy w danym zespole
     //TODO how to calculate the average Instant
     // Przerobić na nativeQuery
-    //Długość kontraktów dniach
+    //Długość kontraktów w dniach
     //Średnia w danym klubie
-    @Query("""
-            select f.name, avg(con.contractEnd - con.contractStart)
-            from Footballer f
-            join Contract con
-            on con.footballer = f
-            join Club c
-            on con.club = :searchedClub
-            group by f.name
-            """)
-    double getMeanLenghtOfContractsInClub(@Param("searchedClub") Club club);
+    //todo Add the club search clause
+    @Query(value = """
+            select cl.id, cl.name, avg(c.contract_end - c.contract_start)
+            from contract c
+            join club cl
+            on c.club_id = cl.id
+            where cl.id = :clubId
+            
+            group by cl.id
+            order by cl.id desc
+            """, nativeQuery = true)
+    List<Object> getMeanLenghtOfContractsInClub(@Param("clubId") int club);
 
 
-//    Średnia liczba goli per mecz dla zawodnika
+    //    Średnia liczba goli per mecz dla zawodnika
     @Query(value = """
             select scores.id, scores.name, scores.cnt as goals, matches.cnt as matches, (CAST (scores.cnt AS float) /matches.cnt) as averageGoals
             from
@@ -66,4 +72,7 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
     List<Object> getAvgGoalsPerMatchForFootballer();
 
 
+    //This query gets Contracts and orders them by salary
+    @Query("SELECT c FROM Contract c ORDER BY c.salary DESC")
+    Page<Contract> findAllByOrderBySalaryDesc(Pageable pageable);
 }
