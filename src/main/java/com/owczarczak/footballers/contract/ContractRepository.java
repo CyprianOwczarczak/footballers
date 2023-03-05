@@ -1,6 +1,5 @@
 package com.owczarczak.footballers.contract;
 
-import com.owczarczak.footballers.club.Club;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +10,6 @@ import java.util.List;
 
 public interface ContractRepository extends JpaRepository<Contract, Integer> {
 
-    //todo JPQL Done
     @Query("""
             select c
             from Contract c
@@ -21,26 +19,20 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
             """)
     List<Object> getListOfContractsForSpecificFootballer(@Param("fId") int fId);
 
-
-
     //- Średnia długość kontraktów piłkarzy w danym zespole
-    //TODO how to calculate the average Instant
-    // Przerobić na nativeQuery
-    //Długość kontraktów w dniach
-    //Średnia w danym klubie
-    //todo Add the club search clause
+    //Długość kontraktów w dniach, Średnia w danym klubie
+    //todo Add the club search clause (nativeQuery), how to calculate the average date
     @Query(value = """
-            select cl.id, cl.name, avg(c.contract_end - c.contract_start)
+            select cl.name, (c.contract_end - c.contract_start)
             from contract c
             join club cl
-            on c.club_id = cl.id
-            where cl.id = :clubId
-            
-            group by cl.id
-            order by cl.id desc
+            on c.club_id = c.id
+            group by c.id, cl.name
             """, nativeQuery = true)
-    List<Object> getMeanLenghtOfContractsInClub(@Param("clubId") int club);
+    List<Object> getMeanLenghtOfContractsInClub(int clubId);
 
+//    CAST ('100' AS INTEGER);
+//    AVG(TIMESTAMPDIFF(HOUR, start_date, end_date))/
 
     //    Średnia liczba goli per mecz dla zawodnika
     @Query(value = """

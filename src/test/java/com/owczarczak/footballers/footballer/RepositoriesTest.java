@@ -298,39 +298,24 @@ public class RepositoriesTest {
     }
 
     @Test
-    public void shouldGetAllClubsThatPlayedMoreThan3Matches() {
+    public void shouldGetAllClubsThatPlayedMoreThanXMatches() {
         List<Club> clubRepresentationList = clubRepository.findAllClubsWhichPlayedMoreThan3Matches();
         Assertions.assertEquals(3, clubRepresentationList.size());
     }
 
-//    @Test
-//    public void shouldGetAverageFootballerGoalsWhenTheirContractIsShorterThanYear() {
-////        Instant start = Instant.from(LocalDate.of(2020, 1, 1));
-//        Instant start = Instant.now().minus(3, ChronoUnit.YEARS);
-//        Instant end = Instant.now();
-//
-//        List<Double> meanGoals = contractRepository.getMeanGoalsScoredByFootballersDuringContractLastingLessThanYear(
-//                start, end
-//        );
-//        Assertions.assertEquals(20, meanGoals.get(0));
-//    }
 
-//    @Test
-//    public void shouldGetAvgGoalsPerMatchForFootballer() {
-//        List<Object> returnedGoals = contractRepository.getAvgGoalsPerMatchForFootballer();
-//        // Should I return only the double here ?
-//        System.out.println("Test chekc");
-//        //Zwraca Listę tablic obiektów
-//    }
+    @Test
+    public void shouldGetAvgGoalsPerMatchForFootballer() {
+        List<Object> returnedGoals = contractRepository.getAvgGoalsPerMatchForFootballer();
+        // Should I return only the double here ?
+        System.out.println("Test chekc");
+        //Zwraca Listę tablic obiektów
+    }
 
     @Test
     public void shouldGetMeanLengthOfContractsInClub() {
         //Get existing Club from the database
-        Optional<Club> clubOptional = clubRepository.findById(4);
-        Club club = clubOptional.get();
-        int clubId = club.getId();
-
-        contractRepository.getMeanLenghtOfContractsInClub(clubId);
+        contractRepository.getMeanLenghtOfContractsInClub(0);
     }
 
 

@@ -16,7 +16,6 @@ public interface ClubRepository extends JpaRepository<Club, Integer> {
     Page<Club> findAllByOrderByCreatedDesc(Pageable pageable);
 
     //Wszystkie kluby które zagrały więcej niż 3 mecze
-    //Fixme
     @Query("""
             select c
             from Club c
