@@ -281,7 +281,7 @@ public class RepositoriesTest {
     @Test
     public void shouldGetAllContractsOrderedBySalary() {
         Pageable pageable = PageRequest.of(0, 5);
-        contractRepository.findAllByOrderBySalaryDesc(pageable);
+        contractRepository.getAllByOrderBySalaryDesc(pageable);
     }
 
     @Test
@@ -297,7 +297,7 @@ public class RepositoriesTest {
 
     @Test
     public void shouldGetAllClubsThatPlayedMoreThanXMatches() {
-        List<Club> clubRepresentationList = clubRepository.findAllClubsWhichPlayedMoreThan3Matches();
+        List<Club> clubRepresentationList = clubRepository.getAllClubsWhichPlayedMoreThan3Matches();
         Assertions.assertEquals(3, clubRepresentationList.size());
     }
 

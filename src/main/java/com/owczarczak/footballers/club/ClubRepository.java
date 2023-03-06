@@ -24,5 +24,5 @@ public interface ClubRepository extends JpaRepository<Club, Integer> {
             where (select count(cr.id) from cr) > 3
             group by c.id
              """)
-    List<Club> findAllClubsWhichPlayedMoreThan3Matches();
+    List<Club> getAllClubsWhichPlayedMoreThan3Matches();
 }

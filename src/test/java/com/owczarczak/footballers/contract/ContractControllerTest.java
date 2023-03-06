@@ -33,7 +33,6 @@ public class ContractControllerTest {
                 .andDo(print());
     }
 
-//    getListOfContractsForSpecificFootballer
     @Test
     void shouldGetListOfContractsForSpecificFootballer() throws Exception {
         this.mockMvc.perform(get("/contracts/" + 1));
