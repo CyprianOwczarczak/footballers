@@ -24,7 +24,7 @@ public class FootballerController {
         return service.getAllFootballers();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FootballerDto> getFootballerById(@PathVariable int id) {
         Optional<FootballerDto> foundDtoOptional = service.getFootballerById(id);
         if (foundDtoOptional.isEmpty()) {

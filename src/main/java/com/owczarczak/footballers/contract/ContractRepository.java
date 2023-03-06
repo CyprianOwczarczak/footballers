@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ContractRepository extends JpaRepository<Contract, Integer> {
@@ -13,26 +14,21 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
     @Query("""
             select c
             from Contract c
-            join Footballer f
-            on c.footballer = f
-            where f.id = :fId
+            where c.footballer.id = :fId
             """)
-    List<Object> getListOfContractsForSpecificFootballer(@Param("fId") int fId);
+    List<Contract> getListOfContractsForSpecificFootballer(@Param("fId") int fId);
 
     //- Średnia długość kontraktów piłkarzy w danym zespole
     //Długość kontraktów w dniach, Średnia w danym klubie
-    //todo Add the club search clause (nativeQuery), how to calculate the average date
     @Query(value = """
-            select cl.name, (c.contract_end - c.contract_start)
+            select
+            c.club_id
+            , avg(cast(c.contract_end as date) - cast(c.contract_start as date))
             from contract c
-            join club cl
-            on c.club_id = c.id
-            group by c.id, cl.name
+            where c.club_id = :clubId
+            group by c.club_id
             """, nativeQuery = true)
-    List<Object> getMeanLenghtOfContractsInClub(int clubId);
-
-//    CAST ('100' AS INTEGER);
-//    AVG(TIMESTAMPDIFF(HOUR, start_date, end_date))/
+    BigDecimal getMeanLenghtOfContractsInClub(int clubId); //todo check what object is it & create a dto for that(club_id, mean length) and that's all
 
     //    Średnia liczba goli per mecz dla zawodnika
     @Query(value = """
@@ -62,7 +58,6 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
             on scores.id = matches.id
             """, nativeQuery = true)
     List<Object> getAvgGoalsPerMatchForFootballer();
-
 
     //This query gets Contracts and orders them by salary
     @Query("SELECT c FROM Contract c ORDER BY c.salary DESC")

@@ -120,7 +120,7 @@ public class RepositoriesTest {
         scoreRepository.save(score);
     }
 
-    //Add a Contract to
+    //Add a Contract to an existing footballer
     @Test
     @DisplayName("Should add a contract to the existing footballer")
     public void shouldAddContractToTheExistingFootballer() {
@@ -157,7 +157,6 @@ public class RepositoriesTest {
         ClubRepresentation clubRepresentation2 = new ClubRepresentation(club2, List.of(footballerForRepresentation2));
 
         //Add new Match without saving it to the database yet (we need it to set Scores to this match)
-//        matchRepository.save(match);
         Match match = new Match(clubRepresentation1, clubRepresentation2,
                 "Referee MatchWithExistingClubs", Instant.now(), Collections.emptyList());
 
@@ -278,7 +277,6 @@ public class RepositoriesTest {
         matchRepository.save(match);
     }
 
-
     //////////Repository Queries///////////
     @Test
     public void shouldGetAllContractsOrderedBySalary() {
@@ -307,7 +305,6 @@ public class RepositoriesTest {
     @Test
     public void shouldGetAvgGoalsPerMatchForFootballer() {
         List<Object> returnedGoals = contractRepository.getAvgGoalsPerMatchForFootballer();
-        // Should I return only the double here ?
         System.out.println("Test chekc");
         //Zwraca Listę tablic obiektów
     }
@@ -315,20 +312,19 @@ public class RepositoriesTest {
     @Test
     public void shouldGetMeanLengthOfContractsInClub() {
         //Get existing Club from the database
-        contractRepository.getMeanLenghtOfContractsInClub(0);
+        Object returnedValues = contractRepository.getMeanLenghtOfContractsInClub(4);
+        System.out.println("test");
     }
-
 
     @Test
-    public void shouldShowWhichFootballerPlayedInMostMatches() {
-        footballerRepository.whichFootballerPlayedInTheBiggestAmountOfMatches();
+    public void shouldShowWhichFootballersPlayedInMostMatches() {
+        footballerRepository.whichFootballersPlayedInMostMatches();
     }
-
 
 
     @Test
     public void shouldGetListOfContractsForFootballer() {
-        List<Object> returnedList = contractRepository.getListOfContractsForSpecificFootballer(10);
+        List<Contract> returnedList = contractRepository.getListOfContractsForSpecificFootballer(10);
         Assertions.assertEquals(4, returnedList.size());
     }
 
@@ -376,6 +372,4 @@ public class RepositoriesTest {
             System.out.println(value.getMinuteScored());
         }
     }
-
-
 }

@@ -98,6 +98,13 @@ Wywołać (napisać kod) LazyInitializationException
 Query w JPQL przez kilka tabel z Joinami i przetestować je
 ✓ Wszystkie kluby które zagrały więcej niż 3 mecze !
 ✓ Średnia liczba goli zdobyta przez każdego zawodnika na mecz np.Piłkarz1 zdobył 6,5 gola na mecz (i wypisać wszystkich)
-- Który piłkarz pojawił się w największej liczbie meczów
-- Średnia długość kontraktów piłkarzy w danym zespole
+✓ Który piłkarz pojawił się w największej liczbie meczów (FootballerRepository)
+✓ Średnia długość kontraktów piłkarzy w danym zespole (ContractRepository)
+
+
+6.03
+❌ Dodać migrację ALTER TABLE dodać Constraint foreign key ClubRepresentation not null✓ + foreign key --> nie da się zrobić foreign key w dwie strony
+Add Controllers, Services and DTOs to all Entities
+Add tests for the methods in Controller (every controller in another test class)
+
 
