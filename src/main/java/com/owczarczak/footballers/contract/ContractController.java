@@ -24,7 +24,8 @@ public class ContractController {
         return service.getListOfContractsForSpecificFootballer(id);
     }
 
-//    @GetMapping("/lengthOfContracts")
-//    public Object getMeanLenghtOfContractsInClub() {
-//    }
+    @GetMapping("/lengthOfContracts/{clubId}")
+    public Object getMeanLenghtOfContractsInClub(int clubId) {
+        return service.getMeanLenghtOfContractsInClub(clubId);
+    }
 }
