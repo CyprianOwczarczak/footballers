@@ -24,6 +24,11 @@ public class Club {
     public Club() {
     }
 
+    public Club(String name, Instant created) {
+        this.name = name;
+        this.created = created;
+    }
+
     public Club(String name, Instant created, List<Contract> contractList) {
         this.name = name;
         this.created = created;

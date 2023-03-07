@@ -26,6 +26,10 @@ public class ClubRepresentation {
     public ClubRepresentation() {
     }
 
+    public ClubRepresentation(Club club) {
+        this.club = club;
+    }
+
     public ClubRepresentation(Club club, List<Footballer> footballerList) {
         this.club = club;
         this.footballerList = footballerList;
