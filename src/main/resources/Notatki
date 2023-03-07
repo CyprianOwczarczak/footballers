@@ -108,8 +108,8 @@ Query w JPQL przez kilka tabel z Joinami i przetestować je
 Add tests for the methods in Controller (every controller in another test class)
 
 7.03
-Stworzyć bazę danych dla testów
-Nadpisać używaną bazę danych dla testów w yaml-u
-TODO pisać każde dane od nowa od każego testu (zaczynać na pustej bazie)
-Usunąć dodawanie danych w migracjach (i dodać dane do każdego testu też w FootballerControllerTest)
+✓ Stworzyć bazę danych dla testów
+✓ Nadpisać używaną bazę danych dla testów w yaml-u
+- Pisać każde dane od nowa do każego testu (zaczynać na pustej bazie)
+- Usunąć dodawanie danych w migracjach (i dodać dane do każdego testu też w FootballerControllerTest)
 
