@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ScoreRepository extends JpaRepository<Score, Integer> {
 
-    //    Średnia liczba goli per mecz dla zawodnika
+    // Średnia liczba goli per mecz dla zawodnika
     @Query(value = """
             select scores.id, scores.name, scores.cnt as goals, matches.cnt as matches, (CAST (scores.cnt AS float) /matches.cnt) as averageGoals
             from
@@ -34,5 +34,5 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
             ) matches
             on scores.id = matches.id
             """, nativeQuery = true)
-    List<Object> getAvgGoalsPerMatchForFootballer();
+    List<Object[]> getAvgGoalsPerMatchForFootballer();
 }

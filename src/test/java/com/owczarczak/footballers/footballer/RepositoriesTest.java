@@ -302,12 +302,12 @@ public class RepositoriesTest {
     }
 
 
-    @Test
-    public void shouldGetAvgGoalsPerMatchForFootballer() {
-        List<Object> returnedGoals = contractRepository.getAvgGoalsPerMatchForFootballer();
-        System.out.println("Test chekc");
-        //Zwraca Listę tablic obiektów
-    }
+//    @Test
+//    public void shouldGetAvgGoalsPerMatchForFootballer() {
+//        List<Object> returnedGoals = contractRepository.getAvgGoalsPerMatchForFootballer();
+//        System.out.println("Test chekc");
+//        //Zwraca Listę tablic obiektów
+//    }
 
     @Test
     public void shouldGetMeanLengthOfContractsInClub() {

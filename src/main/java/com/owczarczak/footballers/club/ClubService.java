@@ -23,6 +23,7 @@ public class ClubService {
                     .name(club.getName())
                     .created(club.getCreated())
                     .build();
+            dtos.add(dtoToBeAdded);
         }
         return dtos;
     }

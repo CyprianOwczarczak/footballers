@@ -1,6 +1,5 @@
-package com.owczarczak.footballers.club;
+package com.owczarczak.footballers.match;
 
-import com.owczarczak.footballers.contract.ContractRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,20 +11,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ClubControllerTest {
-    //TODO add JsonPath assertions
-
-    //TODO zrobić drugi schemat do testów i wskazać tą bazę dnaych do testów w yaml-u
-
-    @Autowired
-    ClubRepository repository;
+public class MatchControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
-    void shouldGetAllClubsWhichPlayedMoreThan3Matches() throws Exception {
-        this.mockMvc.perform(get("/clubs/MoreThan3Matches"))
+    void shouldFindRefereeByName() throws Exception {
+        this.mockMvc.perform(get("/matches/byRefereeName/"))
                 .andDo(print());
     }
 }

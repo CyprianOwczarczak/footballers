@@ -1,12 +1,10 @@
 package com.owczarczak.footballers.score;
 
-import com.owczarczak.footballers.contract.Contract;
-import com.owczarczak.footballers.contract.ContractDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,14 +14,19 @@ public class ScoreService {
     @Autowired
     ScoreRepository repository;
 
-//    List<Object> getAvgGoalsPerMatchForFootballer() {
-//        List<Object> scoreList = repository.getAvgGoalsPerMatchForFootballer();
-//        List<ContractDto> dtos = new LinkedList<>();
-//        for (Object object : scoreList) {
-//            ScoreDto dtoToBeAdded = ScoreDto.builder()
-//                    .id()
-//                    .build();
-//        }
-//    }
-
+    List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
+        List<Object[]> returnedListOfArrays = repository.getAvgGoalsPerMatchForFootballer();
+        List<ScoreAvgGoalsDto> dtos = new LinkedList<>();
+        for (Object[] row : returnedListOfArrays) {
+            ScoreAvgGoalsDto dtoToBeAdded = ScoreAvgGoalsDto.builder()
+                    .id((Integer) row[0])
+                    .footballerName((String) row[1])
+                    .numberOfGoals((BigInteger) row[2])
+                    .numberOfMatches((BigInteger) row[3])
+                    .averageGoals((Double) row[4])
+                    .build();
+            dtos.add(dtoToBeAdded);
+        }
+        return dtos;
+    }
 }
