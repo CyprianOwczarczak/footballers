@@ -1,4 +1,4 @@
-package com.owczarczak.footballers.footballer;
+package com.owczarczak.footballers;
 
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
@@ -6,6 +6,8 @@ import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import com.owczarczak.footballers.contract.Contract;
 import com.owczarczak.footballers.contract.ContractRepository;
+import com.owczarczak.footballers.footballer.Footballer;
+import com.owczarczak.footballers.footballer.FootballerRepository;
 import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.match.MatchRepository;
 import com.owczarczak.footballers.score.Score;

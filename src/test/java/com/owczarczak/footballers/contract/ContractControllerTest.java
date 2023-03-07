@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class ContractControllerTest {
 
     @Autowired
@@ -24,18 +26,20 @@ public class ContractControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-//    @BeforeEach ?
+//    //TODO add JsonPath assertions
+//    @Test
+//    void shouldGetAllContracts() throws Exception {
+//        this.mockMvc.perform(get("/contracts/"))
+//                .andDo(print())
+//                .andExpect();
+//    }
 
-    //TODO add JsonPatch assertions
-    @Test
-    void shouldGetAllContracts() throws Exception {
-        this.mockMvc.perform(get("/contracts/"))
-                .andDo(print());
-    }
-
+    //TODO pisać każde dane od nowa od każego testu (zaczynać na pustej bazie)
+    //
     @Test
     void shouldGetListOfContractsForSpecificFootballer() throws Exception {
-        this.mockMvc.perform(get("/contracts/" + 1));
+        this.mockMvc.perform(get("/contracts/" + 1))
+                .andDo(print());
     }
 
     @Test

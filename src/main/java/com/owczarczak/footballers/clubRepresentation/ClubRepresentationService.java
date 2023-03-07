@@ -23,7 +23,7 @@ public class ClubRepresentationService {
             ClubRepresentationDto dtoToBeAdded = ClubRepresentationDto.builder()
                     .id(representation.getId())
                     .clubName(representation.getClub().getName())
-                    .footballerList(representation.getFootballerList())
+                    .footballerListSize(representation.getFootballerList().size())
                     .build();
             dtos.add(dtoToBeAdded);
         }
