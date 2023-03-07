@@ -56,8 +56,8 @@ public class RepositoriesTest {
     public void shouldAddClubRepresentation() {
         Club club1 = new Club("ClubRepresentationExampleClub5", Instant.now(), Collections.emptyList());
 
-        Footballer footballer1 = new Footballer("10002", "ExampleFootballer3", 50, 250);
-        Footballer footballer2 = new Footballer("10003", "ExampleFootballer4", 60, 300);
+        Footballer footballer1 = new Footballer("10002", "ExampleFootballer3", 250);
+        Footballer footballer2 = new Footballer("10003", "ExampleFootballer4", 300);
         List<Footballer> footballerList = List.of(footballer1, footballer2);
 
         ClubRepresentation exampleClubRepresentation = new ClubRepresentation(club1, footballerList);
@@ -67,7 +67,7 @@ public class RepositoriesTest {
     @Test
     public void shouldAddContract() {
         Club club1 = new Club("ClubFromContract", Instant.now(), Collections.emptyList());
-        Footballer footballer1 = new Footballer("1100", "ExampleFootballer1", 50, 250);
+        Footballer footballer1 = new Footballer("1100", "ExampleFootballer1", 250);
 
         Contract contract1 = new Contract(club1, footballer1, Instant.EPOCH, Instant.EPOCH, 10000);
         contractRepository.save(contract1);
@@ -103,7 +103,7 @@ public class RepositoriesTest {
                 "ExampleRefereeScore", Instant.now(), Collections.emptyList());
 
         //Create example footballer
-        Footballer footballer = new Footballer("22332233", "ExampleFootballerScore", 80, 230);
+        Footballer footballer = new Footballer("22332233", "ExampleFootballerScore", 230);
 
         Score score = new Score(match, footballer, 30);
         scoreRepository.save(score);
@@ -130,7 +130,7 @@ public class RepositoriesTest {
         Club club1 = new Club("ClubFromMatch13", Instant.now(), Collections.emptyList());
 
         //Creating example footballers
-        Footballer footballer = new Footballer("100002", "ExampleFootballerScore", 80, 230);
+        Footballer footballer = new Footballer("100002", "ExampleFootballerScore", 230);
 
         Contract contract = new Contract(club1, footballer, Instant.EPOCH, Instant.now(), 10000);
         contractRepository.save(contract);
@@ -263,15 +263,6 @@ public class RepositoriesTest {
         ClubRepresentation clubRepresentation = new ClubRepresentation(club1, Collections.emptyList());
         matchToAddRepresentation.setHost(clubRepresentation);
     }
-
-    //TODO Jak utworzyć Optionala z obiektem który jest nullem, przejrzeć dokumentację RTFM
-//    @Test
-//    public void testOptional() {
-//        String nullString = null;
-////        Optional<String> not =
-//        System.out.println(Optional.ofNullable(nullString));
-//
-//    }
 
     @Test
     public void shouldSaveMatchWithRepresentationsFootballersAndScoresAtOnce() {

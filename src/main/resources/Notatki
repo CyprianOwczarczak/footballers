@@ -111,5 +111,5 @@ Add tests for the methods in Controller (every controller in another test class)
 ✓ Stworzyć bazę danych dla testów
 ✓ Nadpisać używaną bazę danych dla testów w yaml-u
 - Pisać każde dane od nowa do każego testu (zaczynać na pustej bazie)
-- Usunąć dodawanie danych w migracjach (i dodać dane do każdego testu też w FootballerControllerTest)
+✓ Usunąć dodawanie danych w migracjach (i dodać dane do każdego testu też w FootballerControllerTest)
 

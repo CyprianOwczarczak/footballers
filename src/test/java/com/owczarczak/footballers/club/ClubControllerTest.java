@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ClubControllerTest {
     //TODO add JsonPath assertions
-    //TODO zrobić drugi schemat do testów i wskazać tą bazę dnaych do testów w yaml-u
 
     @Autowired
     ClubRepository repository;
@@ -32,4 +31,6 @@ public class ClubControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$", hasSize(3)));
     }
+
+//    private static
 }

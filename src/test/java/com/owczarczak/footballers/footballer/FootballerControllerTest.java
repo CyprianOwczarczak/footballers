@@ -41,11 +41,6 @@ class FootballerControllerTest {
     }
 
     @Test
-    @DisplayName("Should startup Spring")
-    void shouldStartupSpring() {
-    }
-
-    @Test
     @DisplayName("Should get all footballers")
     void shouldGetAllFootballers() throws Exception {
         repository.save(getFootballer1());
@@ -118,8 +113,6 @@ class FootballerControllerTest {
                 {
                 "pesel":"333333",
                 "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """;
@@ -141,8 +134,6 @@ class FootballerControllerTest {
                 {
                 "pesel":"333333",
                 "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """;
@@ -189,8 +180,6 @@ class FootballerControllerTest {
                 "id":footballer.id,
                 "pesel":"333333",
                 "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """.
@@ -216,8 +205,6 @@ class FootballerControllerTest {
                 "id":footballer.id,
                 "pesel":"333333",
                 "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """.
@@ -263,8 +250,6 @@ class FootballerControllerTest {
     void shouldNotAddFootballerWhenPeselAndNameAndHeightIsNotProvided() throws Exception {
         String request = """
                 {
-                "club":"testClub3",
-                "goals":30
                 }
                 """;
         this.mockMvc.perform(post("/footballers/")
@@ -282,8 +267,6 @@ class FootballerControllerTest {
         String request = """
                 {
                 "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """;
@@ -302,8 +285,6 @@ class FootballerControllerTest {
         String request = """
                 {
                 "pesel":"333333",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """;
@@ -322,9 +303,7 @@ class FootballerControllerTest {
         String request = """
                 {
                 "pesel":"333333",
-                "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30
+                "name":"testPlayer3"
                 }
                 """;
         this.mockMvc.perform(post("/footballers/")
@@ -343,9 +322,7 @@ class FootballerControllerTest {
         int footballerIdToBeUpdated = repository.save(getFootballer2()).getId();
         String request = """
                 {
-                "id":footballer.id,
-                "club":"testClub3",
-                "goals":30
+                "id":footballer.id
                 }
                 """.
                 replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
@@ -367,8 +344,6 @@ class FootballerControllerTest {
                 {
                 "id":footballer.id,
                 "name":"testPlayer3",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """.
@@ -392,8 +367,6 @@ class FootballerControllerTest {
                 {
                 "id":footballer.id,
                 "pesel":"333333",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """.
@@ -417,9 +390,7 @@ class FootballerControllerTest {
                 {
                 "id":footballer.id,
                 "name":"testPlayer3",
-                "pesel":"333333",
-                "club":"testClub3",
-                "goals":30
+                "pesel":"333333"
                 }
                 """.
                 replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
@@ -442,8 +413,6 @@ class FootballerControllerTest {
                 {
                 "name":"testPlayer3",
                 "pesel":"333333",
-                "club":"testClub3",
-                "goals":30,
                 "height":170
                 }
                 """.
@@ -457,19 +426,19 @@ class FootballerControllerTest {
     }
 
     private static Footballer getFootballer1() {
-        return new Footballer("111111", "testPlayer1", 10, 150);
+        return new Footballer("111111", "testPlayer1", 150);
     }
 
     private static Footballer getFootballer2() {
-        return new Footballer("222222", "testPlayer2", 20, 160);
+        return new Footballer("222222", "testPlayer2", 160);
     }
 
     private static Footballer getFootballer3() {
-        return new Footballer("333333", "testPlayer3",30, 170);
+        return new Footballer("333333", "testPlayer3", 170);
     }
 
     private static Footballer getFootballer4() {
-        return new Footballer("444444", "testPlayer3",30, 170);
+        return new Footballer("444444", "testPlayer3", 170);
     }
 
     private static ResultMatcher[] getJsonValidationRules() {
@@ -479,8 +448,6 @@ class FootballerControllerTest {
         //2. Dodaj dane do listy ResultMatcher
         result.add(jsonPath("$.pesel", is("333333")));
         result.add(jsonPath("$.name", is("testPlayer3")));
-        result.add(jsonPath("$.club", is("testClub3")));
-        result.add(jsonPath("$.goals", is(30)));
         result.add(jsonPath("$.height", is(170)));
 
         //3. Przerób listę na tablicę + zwróc listę
@@ -507,14 +474,10 @@ class FootballerControllerTest {
         //2. Dodaj dane do listy ResultMatcher
         result.add(jsonPath("$[0].pesel", is("333333")));
         result.add(jsonPath("$[0].name", is("testPlayer3")));
-        result.add(jsonPath("$[0].club", is("testClub3")));
-        result.add(jsonPath("$[0].goals", is(30)));
         result.add(jsonPath("$[0].height", is(170)));
 
         result.add(jsonPath("$[1].pesel", is("222222")));
         result.add(jsonPath("$[1].name", is("testPlayer2")));
-        result.add(jsonPath("$[1].club", is("testClub2")));
-        result.add(jsonPath("$[1].goals", is(20)));
         result.add(jsonPath("$[1].height", is(160)));
 
         //3. Przerób listę na tablicę + zwróc listę

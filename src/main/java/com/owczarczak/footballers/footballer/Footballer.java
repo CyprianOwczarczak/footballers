@@ -18,7 +18,6 @@ public class Footballer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-
     String pesel;
     String name;
     int height;
@@ -29,7 +28,7 @@ public class Footballer {
     @ManyToMany(mappedBy = "footballerList")
     Set<ClubRepresentation> representationList;
 
-    public Footballer(final String pesel, final String name, final int goals, final int height) {
+    public Footballer(final String pesel, final String name, final int height) {
         this.pesel = pesel;
         this.name = name;
         this.height = height;
