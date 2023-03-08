@@ -3,3 +3,10 @@ spring:
     username: postgres
     url: jdbc:postgresql://localhost:5432/test
     password: cypriani
+  jpa:
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    fail-on-missing-locations: true
+    baselineOnMigrate : true
