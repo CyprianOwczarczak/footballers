@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.footballer.Footballer;
@@ -24,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 public class ContractControllerTest {
 
     @Autowired
@@ -48,10 +48,12 @@ public class ContractControllerTest {
 
     @Test
     void shouldGetListOfContractsForSpecificFootballer() throws Exception {
+        // given --> creating example data to create the Contracts
         createExampleClubs();
         createExampleFootballers();
         createExampleContracts();
 
+        // when + then
         this.mockMvc.perform(get("/contracts/" + 1))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
@@ -59,10 +61,15 @@ public class ContractControllerTest {
 
     @Test
     void shouldGetMeanLenghtOfContractsInSpecificClub() throws Exception {
-        createExampleClubs();
-        createExampleFootballers();
+        //given
+//        createExampleClubs();
+        clubRepository.saveAll(TestDataFactory.getClubList1());
+        footballerRepository.saveAll(TestDataFactory.getFootballerList1());
+        contractRepository.saveAll(TestDataFactory.getContractList1());
+
         createExampleContracts();
 
+        //when + then
         this.mockMvc.perform(get("/contracts/lengthOfContracts" + 1))
                 .andDo(print());
     }

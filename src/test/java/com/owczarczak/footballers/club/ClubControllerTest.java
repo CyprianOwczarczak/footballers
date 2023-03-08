@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.club;
 
+import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import org.checkerframework.checker.units.qual.C;
@@ -35,57 +36,23 @@ public class ClubControllerTest {
 
     @AfterEach
     void setup() {
-        repRepository.deleteAll();
         clubRepository.deleteAll();
+        repRepository.deleteAll();
     }
 
     //Fixme all clubs with assigned Representations are returned
     @Test
     void shouldGetAllClubsWhichPlayedMoreThan3Matches() throws Exception {
-        List<Club> clubList = createExampleClubs();
-        List<ClubRepresentation> clubRepresentations = createExampleClubRepresentations();
+//        List<Club> clubList = createExampleClubs();
+//        List<ClubRepresentation> clubRepresentations = createExampleClubRepresentations();
 
+        //given --> saving ClubRepresentations with Club arguments (without footballerList)
+        clubRepository.saveAll(TestDataFactory.getClubList1());
+        repRepository.saveAll(TestDataFactory.getRepresentationList1()); //fixme
+
+        //when + then
         this.mockMvc.perform(get("/clubs/MoreThan3Matches"))
                 .andDo(print())
                 .andExpect(jsonPath("$", hasSize(2)));
-    }
-
-    //Create example clubs (without footballersList)
-    private List<Club> createExampleClubs() {
-        //TODO dataFactory
-
-        List<Club> clubList = new LinkedList<>();
-
-        clubList.add(new Club("Barcelona", Instant.now()));
-        clubList.add(new Club("Lech", Instant.now()));
-        clubList.add(new Club("Real", Instant.now()));
-        clubList.add(new Club("Manchester", Instant.now()));
-        clubList.add(new Club("Bayern", Instant.now()));
-
-        clubRepository.saveAll(clubList);
-
-        return clubList;
-    }
-
-    private List<ClubRepresentation> createExampleClubRepresentations() {
-        List<Club> clubList = clubRepository.findAll();
-        List<ClubRepresentation> representationList = new LinkedList<>();
-
-        representationList.add(new ClubRepresentation(clubList.get(0)));
-        representationList.add(new ClubRepresentation(clubList.get(0)));
-        representationList.add(new ClubRepresentation(clubList.get(0)));
-        representationList.add(new ClubRepresentation(clubList.get(0)));
-        representationList.add(new ClubRepresentation(clubList.get(1)));
-        representationList.add(new ClubRepresentation(clubList.get(1)));
-        representationList.add(new ClubRepresentation(clubList.get(2)));
-        representationList.add(new ClubRepresentation(clubList.get(2)));
-        representationList.add(new ClubRepresentation(clubList.get(2)));
-        representationList.add(new ClubRepresentation(clubList.get(2)));
-        representationList.add(new ClubRepresentation(clubList.get(3)));
-        representationList.add(new ClubRepresentation(clubList.get(3)));
-
-        repRepository.saveAll(representationList);
-
-        return representationList;
     }
 }

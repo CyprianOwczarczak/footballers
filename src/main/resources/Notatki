@@ -113,3 +113,16 @@ Add tests for the methods in Controller (every controller in another test class)
 - Pisać każde dane od nowa do każego testu (zaczynać na pustej bazie)
 ✓ Usunąć dodawanie danych w migracjach (i dodać dane do każdego testu też w FootballerControllerTest)
 
+8.03
+- Przerobić wszystkie testy na given, when, then
+- Zadanie w osobnym projekcie --> własna implementacja listy (z metodami: dodanie elementu do listy,
+ usunięcie pierwszego, usunięcie ostatniego elementu
+ pobranie pierwszego, pobranie ostatniego elementu, pobranie wybranego i
+ usunięcie wybranego elementu, metoda size() zwracająca ilość elementów w tej liśćie
+ Add() i AddFirst()
+ Lista ma dodawać na koniec listy
+
+
+ Później iterator własny z metodą hasNext() oraz next()
+
+ Przykłady, testy
