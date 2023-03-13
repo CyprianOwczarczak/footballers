@@ -6,6 +6,7 @@ import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import com.owczarczak.footballers.contract.Contract;
 import com.owczarczak.footballers.footballer.Footballer;
+import com.owczarczak.footballers.score.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
@@ -106,10 +107,11 @@ public class TestDataFactory {
     }
 
     //Create a list of Contracts (we need to import Clubs and Footballers)
-    public static List<Contract> getContractList1() {
-        List<Club> clubList = getClubList1();
-        List<Footballer> footballerList = getFootballerList1();
+    public static List<Contract> getContractList1(List<Club> clubList, List<Footballer> footballerList) {
+//        List<Club> clubList = getClubList1();
+//        List<Footballer> footballerList = getFootballerList1();
 
+        //Creating a list of Contracts
         List<Contract> contractList = new LinkedList<>();
         Collections.addAll(contractList,
                 new Contract(clubList.get(0), footballerList.get(0),
@@ -120,5 +122,10 @@ public class TestDataFactory {
                         Instant.now().minus(300, ChronoUnit.DAYS), Instant.now(), 30000));
 
         return contractList;
+    }
+
+
+    public static List<Score> getScoreList() {
+
     }
 }

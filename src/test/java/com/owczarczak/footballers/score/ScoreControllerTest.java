@@ -1,12 +1,15 @@
 package com.owczarczak.footballers.score;
 
+import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerRepository;
+import com.owczarczak.footballers.match.MatchRepository;
 import org.checkerframework.checker.units.qual.A;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -27,23 +31,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ScoreControllerTest {
-
-    @Autowired
-    ScoreRepository scoreRepository;
-
-    @Autowired
-    FootballerRepository footballerRepository;
-
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
+    ScoreRepository scoreRepository;
+    @Autowired
+    FootballerRepository footballerRepository;
+    @Autowired
     ClubRepository clubRepository;
-
     @Autowired
     ClubRepresentationRepository repRepository;
+    @Autowired
+    MatchRepository matchRepository;
+
+    @Autowired
+    ScoreService service;
 
     @BeforeEach
+    void setup2() {
+        scoreRepository.deleteAll();
+        footballerRepository.deleteAll();
+    }
+
+    @AfterEach
     void setup() {
         scoreRepository.deleteAll();
         footballerRepository.deleteAll();
@@ -51,8 +62,23 @@ public class ScoreControllerTest {
 
     @Test
     void shouldGetAvgGoalsPerMatchForFootballer() throws Exception {
-        this.mockMvc.perform(get("/scores/getAverageGoals"))
-                .andDo(print());
+        //TODO I didn't put in any data XD
+
+        footballerRepository.saveAll(TestDataFactory.getFootballerList1());
+        repRepository.saveAll(TestDataFactory.getRepresentationList1());
+
+        //scores
+        //matches
+
+
+//        this.mockMvc.perform(get("/scores/getAverageGoals"))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+//                .andDo(print());
+
+        List<ScoreAvgGoalsDto> list = service.getAvgGoalsPerMatchForFootballer();
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }
     }
 
     

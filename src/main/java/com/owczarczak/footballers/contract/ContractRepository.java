@@ -28,7 +28,7 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
             where c.club_id = :clubId
             group by c.club_id
             """, nativeQuery = true)
-    BigDecimal getMeanLenghtOfContractsInClub(int clubId);
+    BigDecimal getMeanLenghtOfContractsInClub(@Param("clubId") int clubId);
 
     //This query gets Contracts and orders them by salary
     @Query("SELECT c FROM Contract c ORDER BY c.salary DESC")

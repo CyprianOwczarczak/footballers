@@ -6,6 +6,8 @@ import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,8 +22,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.owczarczak.footballers.TestDataFactory.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,6 +45,9 @@ public class ContractControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ContractService service;
+
     @AfterEach
     void setup() {
         contractRepository.deleteAll();
@@ -47,72 +56,69 @@ public class ContractControllerTest {
     }
 
     @Test
-    void shouldGetListOfContractsForSpecificFootballer() throws Exception {
-        // given --> creating example data to create the Contracts
-        createExampleClubs();
-        createExampleFootballers();
-        createExampleContracts();
-
-        // when + then
-        this.mockMvc.perform(get("/contracts/" + 1))
+    void shouldGetAllContracts() throws Exception {
+        //given
+        clubRepository.saveAll(getClubList1());
+        footballerRepository.saveAll(getFootballerList1());
+        contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
+        //when
+        this.mockMvc.perform(get("/contracts/"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(3)));
     }
 
     @Test
+    void shouldGetListOfContractsForSpecificFootballer() throws Exception {
+        // given --> creating example data to create the Contracts
+        clubRepository.saveAll(getClubList1());
+        List<Footballer> list = footballerRepository.saveAll(getFootballerList1());
+        contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
+
+        //Getting the id of the first footballer from the list to check contracts for him
+        int searchedId = list.get(0).getId();
+        System.out.println("THE ID IS: " + searchedId);
+
+        // when + then
+        this.mockMvc.perform(get("/contracts/" + searchedId))
+                .andDo(print())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].clubName", is("Barcelona")))
+                .andExpect(jsonPath("$[0].footballerName", is("Lewandowski")))
+                .andExpect(jsonPath("$[0].salary", is(10000)));
+    }
+
+    //fixme doesn't return any value
+    @Test
     void shouldGetMeanLenghtOfContractsInSpecificClub() throws Exception {
         //given
-//        createExampleClubs();
-        clubRepository.saveAll(TestDataFactory.getClubList1());
-        footballerRepository.saveAll(TestDataFactory.getFootballerList1());
-        contractRepository.saveAll(TestDataFactory.getContractList1());
-
-        createExampleContracts();
+        List<Club> clubList = clubRepository.saveAll(getClubList1());
+        footballerRepository.saveAll(getFootballerList1());
+        contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
+        int clubId = clubList.get(0).getId();
+        System.out.println("THE CLUB ID IS: " + clubId);
 
         //when + then
-        this.mockMvc.perform(get("/contracts/lengthOfContracts" + 1))
-                .andDo(print());
+        this.mockMvc.perform(get("/contracts/lengthOf/" + clubId))
+                .andDo(print())
+                .andExpect(jsonPath("$").isMap());
     }
 
-    //Create example Clubs (to add in Contracts)
-    private void createExampleClubs() {
-        List<Club> clubList = new LinkedList<>();
-        clubList.add(new Club("Barcelona", Instant.now()));
-        clubList.add(new Club("Lech", Instant.now()));
-        clubList.add(new Club("Real", Instant.now()));
-        clubList.add(new Club("Manchester", Instant.now()));
-        clubList.add(new Club("Bayern", Instant.now()));
-
-        clubRepository.saveAll(clubList);
+    @Test
+    void shouldSave() {
+        clubRepository.saveAll(getClubList1());
+        footballerRepository.saveAll(getFootballerList1());
+        contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
     }
 
-    //Create example Footballers (to add in Contracts)
-    private void createExampleFootballers() {
-        Footballer footballer1 = new Footballer("111111", "Lewandowski", 150);
-        Footballer footballer2 = new Footballer("222222", "Neymar", 160);
-        Footballer footballer3 = new Footballer("333333", "Ikar", 160);
-        Footballer footballer4 = new Footballer("444444", "Messi", 170);
-        Footballer footballer5 = new Footballer("555555", "Ronaldo", 170);
-        Footballer footballer6 = new Footballer("666666", "Zlatan", 180);
-
-        for (Footballer footballer : Arrays.asList(
-                footballer1, footballer2, footballer3, footballer4, footballer5, footballer6)) {
-            footballerRepository.save(footballer);
-        }
-    }
-
-    //Create example Contracts
-    private void createExampleContracts() {
+    @Test
+    void shouldReturn() throws Exception {
         List<Club> clubList = clubRepository.findAll();
-        List<Footballer> footballerList = footballerRepository.findAll();
+        int clubId = clubList.get(0).getId();
 
-        Contract contract1 = new Contract(clubList.get(0), footballerList.get(0), Instant.now().minus(1, ChronoUnit.DAYS), Instant.now(), 10000);
-        Contract contract2 = new Contract(clubList.get(1), footballerList.get(1), Instant.now().minus(2, ChronoUnit.DAYS), Instant.now(), 10000);
-        Contract contract3 = new Contract(clubList.get(2), footballerList.get(2), Instant.now().minus(3, ChronoUnit.DAYS), Instant.now(), 10000);
-
-        contractRepository.save(contract1);
-        contractRepository.save(contract2);
-        contractRepository.save(contract3);
+        this.mockMvc.perform(get("/contracts/lengthOf/" + clubId))
+                .andDo(print())
+                .andExpect(jsonPath("$").isMap());
     }
 }
 

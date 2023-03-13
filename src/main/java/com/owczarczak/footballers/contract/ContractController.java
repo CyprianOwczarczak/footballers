@@ -23,4 +23,9 @@ public class ContractController {
     public List<ContractDto> getListOfContractsForSpecificFootballer(@PathVariable int id) {
         return service.getListOfContractsForSpecificFootballer(id);
     }
+
+    @GetMapping("/lenghtOf/{clubId}")
+    public ContractLengthDto getMeanLengthOfContractsInClub(@PathVariable int clubId) {
+        return service.getMeanLenghtOfContractsInClub(clubId);
+    }
 }
