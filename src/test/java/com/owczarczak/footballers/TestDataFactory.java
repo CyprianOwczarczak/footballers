@@ -108,12 +108,11 @@ public class TestDataFactory {
 
     //Create a list of Contracts (we need to import Clubs and Footballers)
     public static List<Contract> getContractList1(List<Club> clubList, List<Footballer> footballerList) {
-//        List<Club> clubList = getClubList1();
-//        List<Footballer> footballerList = getFootballerList1();
 
         //Creating a list of Contracts
         List<Contract> contractList = new LinkedList<>();
         Collections.addAll(contractList,
+
                 new Contract(clubList.get(0), footballerList.get(0),
                         Instant.now().minus(100, ChronoUnit.DAYS), Instant.now(), 10000),
                 new Contract(clubList.get(1), footballerList.get(1),
@@ -122,10 +121,5 @@ public class TestDataFactory {
                         Instant.now().minus(300, ChronoUnit.DAYS), Instant.now(), 30000));
 
         return contractList;
-    }
-
-
-    public static List<Score> getScoreList() {
-
     }
 }

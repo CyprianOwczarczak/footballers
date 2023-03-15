@@ -54,7 +54,7 @@ public class ContractService {
         BigDecimal averageLength = repository.getMeanLenghtOfContractsInClub(clubId);
         return ContractLengthDto.builder()
                 .clubId(clubId)
-                .averageLength(averageLength)
+                .averageLength(averageLength.intValue())
                 .build();
     }
 }

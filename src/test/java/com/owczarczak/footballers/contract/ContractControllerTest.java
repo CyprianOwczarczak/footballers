@@ -14,8 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -77,7 +79,6 @@ public class ContractControllerTest {
 
         //Getting the id of the first footballer from the list to check contracts for him
         int searchedId = list.get(0).getId();
-        System.out.println("THE ID IS: " + searchedId);
 
         // when + then
         this.mockMvc.perform(get("/contracts/" + searchedId))
@@ -88,7 +89,6 @@ public class ContractControllerTest {
                 .andExpect(jsonPath("$[0].salary", is(10000)));
     }
 
-    //fixme doesn't return any value
     @Test
     void shouldGetMeanLenghtOfContractsInSpecificClub() throws Exception {
         //given
@@ -101,24 +101,8 @@ public class ContractControllerTest {
         //when + then
         this.mockMvc.perform(get("/contracts/lengthOf/" + clubId))
                 .andDo(print())
-                .andExpect(jsonPath("$").isMap());
-    }
-
-    @Test
-    void shouldSave() {
-        clubRepository.saveAll(getClubList1());
-        footballerRepository.saveAll(getFootballerList1());
-        contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
-    }
-
-    @Test
-    void shouldReturn() throws Exception {
-        List<Club> clubList = clubRepository.findAll();
-        int clubId = clubList.get(0).getId();
-
-        this.mockMvc.perform(get("/contracts/lengthOf/" + clubId))
-                .andDo(print())
-                .andExpect(jsonPath("$").isMap());
+                .andExpect(jsonPath("$").isMap())
+                .andExpect(jsonPath("$.averageLength", is(100)));
     }
 }
 

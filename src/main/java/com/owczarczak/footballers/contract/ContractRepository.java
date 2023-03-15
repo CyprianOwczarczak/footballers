@@ -22,8 +22,7 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
     //Długość kontraktów w dniach, Średnia w danym klubie
     @Query(value = """
             select
-            c.club_id
-            , avg(cast(c.contract_end as date) - cast(c.contract_start as date))
+            avg(cast(c.contract_end as date) - cast(c.contract_start as date))
             from contract c
             where c.club_id = :clubId
             group by c.club_id

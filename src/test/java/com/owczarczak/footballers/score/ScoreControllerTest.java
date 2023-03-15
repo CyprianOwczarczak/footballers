@@ -62,7 +62,7 @@ public class ScoreControllerTest {
 
     @Test
     void shouldGetAvgGoalsPerMatchForFootballer() throws Exception {
-        //TODO I didn't put in any data XD
+        //TODO I didn't put in any data
 
         footballerRepository.saveAll(TestDataFactory.getFootballerList1());
         repRepository.saveAll(TestDataFactory.getRepresentationList1());

@@ -121,8 +121,8 @@ Add tests for the methods in Controller (every controller in another test class)
  usunięcie wybranego elementu, metoda size() zwracająca ilość elementów w tej liśćie
  Add() i AddFirst()
  Lista ma dodawać na koniec listy
-
-
  Później iterator własny z metodą hasNext() oraz next()
-
  Przykłady, testy
+
+15.03
+Reporting Query w JPA i jak z tego skorzystać i przykład zastosowania

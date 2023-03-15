@@ -8,5 +8,5 @@ import java.math.BigDecimal;
 @Builder
 public class ContractLengthDto {
     private int clubId;
-    private BigDecimal averageLength;
+    private int averageLength;
 }
