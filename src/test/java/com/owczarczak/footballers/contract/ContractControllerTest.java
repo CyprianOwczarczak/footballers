@@ -47,9 +47,6 @@ public class ContractControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @Autowired
-    ContractService service;
-
     @AfterEach
     void setup() {
         contractRepository.deleteAll();

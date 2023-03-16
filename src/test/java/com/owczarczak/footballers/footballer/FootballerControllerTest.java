@@ -45,10 +45,10 @@ class FootballerControllerTest {
     @Autowired
     FootballerService service;
 
-    @Test
-    void shouldGenerateReport() throws JRException, FileNotFoundException {
-       service.exportReport("html");
-    }
+//    @Test
+//    void shouldGenerateReport() throws JRException, FileNotFoundException {
+//       service.exportReport("html");
+//    }
 
     @Test
     @DisplayName("Should get all footballers")

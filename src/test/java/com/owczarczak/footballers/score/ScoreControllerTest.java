@@ -53,7 +53,7 @@ public class ScoreControllerTest {
 
     @Test
     void shouldGetAvgGoalsPerMatchForFootballer() throws Exception {
-        //fixme: could not resolve property: club_id
+        //fixme: detached entity passed to persist
 
         //Creating matches with ClubRepresentations
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList1());
