@@ -1,17 +1,20 @@
 package com.owczarczak.footballers.footballer;
 
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,30 @@ public class FootballerService {
 
     @Autowired
     FootballerRepository repository;
+
+    public String exportReport(String reportFormat) throws FileNotFoundException, JRException {
+        List<Footballer> footballerList = repository.findAll();
+
+        //Load file and compile it
+        File file = ResourceUtils.getFile("class[ath:footballers.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(footballerList);
+
+        //We fill the report
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("createdBy", "ExamplePerson");
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        if (reportFormat.contentEquals("html")) {
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, "C:\\Users\\Cyprian\\Desktop\\Reports" + "\\footballers.html");
+        }
+
+        if (reportFormat.contentEquals("pdf")) {
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Cyprian\\Desktop\\Reports" + "\\footballers.pdf");
+        }
+
+        return "report generated !";
+    }
 
     public List<FootballerDto> getAllFootballers() {
         List<Footballer> footballersList = repository.findAll();
@@ -112,7 +139,7 @@ public class FootballerService {
                 .build());
     }
 
-@Transactional
+    @Transactional
     public void deleteFootballer(@PathVariable int id) {
         repository.deleteAllById(id);
     }

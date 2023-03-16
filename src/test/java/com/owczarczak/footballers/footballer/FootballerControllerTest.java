@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.footballer;
 
+import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,14 @@ class FootballerControllerTest {
     @BeforeEach
     void setup() {
         repository.deleteAll();
+    }
+
+    @Autowired
+    FootballerService service;
+
+    @Test
+    void shouldGenerateReport() throws JRException, FileNotFoundException {
+       service.exportReport("html");
     }
 
     @Test
