@@ -13,7 +13,7 @@ public class MatchController {
     @Autowired
     MatchService service;
 
-    @GetMapping("/byRefereeName/")
+    @GetMapping("/byRefereeName/{name}")
     MatchDto findByRefereeName(@RequestParam("name") String name) {
         return service.findByRefereeName(name);
     }

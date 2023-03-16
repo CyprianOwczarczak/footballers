@@ -6,6 +6,7 @@ import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import com.owczarczak.footballers.contract.Contract;
 import com.owczarczak.footballers.footballer.Footballer;
+import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.score.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,27 +27,6 @@ public class TestDataFactory {
 
     @Autowired
     ClubRepresentationRepository representationRepository;
-
-
-//    public static Club getClub1() {
-//        return new Club("Barcelona", Instant.now());
-//    }
-//
-//    public static Club getClub2() {
-//        return new Club("Lech", Instant.now());
-//    }
-//
-//    public static Club getClub3() {
-//        return new Club("Real", Instant.now());
-//    }
-//
-//    public static Club getClub4() {
-//        return new Club("Manchester", Instant.now());
-//    }
-//
-//    public static Club getClub5() {
-//        return new Club("Bayern", Instant.now());
-//    }
 
     public static List<Club> getClubList1() {
         List<Club> clubList = new LinkedList<>();
@@ -70,8 +50,8 @@ public class TestDataFactory {
     }
 
     //Create a ClubRepresentation with Clubs and without FootballersList
-    public static List<ClubRepresentation> getRepresentationList1() {
-        List<Club> clubList = getClubList1();
+    public static List<ClubRepresentation> getRepresentationList1(List<Club> clubList) {
+//        List<Club> clubList = getClubList1();
         List<ClubRepresentation> clubRepresentations = new LinkedList<>();
 
         Collections.addAll(clubRepresentations,
@@ -121,5 +101,43 @@ public class TestDataFactory {
                         Instant.now().minus(300, ChronoUnit.DAYS), Instant.now(), 30000));
 
         return contractList;
+    }
+
+    //We need ClubRepresentation list for host and guests, and leave the Scores list empty
+    public static List<Match> getMatchList(List<ClubRepresentation> representationList) {
+
+        //Create a list of matches
+        // --> Club1 plays 4 matches as host, Club2 plays 2 as guest, Club3 plays 2 as guest
+        List<Match> matchList = new LinkedList<>();
+        Collections.addAll(matchList,
+                new Match(representationList.get(0), representationList.get(4),
+                        "Referee1", Instant.now(), Collections.emptyList()),
+                new Match(representationList.get(1), representationList.get(5),
+                        "Referee2", Instant.now(), Collections.emptyList()),
+                new Match(representationList.get(2), representationList.get(6),
+                        "Referee3", Instant.now(), Collections.emptyList()),
+
+                new Match(representationList.get(3), representationList.get(7),
+                        "Referee4", Instant.now(), Collections.emptyList())
+                );
+        return matchList;
+    }
+
+    //We need match and footballer to create Scores
+    public static List<Score> getScoresList(List<Match> matchList, List<Footballer> footballerList) {
+
+        //Create a list of Scores
+        List<Score> scoreList = new LinkedList<>();
+        Collections.addAll(scoreList,
+
+                new Score(matchList.get(0), footballerList.get(0), 10),
+                new Score(matchList.get(0), footballerList.get(0), 10),
+                new Score(matchList.get(1), footballerList.get(1), 10),
+                new Score(matchList.get(1), footballerList.get(1), 10),
+                new Score(matchList.get(1), footballerList.get(1), 10),
+                new Score(matchList.get(2), footballerList.get(2), 10)
+                );
+
+        return scoreList;
     }
 }

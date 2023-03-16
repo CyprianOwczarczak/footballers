@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,8 +30,8 @@ public class ClubControllerTest {
 
     @AfterEach
     void setup() {
-        clubRepository.deleteAll();
         repRepository.deleteAll();
+        clubRepository.deleteAll();
     }
 
     //Fixme all clubs with assigned Representations are returned
@@ -39,12 +41,12 @@ public class ClubControllerTest {
 //        List<ClubRepresentation> clubRepresentations = createExampleClubRepresentations();
 
         //given --> saving ClubRepresentations with Club arguments (without footballerList)
-        clubRepository.saveAll(TestDataFactory.getClubList1());
-        repRepository.saveAll(TestDataFactory.getRepresentationList1()); //fixme
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList1());
+        repRepository.saveAll(TestDataFactory.getRepresentationList1(clubList));
 
         //when + then
         this.mockMvc.perform(get("/clubs/MoreThan3Matches"))
                 .andDo(print())
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$", hasSize(2))); //fixme Should return 2
     }
 }
