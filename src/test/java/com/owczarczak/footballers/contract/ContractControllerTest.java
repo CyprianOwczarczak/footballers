@@ -102,4 +102,3 @@ public class ContractControllerTest {
                 .andExpect(jsonPath("$.averageLength", is(100)));
     }
 }
-

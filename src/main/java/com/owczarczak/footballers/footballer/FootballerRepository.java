@@ -33,12 +33,11 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
     @Query("DELETE FROM Footballer f WHERE f.id = :id")
     void deleteAllById(@Param("id") int id);
 
-
 //- Którzy piłkarze grali w największej ilości meczów (no Limit option for JPQL)
     @Query(value = """
-            select f.id, f.name, size(f.representationList)
+            select f.id, size(f.representationList)
             from Footballer f
             order by size(f.representationList) desc
             """)
-    List<Object> whichFootballersPlayedInMostMatches();
+    List<Integer[]> whichFootballersPlayedInMostMatches();
 }

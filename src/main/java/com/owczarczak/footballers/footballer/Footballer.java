@@ -34,6 +34,13 @@ public class Footballer {
         this.height = height;
     }
 
+    public Footballer(final String pesel, final String name, final int height, Set<ClubRepresentation> representationList) {
+        this.pesel = pesel;
+        this.name = name;
+        this.height = height;
+        this.representationList = representationList;
+    }
+
     @Override
     public String toString() {
         return "Footballer{" +

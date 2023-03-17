@@ -17,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static java.time.LocalDateTime.of;
 
@@ -86,6 +87,42 @@ public class TestDataFactory {
         return footballerList;
     }
 
+    //Creating Footballers with sets of representations
+    public static List<Footballer> getFootballerListWithRepresentations(List<Club> clubList) {
+
+        //Creating example representationSets (only the size of it matters) --> save the ClubRepresentations and refer footballer to them
+        //It should save with the join table
+
+        //Save clubRepresentations
+
+
+        Set<ClubRepresentation> clubRepresentationSet1 = Set.of(new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(0)));
+
+        Set<ClubRepresentation> clubRepresentationSet2 = Set.of(new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(1)),
+                new ClubRepresentation(clubList.get(1)));
+
+        Set<ClubRepresentation> clubRepresentationSet3 = Set.of(new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(2)),
+                new ClubRepresentation(clubList.get(2)),
+                new ClubRepresentation(clubList.get(2)),
+                new ClubRepresentation(clubList.get(2)));
+
+        List<Footballer> footballerList = new LinkedList<>();
+        Collections.addAll(footballerList,
+
+                //Footballer doesn't have that field
+                new Footballer("111111", "Lewandowski", 150, clubRepresentationSet1),
+                new Footballer("222222", "Neymar", 160, clubRepresentationSet2),
+                new Footballer("333333", "Ikar", 160, clubRepresentationSet3)
+                );
+
+        return footballerList;
+    }
+
     //Create a list of Contracts (we need to import Clubs and Footballers)
     public static List<Contract> getContractList1(List<Club> clubList, List<Footballer> footballerList) {
 
@@ -119,7 +156,7 @@ public class TestDataFactory {
 
                 new Match(representationList.get(3), representationList.get(7),
                         "Referee4", Instant.now(), Collections.emptyList())
-                );
+        );
         return matchList;
     }
 
@@ -136,7 +173,7 @@ public class TestDataFactory {
                 new Score(matchList.get(1), footballerList.get(1), 10),
                 new Score(matchList.get(1), footballerList.get(1), 10),
                 new Score(matchList.get(2), footballerList.get(2), 10)
-                );
+        );
 
         return scoreList;
     }

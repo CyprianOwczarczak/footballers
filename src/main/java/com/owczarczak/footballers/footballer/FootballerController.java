@@ -45,6 +45,11 @@ public class FootballerController {
         return service.getFootballersByName(name);
     }
 
+    @GetMapping("/mostMatchesPlayed")
+    public List<FootballerDtoMostMatches> getFootballersWhoPlayedInMostMatches() {
+        return service.getFootballersWhoPlayedInMostMatches();
+    }
+
     @DeleteMapping("/{id}")
     ResponseEntity deleteFootballer(@PathVariable int id) {
         service.deleteFootballer(id);

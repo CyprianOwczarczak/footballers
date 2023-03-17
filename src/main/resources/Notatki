@@ -126,3 +126,12 @@ Add tests for the methods in Controller (every controller in another test class)
 
 15.03
 Reporting Query w JPA i jak z tego skorzystać i przykład zastosowania
+
+17.03
+DLACZEGO TO NIE DZIAŁA
+
+Uzupełnić wszystkie Controllery żeby miały wszystkie funkcjonalności (repozytoria i inne które mogą się przydać)
+Testy do tych metod z repozytoriów --> happy i unhappy path
+
+
+Odezwać się do Artura jak się uczył do rozmów o pracę
