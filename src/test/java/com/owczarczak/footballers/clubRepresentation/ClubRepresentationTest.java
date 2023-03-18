@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -34,8 +33,8 @@ public class ClubRepresentationTest {
 
     @BeforeEach
     void setup() {
-        clubRepository.deleteAll();
         representationRepository.deleteAll();
+        clubRepository.deleteAll();
     }
 
     @AfterEach
@@ -47,7 +46,7 @@ public class ClubRepresentationTest {
     @Test
     void shouldGetAllClubRepresentations() throws Exception {
         //Adding test data
-        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList1());
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         representationRepository.saveAll(TestDataFactory.getRepresentationList1(clubList));
 
         this.mockMvc.perform(get("/representation/"))

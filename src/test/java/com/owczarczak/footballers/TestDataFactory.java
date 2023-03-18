@@ -29,7 +29,21 @@ public class TestDataFactory {
     @Autowired
     ClubRepresentationRepository representationRepository;
 
-    public static List<Club> getClubList1() {
+    public static List<Footballer> getFootballerList() {
+        List<Footballer> footballerList = new LinkedList<>();
+
+        Collections.addAll(footballerList,
+                new Footballer("111111", "Lewandowski", 150),
+                new Footballer("222222", "Neymar", 160),
+                new Footballer("333333", "Ikar", 160),
+                new Footballer("444444", "Messi", 170),
+                new Footballer("555555", "Ronaldo", 170),
+                new Footballer("666666", "Zlatan", 180));
+
+        return footballerList;
+    }
+
+    public static List<Club> getClubList() {
         List<Club> clubList = new LinkedList<>();
 
         //Creating dates of founding the clubs
@@ -72,30 +86,10 @@ public class TestDataFactory {
         return clubRepresentations;
     }
 
-
-    public static List<Footballer> getFootballerList1() {
-        List<Footballer> footballerList = new LinkedList<>();
-
-        Collections.addAll(footballerList,
-                new Footballer("111111", "Lewandowski", 150),
-                new Footballer("222222", "Neymar", 160),
-                new Footballer("333333", "Ikar", 160),
-                new Footballer("444444", "Messi", 170),
-                new Footballer("555555", "Ronaldo", 170),
-                new Footballer("666666", "Zlatan", 180));
-
-        return footballerList;
-    }
-
     //Creating Footballers with sets of representations
-    public static List<Footballer> getFootballerListWithRepresentations(List<Club> clubList) {
+    public static List<Footballer> getFootballersWithRepresentations(List<Club> clubList) {
 
-        //Creating example representationSets (only the size of it matters) --> save the ClubRepresentations and refer footballer to them
-        //It should save with the join table
-
-        //Save clubRepresentations
-
-
+        //Creating example representationSets without FootballersList
         Set<ClubRepresentation> clubRepresentationSet1 = Set.of(new ClubRepresentation(clubList.get(0)),
                 new ClubRepresentation(clubList.get(0)),
                 new ClubRepresentation(clubList.get(0)),
@@ -113,14 +107,30 @@ public class TestDataFactory {
 
         List<Footballer> footballerList = new LinkedList<>();
         Collections.addAll(footballerList,
-
-                //Footballer doesn't have that field
                 new Footballer("111111", "Lewandowski", 150, clubRepresentationSet1),
                 new Footballer("222222", "Neymar", 160, clubRepresentationSet2),
-                new Footballer("333333", "Ikar", 160, clubRepresentationSet3)
-                );
+                new Footballer("333333", "Ikar", 160, clubRepresentationSet3));
 
         return footballerList;
+    }
+
+    //We need ClubRepresentation list for host and guests, and leave the Scores list empty
+    public static List<Match> getMatchList(List<ClubRepresentation> representationList) {
+
+        //Create a list of matches
+        // --> Club1 plays 4 matches as host, Club2 plays 2 as guest, Club3 plays 2 as guest
+        List<Match> matchList = new LinkedList<>();
+        Collections.addAll(matchList,
+                new Match(representationList.get(0), representationList.get(4),
+                        "Referee1", Instant.now(), Collections.emptyList()),
+                new Match(representationList.get(1), representationList.get(5),
+                        "Referee2", Instant.now(), Collections.emptyList()),
+                new Match(representationList.get(2), representationList.get(6),
+                        "Referee3", Instant.now(), Collections.emptyList()),
+                new Match(representationList.get(3), representationList.get(7),
+                        "Referee4", Instant.now(), Collections.emptyList())
+        );
+        return matchList;
     }
 
     //Create a list of Contracts (we need to import Clubs and Footballers)
@@ -138,26 +148,6 @@ public class TestDataFactory {
                         Instant.now().minus(300, ChronoUnit.DAYS), Instant.now(), 30000));
 
         return contractList;
-    }
-
-    //We need ClubRepresentation list for host and guests, and leave the Scores list empty
-    public static List<Match> getMatchList(List<ClubRepresentation> representationList) {
-
-        //Create a list of matches
-        // --> Club1 plays 4 matches as host, Club2 plays 2 as guest, Club3 plays 2 as guest
-        List<Match> matchList = new LinkedList<>();
-        Collections.addAll(matchList,
-                new Match(representationList.get(0), representationList.get(4),
-                        "Referee1", Instant.now(), Collections.emptyList()),
-                new Match(representationList.get(1), representationList.get(5),
-                        "Referee2", Instant.now(), Collections.emptyList()),
-                new Match(representationList.get(2), representationList.get(6),
-                        "Referee3", Instant.now(), Collections.emptyList()),
-
-                new Match(representationList.get(3), representationList.get(7),
-                        "Referee4", Instant.now(), Collections.emptyList())
-        );
-        return matchList;
     }
 
     //We need match and footballer to create Scores

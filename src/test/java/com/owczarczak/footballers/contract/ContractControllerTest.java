@@ -1,27 +1,16 @@
 package com.owczarczak.footballers.contract;
 
-import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import static com.owczarczak.footballers.TestDataFactory.*;
@@ -57,8 +46,8 @@ public class ContractControllerTest {
     @Test
     void shouldGetAllContracts() throws Exception {
         //given
-        clubRepository.saveAll(getClubList1());
-        footballerRepository.saveAll(getFootballerList1());
+        clubRepository.saveAll(getClubList());
+        footballerRepository.saveAll(getFootballerList());
         contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
         //when
         this.mockMvc.perform(get("/contracts/"))
@@ -70,8 +59,8 @@ public class ContractControllerTest {
     @Test
     void shouldGetListOfContractsForSpecificFootballer() throws Exception {
         // given --> creating example data to create the Contracts
-        clubRepository.saveAll(getClubList1());
-        List<Footballer> list = footballerRepository.saveAll(getFootballerList1());
+        clubRepository.saveAll(getClubList());
+        List<Footballer> list = footballerRepository.saveAll(getFootballerList());
         contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
 
         //Getting the id of the first footballer from the list to check contracts for him
@@ -89,8 +78,8 @@ public class ContractControllerTest {
     @Test
     void shouldGetMeanLenghtOfContractsInSpecificClub() throws Exception {
         //given
-        List<Club> clubList = clubRepository.saveAll(getClubList1());
-        footballerRepository.saveAll(getFootballerList1());
+        List<Club> clubList = clubRepository.saveAll(getClubList());
+        footballerRepository.saveAll(getFootballerList());
         contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
         int clubId = clubList.get(0).getId();
         System.out.println("THE CLUB ID IS: " + clubId);

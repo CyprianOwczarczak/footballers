@@ -3,6 +3,7 @@ package com.owczarczak.footballers.club;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -28,25 +30,44 @@ public class ClubControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @BeforeEach
+    void setup2() {
+        repRepository.deleteAll();
+        clubRepository.deleteAll();
+    }
+
     @AfterEach
     void setup() {
         repRepository.deleteAll();
         clubRepository.deleteAll();
     }
 
-    //Fixme all clubs with assigned Representations are returned
+    @Test
+    void shouldGetAllClubs() throws Exception {
+        //given
+        clubRepository.saveAll(TestDataFactory.getClubList());
+
+        //when + then
+        this.mockMvc.perform(get("/clubs/"))
+                .andDo(print())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(5)))
+
+        ;
+    }
+
     @Test
     void shouldGetAllClubsWhichPlayedMoreThan3Matches() throws Exception {
-//        List<Club> clubList = createExampleClubs();
-//        List<ClubRepresentation> clubRepresentations = createExampleClubRepresentations();
-
         //given --> saving ClubRepresentations with Club arguments (without footballerList)
-        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList1());
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         repRepository.saveAll(TestDataFactory.getRepresentationList1(clubList));
 
         //when + then
         this.mockMvc.perform(get("/clubs/MoreThan3Matches"))
                 .andDo(print())
-                .andExpect(jsonPath("$", hasSize(2))); //fixme Should return 2
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name", is("Barcelona")))
+                .andExpect(jsonPath("$[1].name", is("Real")));
     }
 }

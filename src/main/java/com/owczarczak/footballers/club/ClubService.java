@@ -27,5 +27,19 @@ public class ClubService {
         }
         return dtos;
     }
+
+    List<ClubDto> getAllClubs() {
+        List<Club> clubList = repository.findAll();
+        List<ClubDto> dtos = new LinkedList<>();
+        for (Club club : clubList) {
+            ClubDto dtoToBeAdded = ClubDto.builder()
+                    .id(club.getId())
+                    .name(club.getName())
+                    .created(club.getCreated())
+                    .build();
+            dtos.add(dtoToBeAdded);
+        }
+        return dtos;
+    }
 }
 

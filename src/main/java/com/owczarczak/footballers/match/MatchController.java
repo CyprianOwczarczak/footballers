@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/matches")
 public class MatchController {
@@ -14,7 +16,7 @@ public class MatchController {
     MatchService service;
 
     @GetMapping("/byRefereeName/{name}")
-    MatchDto findByRefereeName(@RequestParam("name") String name) {
+    List<MatchDto> findByRefereeName(@RequestParam("name") String name) {
         return service.findByRefereeName(name);
     }
 }

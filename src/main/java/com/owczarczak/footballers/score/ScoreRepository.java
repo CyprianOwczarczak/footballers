@@ -9,7 +9,8 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
 
     // Średnia liczba goli per mecz dla zawodnika
     @Query(value = """
-            select scores.id, scores.name, scores.cnt as goals, matches.cnt as matches, (CAST (scores.cnt AS float) /matches.cnt) as averageGoals
+            select scores.id, scores.name, scores.cnt as goals, matches.cnt as matches,
+            (CAST (scores.cnt AS float) /matches.cnt) as averageGoals
             from
             (
             	select f.id, f.name, count(s.id) as cnt

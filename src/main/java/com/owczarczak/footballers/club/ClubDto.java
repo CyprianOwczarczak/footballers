@@ -11,5 +11,4 @@ public class ClubDto {
     private int id;
     private String name;
     private Instant created;
-//    private List<Contract> contractList;
 }

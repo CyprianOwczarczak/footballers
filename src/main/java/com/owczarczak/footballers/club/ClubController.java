@@ -16,6 +16,11 @@ public class ClubController {
     @Autowired
     ClubService service;
 
+    @GetMapping("/")
+    public List<ClubDto> getAllClubs() {
+        return service.getAllClubs();
+    }
+
     @GetMapping("/MoreThan3Matches")
     public List<ClubDto> getAllClubsWhichPlayedMoreThan3Matches() {
         return service.getAllClubsWhichPlayedMoreThan3Matches();

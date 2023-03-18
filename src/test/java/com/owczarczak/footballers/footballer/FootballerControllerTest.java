@@ -48,19 +48,19 @@ class FootballerControllerTest {
     @Autowired
     ClubRepresentationRepository representationRepository;
 
-//    @BeforeEach
-//    void setup() {
-//        representationRepository.deleteAll();
-//        clubRepository.deleteAll();
-//        footballerRepository.deleteAll();
-//    }
-//
-//    @AfterEach
-//    void setup2() {
-//        representationRepository.deleteAll();
-//        clubRepository.deleteAll();
-//        footballerRepository.deleteAll();
-//    }
+    @BeforeEach
+    void setup() {
+        representationRepository.deleteAll();
+        clubRepository.deleteAll();
+        footballerRepository.deleteAll();
+    }
+
+    @AfterEach
+    void setup2() {
+        representationRepository.deleteAll();
+        clubRepository.deleteAll();
+        footballerRepository.deleteAll();
+    }
 
     @Autowired
     FootballerService service;
