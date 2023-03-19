@@ -23,30 +23,6 @@ public class FootballerService {
     @Autowired
     FootballerRepository repository;
 
-    public String exportReport(String reportFormat) throws FileNotFoundException, JRException {
-        List<Footballer> footballerList = repository.findAll();
-
-        //Load file and compile it
-        File file = ResourceUtils.getFile("class[ath:footballers.jrxml");
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(footballerList);
-
-        //We fill the report
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("createdBy", "ExamplePerson");
-
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-        if (reportFormat.contentEquals("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, "C:\\Users\\Cyprian\\Desktop\\Reports" + "\\footballers.html");
-        }
-
-        if (reportFormat.contentEquals("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Cyprian\\Desktop\\Reports" + "\\footballers.pdf");
-        }
-
-        return "report generated !";
-    }
-
     public List<FootballerDto> getAllFootballers() {
         List<Footballer> footballersList = repository.findAll();
         List<FootballerDto> dtos = new LinkedList<>();
