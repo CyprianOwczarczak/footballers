@@ -35,15 +35,8 @@ public class MatchControllerTest {
     @Autowired
     ClubRepository clubRepository;
 
-    @BeforeEach
-    void setup() {
-        matchRepository.deleteAll();
-        representationRepository.deleteAll();
-        clubRepository.deleteAll();
-    }
-
     @AfterEach
-    void setup2() {
+    void setup() {
         matchRepository.deleteAll();
         representationRepository.deleteAll();
         clubRepository.deleteAll();

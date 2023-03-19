@@ -11,11 +11,13 @@ import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.match.MatchRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -45,15 +47,6 @@ public class ScoreControllerTest {
     @Autowired
     ScoreService service;
 
-    @BeforeEach
-    void setup2() {
-        scoreRepository.deleteAll();
-        footballerRepository.deleteAll();
-        matchRepository.deleteAll();
-        repRepository.deleteAll();
-        clubRepository.deleteAll();
-    }
-
     @AfterEach
     void setup() {
         scoreRepository.deleteAll();
@@ -64,6 +57,7 @@ public class ScoreControllerTest {
     }
 
     @Test
+    @DisplayName("Should get average goals per match for footballer")
     void shouldGetAvgGoalsPerMatchForFootballer() throws Exception {
         //footballer, score, match , clubRepresentation, clubRepresentation_footballer join table
 

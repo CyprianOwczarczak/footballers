@@ -1,13 +1,14 @@
 package com.owczarczak.footballers.clubRepresentation;
 
-import com.owczarczak.footballers.footballer.Footballer;
-import com.owczarczak.footballers.footballer.FootballerDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +29,25 @@ public class ClubRepresentationService {
             dtos.add(dtoToBeAdded);
         }
         return dtos;
+    }
+
+    Optional<ClubRepresentationDto> getClubRepresentationById(@PathVariable int id) {
+        if (!repository.existsById(id)) {
+            return Optional.empty();
+        } else {
+            ClubRepresentation clubRepresentation = repository.getReferenceById(id);
+            return Optional.ofNullable(ClubRepresentationDto.builder()
+                    .id(clubRepresentation.getId())
+                    .clubName(clubRepresentation.getClub().getName())
+                    .footballerListSize(clubRepresentation.getFootballerList().size())
+                    .build());
+        }
+    }
+
+    @Transactional
+    public void deleteClubRepresentation(@PathVariable int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
     }
 }

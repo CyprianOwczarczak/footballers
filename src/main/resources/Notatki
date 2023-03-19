@@ -14,11 +14,11 @@ Record poczytać co to jest
 
 (za pomocą MapStruct (konwertery)) -> na razie przepisywać ręcznie/ builder z Lomboka
 
-//TODO W osobnym branchu dodać footballera, który będzie miał encję klub, historię klubu, listę meczy i zobaczyć co zwróci RestController (zwróci wszysko, dlatego potrzebujemy DTO)
-//TODO testy najpierw dla repozytoriów
+W osobnym branchu dodać footballera, który będzie miał encję klub, historię klubu, listę meczy i zobaczyć co zwróci RestController (zwróci wszysko, dlatego potrzebujemy DTO)
+testy najpierw dla repozytoriów
 
-//TODO Przerobić na listę klubów w któych grał, i niech to będzie encja, i od kiedy do kiedy grał w tych klubach (kontrakt encja)
-//TODO DTO - Data Transfer Object
+Przerobić na listę klubów w któych grał, i niech to będzie encja, i od kiedy do kiedy grał w tych klubach (kontrakt encja)
+DTO - Data Transfer Object
 // REpository(wypycha Encję) -> Service(wypycha DTO'sa) ->  Controller(wypycha REsponseEntity z DTO'sem
 // Controllery do kontraktu i do klubu
 // Dołożyć obsługę meczy (mecz drużyny obie, lista zawodników obu drużyn, lista goli(kto strzelił),
@@ -57,7 +57,7 @@ walidować też metodę put w controllerze (sprawdzać czy request jest poprawny
 Dokumentacja Spring Data --> notatki
 
 
-    //todo prepaere pull request,
+    //prepaere pull request,
     // prepare database extended with club entity
     //flyway migration V2 (with club) --> name, year of creation etc,
     //create a branch from this branch
@@ -132,7 +132,5 @@ DLACZEGO TO NIE DZIAŁA
 
 Uzupełnić wszystkie Controllery żeby miały wszystkie funkcjonalności (repozytoria i inne które mogą się przydać)
 Testy do tych metod z repozytoriów --> happy i unhappy path
-
-Odezwać się do Artura jak się uczył do rozmów o pracę
 
 Przerobić na reporting query (a la DTO)

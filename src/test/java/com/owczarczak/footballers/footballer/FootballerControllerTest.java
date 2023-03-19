@@ -48,15 +48,8 @@ class FootballerControllerTest {
     @Autowired
     ClubRepresentationRepository representationRepository;
 
-    @BeforeEach
-    void setup() {
-        representationRepository.deleteAll();
-        clubRepository.deleteAll();
-        footballerRepository.deleteAll();
-    }
-
     @AfterEach
-    void setup2() {
+    void setup() {
         representationRepository.deleteAll();
         clubRepository.deleteAll();
         footballerRepository.deleteAll();

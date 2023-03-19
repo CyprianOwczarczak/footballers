@@ -1,12 +1,14 @@
 package com.owczarczak.footballers.contract;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/contracts")
@@ -20,12 +22,23 @@ public class ContractController {
     }
 
     @GetMapping("/{id}")
-    public List<ContractDto> getListOfContractsForSpecificFootballer(@PathVariable int id) {
-        return service.getListOfContractsForSpecificFootballer(id);
+    public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable int id) {
+        Optional<ContractDto> foundDtoOptional = service.getContractById(id);
+        if (foundDtoOptional.isEmpty()) {
+            return notFound().build();
+        } else {
+            return ok(foundDtoOptional.get());
+        }
     }
 
     @GetMapping("/lengthOf/{clubId}")
     public ContractLengthDto getMeanLengthOfContractsInClub(@PathVariable("clubId") int clubId) {
         return service.getMeanLenghtOfContractsInClub(clubId);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteContract(@PathVariable int id) {
+        service.deleteContract(id);
+        return ok().build();
     }
 }
