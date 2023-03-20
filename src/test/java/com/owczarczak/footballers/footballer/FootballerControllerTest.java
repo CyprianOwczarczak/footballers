@@ -1,11 +1,13 @@
 package com.owczarczak.footballers.footballer;
 
-import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,14 +25,9 @@ import java.util.Set;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -442,7 +439,7 @@ class FootballerControllerTest {
                 .andDo(print())
                 .andExpectAll(status().isNotFound());
     }
-//    whichFootballersPlayedInMostMatches
+
     @Transactional
     @Rollback(value = false)
     @Test
@@ -462,7 +459,7 @@ class FootballerControllerTest {
 
         // 1) Zapisać dla każdej reprezentacji zawodnika
         Footballer footballerReturned = footballerRepository.save(footballer);
-        for (ClubRepresentation representation: representationsList) {
+        for (ClubRepresentation representation : representationsList) {
             representation.setFootballerList(List.of(footballerReturned));
         }
 
@@ -481,10 +478,10 @@ class FootballerControllerTest {
 
         this.mockMvc.perform(get("/footballers/mostMatchesPlayed"))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].representationSize", is(1)))
-                ;
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(1)),
+                        jsonPath("$[0].representationSize", is(1)));
     }
 
     private static Footballer getFootballer1() {

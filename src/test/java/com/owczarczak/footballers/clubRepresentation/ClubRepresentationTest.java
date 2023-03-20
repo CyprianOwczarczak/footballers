@@ -3,7 +3,10 @@ package com.owczarczak.footballers.clubRepresentation;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,9 +50,10 @@ public class ClubRepresentationTest {
 
         //when + then
         this.mockMvc.perform(get("/representation/"))
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(12)))
-                .andDo(print());
+                .andDo(print())
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(12)));
     }
 
     @Test
@@ -57,9 +61,10 @@ public class ClubRepresentationTest {
     void shouldNotGetClubRepresentationsFromEmptyList() throws Exception {
         //when + then
         this.mockMvc.perform(get("/representation/"))
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(0)))
-                .andDo(print());
+                .andDo(print())
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -74,8 +79,9 @@ public class ClubRepresentationTest {
         //when + then
         this.mockMvc.perform(get("/representation/" + clubRepresentationId))
                 .andDo(print())
-                .andExpect(jsonPath("$").isMap())
-                .andExpect(jsonPath("$.clubName", is("Barcelona")));
+                .andExpectAll(
+                        jsonPath("$").isMap(),
+                        jsonPath("$.clubName", is("Barcelona")));
     }
 
     @Test

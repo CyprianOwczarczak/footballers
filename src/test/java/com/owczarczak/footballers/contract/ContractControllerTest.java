@@ -57,8 +57,9 @@ public class ContractControllerTest {
         //when
         this.mockMvc.perform(get("/contracts/"))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(3)));
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(3)));
     }
 
     @Test
@@ -94,10 +95,10 @@ public class ContractControllerTest {
         // when + then
         this.mockMvc.perform(get("/contracts/" + searchedId))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].clubName", is("Barcelona")))
-                .andExpect(jsonPath("$[0].footballerName", is("Lewandowski")))
-                .andExpect(jsonPath("$[0].salary", is(10000)));
+                .andExpectAll(jsonPath("$").isArray(),
+                        jsonPath("$[0].clubName", is("Barcelona")),
+                        jsonPath("$[0].footballerName", is("Lewandowski")),
+                        jsonPath("$[0].salary", is(10000)));
     }
 
     @Test
@@ -112,8 +113,9 @@ public class ContractControllerTest {
         //when + then
         this.mockMvc.perform(get("/contracts/lengthOf/" + clubId))
                 .andDo(print())
-                .andExpect(jsonPath("$").isMap())
-                .andExpect(jsonPath("$.averageLength", is(100)));
+                .andExpectAll(
+                        jsonPath("$").isMap(),
+                        jsonPath("$.averageLength", is(100)));
     }
 
     @Test

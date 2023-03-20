@@ -35,7 +35,7 @@ public class ScoreController {
         }
     }
 
-    @GetMapping("/getAverageGoals")
+    @GetMapping("/getAverageGoals/")
     public List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
         return service.getAvgGoalsPerMatchForFootballer();
     }

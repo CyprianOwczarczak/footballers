@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.match;
 
+import com.owczarczak.footballers.footballer.FootballerDto;
 import com.owczarczak.footballers.score.ScoreDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class MatchController {
         }
     }
 
-    @GetMapping("/byRefereeName/{name}")
+    @GetMapping("/byRefereeName/")
     List<MatchDto> findByRefereeName(@RequestParam("name") String name) {
         return service.findByRefereeName(name);
     }

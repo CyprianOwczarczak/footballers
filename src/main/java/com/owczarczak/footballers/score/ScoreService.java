@@ -46,18 +46,34 @@ public class ScoreService {
     }
 
     List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
-        List<Object[]> returnedListOfArrays = repository.getAvgGoalsPerMatchForFootballer();
+        List<ScoreAvgGoalsDto> returnedListOfArrays = repository.getAvgGoalsPerMatchForFootballer();
         List<ScoreAvgGoalsDto> dtos = new LinkedList<>();
-        for (Object[] row : returnedListOfArrays) {
+        for (ScoreAvgGoalsDto row : returnedListOfArrays) {
             ScoreAvgGoalsDto dtoToBeAdded = ScoreAvgGoalsDto.builder()
-                    .id((Integer) row[0])
-                    .footballerName((String) row[1])
-                    .numberOfGoals((BigInteger) row[2])
-                    .numberOfMatches((BigInteger) row[3])
-                    .averageGoals((Double) row[4])
+                    .id(row.getId())
+                    .footballerName(row.getFootballerName())
+                    .numberOfGoals(row.getNumberOfGoals())
+                    .numberOfMatches(row.getNumberOfMatches())
+                    .averageGoals(row.getAverageGoals())
                     .build();
             dtos.add(dtoToBeAdded);
         }
         return dtos;
     }
+
+//    List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
+//        List<ScoreAvgGoalsDto> returnedListOfArrays = repository.getAvgGoalsPerMatchForFootballer();
+//        List<ScoreAvgGoalsDto> dtos = new LinkedList<>();
+//        for (ScoreAvgGoalsDto row : returnedListOfArrays) {
+//            ScoreAvgGoalsDto dtoToBeAdded = ScoreAvgGoalsDto.builder()
+//                    .id((Integer) row[0])
+//                    .footballerName((String) row[1])
+//                    .numberOfGoals((BigInteger) row[2])
+//                    .numberOfMatches((BigInteger) row[3])
+//                    .averageGoals((Double) row[4])
+//                    .build();
+//            dtos.add(dtoToBeAdded);
+//        }
+//        return dtos;
+//    }
 }

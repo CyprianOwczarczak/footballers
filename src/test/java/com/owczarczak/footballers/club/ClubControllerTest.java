@@ -3,7 +3,6 @@ package com.owczarczak.footballers.club;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +46,9 @@ public class ClubControllerTest {
         //when + then
         this.mockMvc.perform(get("/clubs/"))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(5)));
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(5)));
     }
 
     @Test
@@ -57,8 +57,9 @@ public class ClubControllerTest {
         //when + then
         this.mockMvc.perform(get("/clubs/"))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -71,8 +72,9 @@ public class ClubControllerTest {
         //when + then
         this.mockMvc.perform(get("/clubs/" + clubId))
                 .andDo(print())
-                .andExpect(jsonPath("$").isMap())
-                .andExpect(jsonPath("$.name", is("Barcelona")));
+                .andExpectAll(
+                        jsonPath("$").isMap(),
+                        jsonPath("$.name", is("Barcelona")));
     }
 
     @Test
@@ -94,9 +96,10 @@ public class ClubControllerTest {
         //when + then
         this.mockMvc.perform(get("/clubs/MoreThan3Matches"))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].name", is("Barcelona")))
-                .andExpect(jsonPath("$[1].name", is("Real")));
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        jsonPath("$", hasSize(2)),
+                        jsonPath("$[0].name", is("Barcelona")),
+                        jsonPath("$[1].name", is("Real")));
     }
 }

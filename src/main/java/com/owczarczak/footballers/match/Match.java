@@ -17,19 +17,19 @@ public class Match {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "host_representation_id")
-    private ClubRepresentation host;
+    ClubRepresentation host;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "guest_representation_id")
-    private ClubRepresentation guest;
+    ClubRepresentation guest;
 
-    private String nameOfReferee;
+    String nameOfReferee;
 
-    private Instant date;
+    Instant date;
 
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "match_id")
-    private List<Score> scores;
+    List<Score> scores;
 
     public Match() {
     }
