@@ -1,11 +1,13 @@
 package com.owczarczak.footballers.match;
 
 import com.owczarczak.footballers.footballer.FootballerDto;
-import com.owczarczak.footballers.score.ScoreDto;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +39,45 @@ public class MatchController {
     @GetMapping("/byRefereeName/")
     List<MatchDto> findByRefereeName(@RequestParam("name") String name) {
         return service.findByRefereeName(name);
+    }
+
+    @PostMapping("/")
+    ResponseEntity<?> addMatch(@RequestBody MatchAddDto newMatchDto) {
+        if (service.repository.existsById(newMatchDto.getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        ArrayList<String> errorList = returnErrorList(newMatchDto);
+        if (!errorList.isEmpty()) {
+            return ResponseEntity.badRequest().body(errorList);
+        }
+
+        MatchAddDto result = service.addMatch(newMatchDto);
+        return ResponseEntity.created(URI.create("/" + result.getId()))
+                .body(result);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteMatch(@PathVariable int id) {
+        service.deleteMatchById(id);
+        return ok().build();
+    }
+
+    private ArrayList<String> returnErrorList(MatchAddDto newMatchDto) {
+        ArrayList<String> errorList = new ArrayList<>();
+
+        if (newMatchDto.getHost() == null) {
+            errorList.add("You have to provide a host !");
+        }
+        if (newMatchDto.getGuest() == null) {
+            errorList.add("You have to provide a guest !");
+        }
+        if (StringUtils.isEmpty(newMatchDto.getNameOfReferee())) {
+            errorList.add("You have to provide a referee name !");
+        }
+        if (newMatchDto.getDate() == null) {
+            errorList.add("You have to provide a date !");
+        }
+        return errorList;
     }
 }

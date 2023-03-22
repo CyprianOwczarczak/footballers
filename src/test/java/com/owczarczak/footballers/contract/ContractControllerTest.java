@@ -18,8 +18,7 @@ import java.util.List;
 import static com.owczarczak.footballers.TestDataFactory.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -82,6 +81,15 @@ public class ContractControllerTest {
     }
 
     @Test
+    @DisplayName("Should not get contract by id")
+    void shouldNotGetContractById() throws Exception {
+        //when + then
+        this.mockMvc.perform(get("/contracts/" + 0))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @DisplayName("Should get list of contracts for specific footballer")
     void shouldGetListOfContractsForSpecificFootballer() throws Exception {
         // given --> creating example data to create the Contracts
@@ -93,7 +101,7 @@ public class ContractControllerTest {
         int searchedId = list.get(0).getId();
 
         // when + then
-        this.mockMvc.perform(get("/contracts/" + searchedId))
+        this.mockMvc.perform(get("/contracts/contractsForFootballer/" + searchedId))
                 .andDo(print())
                 .andExpectAll(jsonPath("$").isArray(),
                         jsonPath("$[0].clubName", is("Barcelona")),
@@ -130,8 +138,33 @@ public class ContractControllerTest {
         int clubId = contractList.get(0).getId();
 
         //when + then
-        this.mockMvc.perform(delete("/contracts/" + clubId)).andDo(print())
+        this.mockMvc.perform(delete("/contracts/" + clubId))
+                .andDo(print())
                 .andExpect(status().is2xxSuccessful());
         Assertions.assertEquals(2, contractRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("Should not delete contract by id")
+    void shouldNotDeleteContractById() throws Exception {
+        //when + then
+        this.mockMvc.perform(delete("/contracts/" + 0))
+                .andDo(print());
+    }
+
+    @Test
+    void shouldUpdateContractLength() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(getClubList());
+        footballerRepository.saveAll(getFootballerList());
+        List<Contract> contractList =
+                contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
+        int idToUpdate = contractList.get(0).getId();
+
+        //when + then
+        this.mockMvc.perform(post("/" + idToUpdate + "?monthsToAdd=12"))
+                .andDo(print())
+                .andExpect(status().isOk());
+        //Fixme should return ok
     }
 }

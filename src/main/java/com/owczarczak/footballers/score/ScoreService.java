@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +62,14 @@ public class ScoreService {
         return dtos;
     }
 
+    @Transactional
+    public void deleteMatchById(@PathVariable int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
+    }
+
+    //TODO
 //    List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
 //        List<ScoreAvgGoalsDto> returnedListOfArrays = repository.getAvgGoalsPerMatchForFootballer();
 //        List<ScoreAvgGoalsDto> dtos = new LinkedList<>();

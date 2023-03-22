@@ -91,6 +91,7 @@ public class FootballerService {
                 .height(footballerToBeAdded.getHeight())
                 .build();
         Footballer savedEntity = repository.save(newFootballer);
+
         return FootballerDto.builder()
                 .id(savedEntity.getId())
                 .pesel(savedEntity.getPesel())

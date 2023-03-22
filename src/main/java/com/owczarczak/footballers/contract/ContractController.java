@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public class ContractController {
         return service.getAllContracts();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/contractsForFootballer/{id}")
     public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable int id) {
         Optional<ContractDto> foundDtoOptional = service.getContractById(id);
         if (foundDtoOptional.isEmpty()) {
@@ -38,7 +39,36 @@ public class ContractController {
 
     @DeleteMapping("/{id}")
     ResponseEntity deleteContract(@PathVariable int id) {
-        service.deleteContract(id);
+        service.deleteContractById(id);
         return ok().build();
     }
+
+    //TODO extend the Contract of the Footballer whose contract comes to an end
+    // (pass the number of days to extend the contract in the parameter)
+    @PutMapping("/{id}")
+    ResponseEntity<?> extendContractLength(@PathVariable int id,
+                                           @RequestParam("monthsToAdd") int monthsToAdd) {
+        if (service.getContractById(id).isEmpty()) {
+            return notFound().build();
+        }
+
+        Optional<ContractDto> result = service.extendContractLength(id, monthsToAdd);
+        return ok(result.get());
+    }
+
+//    @PutMapping("/")
+//    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
+//        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
+//            return notFound().build();
+//        }
+//
+//        ArrayList<String> errorList = returnErrorList(footballerToUpdate);
+//        if (!errorList.isEmpty()) {
+//            return badRequest().body(errorList);
+//        }
+//        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
+//        return ok(result.get());
+//    }
+
+
 }

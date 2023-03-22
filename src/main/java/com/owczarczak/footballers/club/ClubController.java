@@ -1,8 +1,5 @@
 package com.owczarczak.footballers.club;
 
-import com.owczarczak.footballers.contract.ContractDto;
-import com.owczarczak.footballers.footballer.FootballerDto;
-import org.springframework.aop.framework.autoproxy.target.LazyInitTargetSourceCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +38,7 @@ public class ClubController {
 
     @DeleteMapping("/{id}")
     ResponseEntity deleteClub(@PathVariable int id) {
-        service.deleteClub(id);
+        service.deleteClubById(id);
         return ok().build();
     }
 }

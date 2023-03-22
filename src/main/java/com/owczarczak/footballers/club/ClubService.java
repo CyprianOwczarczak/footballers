@@ -59,8 +59,10 @@ public class ClubService {
     }
 
     @Transactional
-    public void deleteClub(@PathVariable int id) {
-        repository.deleteById(id);
+    public void deleteClubById(@PathVariable int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
     }
 }
 

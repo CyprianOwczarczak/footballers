@@ -50,12 +50,6 @@ public class FootballerController {
         return service.getFootballersWhoPlayedInMostMatches();
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity deleteFootballer(@PathVariable int id) {
-        service.deleteFootballer(id);
-        return ok().build();
-    }
-
     @PostMapping("/")
     ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
         if (service.existsByPesel(newFootballerDto.getPesel())) {
@@ -84,6 +78,12 @@ public class FootballerController {
         }
         Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
         return ok(result.get());
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteFootballer(@PathVariable int id) {
+        service.deleteFootballer(id);
+        return ok().build();
     }
 
     private ArrayList<String> returnErrorList(FootballerDto newFootballerDto) {

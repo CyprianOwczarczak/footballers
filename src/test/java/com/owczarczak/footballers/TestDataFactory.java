@@ -158,11 +158,11 @@ public class TestDataFactory {
         Collections.addAll(scoreList,
 
                 new Score(matchList.get(0), footballerList.get(0), 10),
-                new Score(matchList.get(0), footballerList.get(0), 10),
-                new Score(matchList.get(1), footballerList.get(1), 10),
-                new Score(matchList.get(1), footballerList.get(1), 10),
-                new Score(matchList.get(1), footballerList.get(1), 10),
-                new Score(matchList.get(2), footballerList.get(2), 10)
+                new Score(matchList.get(0), footballerList.get(0), 20),
+                new Score(matchList.get(1), footballerList.get(1), 30),
+                new Score(matchList.get(1), footballerList.get(1), 40),
+                new Score(matchList.get(1), footballerList.get(1), 50),
+                new Score(matchList.get(2), footballerList.get(2), 60)
         );
 
         return scoreList;

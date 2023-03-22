@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -77,8 +79,29 @@ public class ContractService {
                 .build();
     }
 
+    public Optional<ContractDto> extendContractLength(int id, int monthsToAdd) {
+        if (!repository.existsById(id)) {
+            return Optional.empty();
+        } else {
+            Contract contract = repository.getReferenceById(id);
+
+            Instant updatedContractEnd = contract.getContractEnd().plus(monthsToAdd, ChronoUnit.MONTHS);
+
+            return Optional.ofNullable(ContractDto.builder()
+                    .id(contract.getId())
+                    .clubName(contract.getClub().getName())
+                    .footballerName(contract.getFootballer().getName())
+                    .contractStart(contract.getContractStart())
+                    .contractEnd(updatedContractEnd)
+                    .salary(contract.getSalary())
+                    .build());
+        }
+    }
+
     @Transactional
-    public void deleteContract(@PathVariable int id) {
-        repository.deleteById(id);
+    public void deleteContractById(@PathVariable int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
     }
 }

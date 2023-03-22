@@ -3,6 +3,7 @@ package com.owczarczak.footballers.club;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -78,7 +81,7 @@ public class ClubControllerTest {
     }
 
     @Test
-    @DisplayName("Should get club by id")
+    @DisplayName("Should not get club by id")
     void shouldNotGetClubById() throws Exception {
         //when + then
         this.mockMvc.perform(get("/clubs/" + 1))
@@ -101,5 +104,28 @@ public class ClubControllerTest {
                         jsonPath("$", hasSize(2)),
                         jsonPath("$[0].name", is("Barcelona")),
                         jsonPath("$[1].name", is("Real")));
+    }
+
+    @Test
+    void shouldDeleteByCLubId() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+
+        int clubId = clubList.get(0).getId();
+
+        //when + then
+        this.mockMvc.perform(delete("/clubs/" + clubId))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        assertEquals(4, clubRepository.findAll().size());
+    }
+
+    @Test
+    void shouldNotDeleteClubById() throws Exception {
+        //when + then
+        this.mockMvc.perform(delete("/clubs/0"))
+                .andDo(print())
+                .andExpect(jsonPath("$").doesNotExist());
     }
 }

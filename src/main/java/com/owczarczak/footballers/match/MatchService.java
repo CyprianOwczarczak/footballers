@@ -1,10 +1,13 @@
 package com.owczarczak.footballers.match;
 
+import com.owczarczak.footballers.footballer.Footballer;
+import com.owczarczak.footballers.footballer.FootballerDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import javax.xml.xpath.XPathVariableResolver;
 import java.time.Instant;
 import java.util.LinkedList;
@@ -63,5 +66,33 @@ public class MatchService {
             dtos.add(dtoToBeAdded);
         }
         return dtos;
+    }
+
+    public MatchAddDto addMatch(MatchAddDto matchToBeAdded) {
+        Match newMatch = Match.builder()
+                .id(matchToBeAdded.getId())
+                .guest(matchToBeAdded.getGuest())
+                .host(matchToBeAdded.getHost())
+                .nameOfReferee(matchToBeAdded.getNameOfReferee())
+                .date(matchToBeAdded.getDate())
+                .scores(matchToBeAdded.getScores())
+                .build();
+        Match savedEntity = repository.save(newMatch);
+
+        return MatchAddDto.builder()
+                .id(savedEntity.getId())
+                .guest(savedEntity.getGuest())
+                .host(savedEntity.getHost())
+                .nameOfReferee(savedEntity.getNameOfReferee())
+                .date(savedEntity.getDate())
+                .scores(savedEntity.getScores())
+                .build();
+    }
+
+    @Transactional
+    public void deleteMatchById(@PathVariable int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
     }
 }

@@ -3,10 +3,7 @@ package com.owczarczak.footballers.score;
 import com.owczarczak.footballers.club.ClubDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,4 +36,12 @@ public class ScoreController {
     public List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
         return service.getAvgGoalsPerMatchForFootballer();
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteMatch(@PathVariable int id) {
+        service.deleteMatchById(id);
+        return ok().build();
+    }
+
+    // TODO Add a Score to an existing match (match saves everything by Cascade, but we should be able to add Scores to it after the match)
 }

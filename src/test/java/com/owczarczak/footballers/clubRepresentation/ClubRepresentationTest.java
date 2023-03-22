@@ -111,7 +111,7 @@ public class ClubRepresentationTest {
     }
 
     @Test
-    @DisplayName("Should delete club representation by id")
+    @DisplayName("Should not delete club representation by id")
     void shouldNotDeleteClubRepresentationById() throws Exception {
         //when + then
         this.mockMvc.perform(delete("/representation/" + 1))
