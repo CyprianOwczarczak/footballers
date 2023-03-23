@@ -41,21 +41,21 @@ public class MatchController {
         return service.findByRefereeName(name);
     }
 
-    @PostMapping("/")
-    ResponseEntity<?> addMatch(@RequestBody MatchAddDto newMatchDto) {
-        if (service.repository.existsById(newMatchDto.getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        ArrayList<String> errorList = returnErrorList(newMatchDto);
-        if (!errorList.isEmpty()) {
-            return ResponseEntity.badRequest().body(errorList);
-        }
-
-        MatchAddDto result = service.addMatch(newMatchDto);
-        return ResponseEntity.created(URI.create("/" + result.getId()))
-                .body(result);
-    }
+//    @PostMapping("/")
+//    ResponseEntity<?> addMatch(@RequestBody MatchAddDto newMatchDto) {
+//        if (service.repository.existsById(newMatchDto.getId())) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        ArrayList<String> errorList = returnErrorList(newMatchDto);
+//        if (!errorList.isEmpty()) {
+//            return ResponseEntity.badRequest().body(errorList);
+//        }
+//
+//        MatchAddDto result = service.addMatch(newMatchDto);
+//        return ResponseEntity.created(URI.create("/" + result.getId()))
+//                .body(result);
+//    }
 
     @DeleteMapping("/{id}")
     ResponseEntity deleteMatch(@PathVariable int id) {

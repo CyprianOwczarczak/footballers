@@ -89,6 +89,7 @@ public class ContractControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    //fixme
     @Test
     @DisplayName("Should get list of contracts for specific footballer")
     void shouldGetListOfContractsForSpecificFootballer() throws Exception {
@@ -152,6 +153,7 @@ public class ContractControllerTest {
                 .andDo(print());
     }
 
+    //Fixme should return ok
     @Test
     void shouldUpdateContractLength() throws Exception {
         //given
@@ -165,6 +167,5 @@ public class ContractControllerTest {
         this.mockMvc.perform(post("/" + idToUpdate + "?monthsToAdd=12"))
                 .andDo(print())
                 .andExpect(status().isOk());
-        //Fixme should return ok
     }
 }

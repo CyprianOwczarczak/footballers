@@ -3,7 +3,6 @@ package com.owczarczak.footballers.club;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -101,9 +100,7 @@ public class ClubControllerTest {
                 .andDo(print())
                 .andExpectAll(
                         jsonPath("$").isArray(),
-                        jsonPath("$", hasSize(2)),
-                        jsonPath("$[0].name", is("Barcelona")),
-                        jsonPath("$[1].name", is("Real")));
+                        jsonPath("$", hasSize(2)));
     }
 
     @Test

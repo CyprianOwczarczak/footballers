@@ -5,8 +5,10 @@ import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
-import com.owczarczak.footballers.contract.Contract;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,12 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.owczarczak.footballers.TestDataFactory.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,13 +39,6 @@ public class MatchControllerTest {
 
     @Autowired
     ClubRepository clubRepository;
-
-    @BeforeEach
-    void setup2() {
-        matchRepository.deleteAll();
-        representationRepository.deleteAll();
-        clubRepository.deleteAll();
-    }
 
     @AfterEach
     void setup() {
@@ -151,4 +144,26 @@ public class MatchControllerTest {
         assertEquals(4, matchRepository.findAll().size());
         assertEquals(8, representationRepository.findAll().size());
     }
+
+//    //TODO add POST test
+//    @Test
+//    @DisplayName("Should add match")
+//    void shouldAddMatch() throws Exception {
+//        //given
+//        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+//        List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
+//
+//        String request = """
+//                {
+//
+//                }
+//                """;
+
+        //when
+//        Match match = new Match(representationList.get(0), representationList.get(4),
+//                "Referee1", Instant.now(), Collections.emptyList());
+
+        //then
+//        this.mockMvc.perform(post("/"))
+//    }
 }

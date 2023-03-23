@@ -98,6 +98,7 @@ public class ScoreControllerTest {
                 .andExpect(jsonPath("$").isMap());
     }
 
+    //fixme
     @Test
     @DisplayName("Should get average goals per match for footballer")
     void shouldGetAvgGoalsPerMatchForFootballer() throws Exception {

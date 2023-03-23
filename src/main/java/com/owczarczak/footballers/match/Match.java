@@ -3,6 +3,7 @@ package com.owczarczak.footballers.match;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.score.Score;
 import lombok.Builder;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -36,6 +37,15 @@ public class Match {
     public Match() {
     }
 
+    public Match(int id, ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, Instant date, List<Score> scores) {
+        this.id = id;
+        this.host = host;
+        this.guest = guest;
+        this.nameOfReferee = nameOfReferee;
+        this.date = date;
+        this.scores = scores;
+    }
+
     public Match(ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, Instant date, List<Score> scores) {
         this.host = host;
         this.guest = guest;
@@ -43,6 +53,7 @@ public class Match {
         this.date = date;
         this.scores = scores;
     }
+
 
     public int getId() {
         return id;
