@@ -31,10 +31,10 @@ public class ClubController {
         }
     }
 
-    @GetMapping("/MoreThan3Matches")
-    public List<ClubDto> getAllClubsWhichPlayedMoreThan3Matches() {
-        return service.getAllClubsWhichPlayedMoreThan3Matches();
-    }
+//    @GetMapping("/MoreThan3Matches")
+//    public List<ClubDto> getAllClubsWhichPlayedMoreThan3Matches() {
+//        return service.getAllClubsWhichPlayedMoreThan3Matches();
+//    }
 
     @DeleteMapping("/{id}")
     ResponseEntity deleteClub(@PathVariable int id) {

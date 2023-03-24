@@ -37,11 +37,14 @@ public class ScoreController {
         return service.getAvgGoalsPerMatchForFootballer();
     }
 
+    @GetMapping("/getAverageNew/")
+    public List<ScoreNewDto> getAvgNew() {
+        return service.getAvgNew();
+    }
+
     @DeleteMapping("/{id}")
     ResponseEntity deleteMatch(@PathVariable int id) {
         service.deleteMatchById(id);
         return ok().build();
     }
-
-    // TODO Add a Score to an existing match (match saves everything by Cascade, but we should be able to add Scores to it after the match)
 }

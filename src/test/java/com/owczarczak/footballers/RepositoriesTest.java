@@ -288,11 +288,11 @@ public class RepositoriesTest {
         clubRepository.findAllByOrderByCreatedDesc(pageable);
     }
 
-    @Test
-    public void shouldGetAllClubsThatPlayedMoreThanXMatches() {
-        List<Club> clubRepresentationList = clubRepository.getAllClubsWhichPlayedMoreThan3Matches();
-        Assertions.assertEquals(3, clubRepresentationList.size());
-    }
+//    @Test
+//    public void shouldGetAllClubsThatPlayedMoreThanXMatches() {
+//        List<Club> clubRepresentationList = clubRepository.getAllClubsWhichPlayedMoreThan3Matches();
+//        Assertions.assertEquals(3, clubRepresentationList.size());
+//    }
 
 
 //    @Test

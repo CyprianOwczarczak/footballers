@@ -22,7 +22,7 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
             	group by f.id, f.name
             	order by cnt desc
             ) scores
-            join\s
+            join
             (
             	select f.id, f.name, count(cr.id) as cnt
             	from footballer f
@@ -35,5 +35,13 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
             ) matches
             on scores.id = matches.id
             """, nativeQuery = true)
-    List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer();
+    List<Object[]> getAvgGoalsPerMatchForFootballer();
+
+    //TODO stworzyć drugi serwis który z tego korzysta/ endpoint restowy
+    @Query("""
+            select new com.owczarczak.footballers.score.ScoreNewDto(
+            s.id, s.match, s.footballer, s.minuteScored)
+            from Score s
+            """)
+    List<ScoreNewDto> getAvgNew();
 }

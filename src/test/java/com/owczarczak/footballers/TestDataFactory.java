@@ -164,7 +164,39 @@ public class TestDataFactory {
                 new Score(matchList.get(1), footballerList.get(1), 50),
                 new Score(matchList.get(2), footballerList.get(2), 60)
         );
-
         return scoreList;
+    }
+
+    //todo
+    //Creating Footballers with sets of representations
+    public static List<Footballer> getFootballersWithRepresentationsList(List<Club> clubList) {
+
+        //Creating footballersList
+
+
+
+        //Creating example representationSets with FootballersList
+        Set<ClubRepresentation> clubRepresentationSet1 = Set.of(new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(0)));
+
+        Set<ClubRepresentation> clubRepresentationSet2 = Set.of(new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(1)),
+                new ClubRepresentation(clubList.get(1)));
+
+        Set<ClubRepresentation> clubRepresentationSet3 = Set.of(new ClubRepresentation(clubList.get(0)),
+                new ClubRepresentation(clubList.get(2)),
+                new ClubRepresentation(clubList.get(2)),
+                new ClubRepresentation(clubList.get(2)),
+                new ClubRepresentation(clubList.get(2)));
+
+        List<Footballer> footballerList = new LinkedList<>();
+        Collections.addAll(footballerList,
+                new Footballer("111111", "Lewandowski", 150, clubRepresentationSet1),
+                new Footballer("222222", "Neymar", 160, clubRepresentationSet2),
+                new Footballer("333333", "Ikar", 160, clubRepresentationSet3));
+
+        return footballerList;
     }
 }

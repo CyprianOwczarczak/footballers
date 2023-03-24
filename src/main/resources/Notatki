@@ -134,3 +134,7 @@ Uzupełnić wszystkie Controllery żeby miały wszystkie funkcjonalności (repoz
 Testy do tych metod z repozytoriów --> happy i unhappy path
 
 Przerobić na reporting query (a la DTO)
+REPORT QUERY --> zwrócenie DTO zamiast Encji w JPQL
+Przykład: "select new com.cyprian.footballers.dtos.UserDto(u.id, u.firstname, u.lastname) from User u" --> 2 przykłady (musi mieć taki konstruktor)
+
+Spring Data JPA projections
