@@ -23,6 +23,5 @@ public class ClubRepresentationDto {
 //    int matchId;
 //    Instant matchDate;
 
-    //todo add what match is it for (match id, date, which clubs played)
-    // club name, club id, footballerList(id, etc)
+    //todo add what match is it for (match id, date, which clubs played) -- > club name, club id, footballerList(id, etc)
 }

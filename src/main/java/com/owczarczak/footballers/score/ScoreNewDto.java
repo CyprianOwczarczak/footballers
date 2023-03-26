@@ -5,22 +5,29 @@ import com.owczarczak.footballers.match.MatchDto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 @Builder
 public class ScoreNewDto {
-    private Integer id;
+    private int id;
 
-    //todo DTO not Entity ! --> zamiast obiektu zrobić prostszy typ (kilka pól zamiast całego obiektu)
-    private MatchDto matchDto;
-    private FootballerDto footballerDto; //id, name
-    private Integer minuteScored;
+    private int matchId;
+    private Instant matchDate;
 
-    public ScoreNewDto(Integer id, MatchDto matchDto, FootballerDto footballerDto, Integer minuteScored) {
+    private int footballerId;
+    private String footballerPesel;
+    private String footballerName;
+
+    private int minuteScored;
+
+    public ScoreNewDto(Integer id, Integer matchId, Instant matchDate, Integer footballerId, String footballerPesel, String footballerName, Integer minuteScored) {
         this.id = id;
-        this.matchDto = matchDto;
-        this.footballerDto = footballerDto;
+        this.matchId = matchId;
+        this.matchDate = matchDate;
+        this.footballerId = footballerId;
+        this.footballerPesel = footballerPesel;
+        this.footballerName = footballerName;
         this.minuteScored = minuteScored;
     }
-
-
 }

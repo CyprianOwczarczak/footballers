@@ -84,8 +84,11 @@ public class ScoreService {
         for (ScoreNewDto score : returnedList) {
             ScoreNewDto dtoToBeAdded = ScoreNewDto.builder()
                     .id(score.getId())
-                    .matchDto(score.getMatchDto())
-                    .footballerDto(score.getFootballerDto())
+                    .matchId(score.getMatchId())
+                    .matchDate(score.getMatchDate())
+                    .footballerId(score.getFootballerId())
+                    .footballerPesel(score.getFootballerPesel())
+                    .footballerName(score.getFootballerName())
                     .minuteScored(score.getMinuteScored())
                     .build();
             dtos.add(dtoToBeAdded);

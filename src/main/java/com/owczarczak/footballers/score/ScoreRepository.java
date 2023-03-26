@@ -1,8 +1,10 @@
 package com.owczarczak.footballers.score;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface ScoreRepository extends JpaRepository<Score, Integer> {
@@ -37,11 +39,18 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
             """, nativeQuery = true)
     List<Object[]> getAvgGoalsPerMatchForFootballer();
 
-    //TODO stworzyć drugi serwis który z tego korzysta/ endpoint restowy
     @Query("""
             select new com.owczarczak.footballers.score.ScoreNewDto(
-            s.id, s.match, s.footballer, s.minuteScored)
+            s.id, s.match.id, s.match.date, s.footballer.id, s.footballer.pesel, s.footballer.name, s.minuteScored)
             from Score s
             """)
     List<ScoreNewDto> getAvgNew();
+
+    @Transactional
+    @Modifying
+    @Query(value = """
+            delete
+            from club_representation_footballer
+            """, nativeQuery = true)
+    void deleteFromJoinTable();
 }

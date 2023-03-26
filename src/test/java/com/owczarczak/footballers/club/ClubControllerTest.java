@@ -3,11 +3,13 @@ package com.owczarczak.footballers.club;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.AssertionErrors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -16,7 +18,6 @@ import java.util.stream.Stream;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.util.AssertionErrors.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -81,11 +82,11 @@ public class ClubControllerTest {
                         jsonPath("$.name", is("Barcelona")));
     }
 
+    //todo get the first id and add 1000 or smth OR set the initial id as for example 100
     @Test
     @DisplayName("Should not get club by id")
     void shouldNotGetClubById() throws Exception {
         //when + then
-        //todo get the first id and add 1000 or smth OR set the initial id as for example 100
         this.mockMvc.perform(get("/clubs/" + 1))
                 .andDo(print())
                 .andExpect(status().isNotFound());
@@ -125,16 +126,7 @@ public class ClubControllerTest {
         List<Club> clubs = clubRepository.findAll();
 
         boolean containsClubName = clubs.stream().anyMatch(i -> i.equals("Barcelona"));
-
-//        clubs.stream().anyMatch("Barcelona");
-
-//        Checking if Stream contains an element
-//        Stream<String> stream = Stream.of("one", "two", "three", "four");
-//
-//        boolean match = stream.anyMatch(s -> s.contains("four"));
-//
-//        System.out.println(match);
-        //TODO check if the correct one is deleted --> check if not contains
+        assertFalse(containsClubName);
     }
 
     @Test

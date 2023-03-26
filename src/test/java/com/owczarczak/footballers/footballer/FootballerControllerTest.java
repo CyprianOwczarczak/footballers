@@ -469,13 +469,6 @@ class FootballerControllerTest {
         //Relating the ClubRepresentation back to Footballer
         representationReturned.setFootballerList(List.of(footballerReturned));
 
-//footballerRepository.save(footballerReturned);
-//representationRepository.save(representationReturned);
-//TODO dlaczego to działa --> książka JPA
-
-//        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList1());
-//        footballerRepository.saveAll(TestDataFactory.getFootballerListWithRepresentations(clubList));
-
         this.mockMvc.perform(get("/footballers/mostMatchesPlayed"))
                 .andDo(print())
                 .andExpectAll(

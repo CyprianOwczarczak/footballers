@@ -58,7 +58,7 @@ public class MatchService {
         for (Match match : matchList) {
             MatchDto dtoToBeAdded = MatchDto.builder()
                     .id(match.getId())
-                    .hostClubName(match.getHost().getClub().getName()) //fixme Check if here we don't have some error
+                    .hostClubName(match.getHost().getClub().getName())
                     .guestClubName(match.getGuest().getClub().getName())
                     .nameOfReferee(match.getNameOfReferee())
                     .date(match.getDate())

@@ -16,15 +16,14 @@ public interface ClubRepository extends JpaRepository<Club, Integer> {
     @Query("SELECT c FROM Club c ORDER BY c.created DESC")
     Page<Club> findAllByOrderByCreatedDesc(Pageable pageable);
 
-    //Wszystkie kluby które zagrały więcej niż 3 mecze
-//    @Query("""
-//            select c
-//            from Club c
-//            join ClubRepresentation cr
-//            on cr.club = c
-//            group by c.id
-//            having count(cr.club) > 3
-//             """)
-//    List<Club> getAllClubsWhichPlayedMoreThan3Matches();
-    // TODO przejrzeć dokumentację do JSONPATH i użyć AnyMatch w testach
+//    Wszystkie kluby które zagrały więcej niż 3 mecze
+    @Query("""
+            select c
+            from Club c
+            join ClubRepresentation cr
+            on cr.club = c
+            group by c.id
+            having count(cr.club) > 3
+             """)
+    List<Club> getAllClubsWhichPlayedMoreThan3Matches();
 }

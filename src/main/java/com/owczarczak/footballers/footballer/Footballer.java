@@ -25,7 +25,7 @@ public class Footballer {
     @OneToMany(mappedBy = "footballer")
     Set<Contract> contractList;
 
-    @ManyToMany(mappedBy = "footballerList")
+    @ManyToMany(mappedBy = "footballerList", cascade = CascadeType.REMOVE)
     Set<ClubRepresentation> representationList;
 
     public Footballer(final String pesel, final String name, final int height) {

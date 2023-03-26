@@ -10,7 +10,7 @@ import com.owczarczak.footballers.footballer.FootballerRepository;
 import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.match.MatchRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -46,20 +45,27 @@ public class ScoreControllerTest {
     @Autowired
     MatchRepository matchRepository;
 
-    @Autowired
-    ScoreService service;
+    @BeforeEach
+    void setup2() {
+
+        scoreRepository.deleteAll();
+        matchRepository.deleteAll();
+        repRepository.deleteAll();
+        footballerRepository.deleteAll();
+        clubRepository.deleteAll();
+    }
 
     @AfterEach
     void setup() {
         scoreRepository.deleteAll();
-        footballerRepository.deleteAll();
         matchRepository.deleteAll();
         repRepository.deleteAll();
+        footballerRepository.deleteAll();
         clubRepository.deleteAll();
     }
 
     @Test
-    void shouldGetAllMatches() throws Exception {
+    void shouldGetAllScores() throws Exception {
         //given
         //Creating matches with ClubRepresentations
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
@@ -98,24 +104,30 @@ public class ScoreControllerTest {
                 .andExpect(jsonPath("$").isMap());
     }
 
-    //fixme the query returns empty --> add data to the join table !
     @Test
     @DisplayName("Should get average goals per match for footballer")
     void shouldGetAvgGoalsPerMatchForFootballer() throws Exception {
+        scoreRepository.deleteFromJoinTable();
 
         //given
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
-        List<ClubRepresentation> clubRepresentations = TestDataFactory.getRepresentationList1(clubList);
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballersWithRepresentationsList(clubList));
+
+        Footballer footballer1 = new Footballer("100000", "AvgFootballer", 150);
+        Footballer footballer2 = new Footballer("200000", "AvgFootballer2", 160);
+        List<Footballer> avgFootballerList = List.of(footballer1, footballer2);
+        footballerRepository.saveAll(avgFootballerList);
+
+        List<ClubRepresentation> clubRepresentations = TestDataFactory.getRepresentationsWithFootballersList(clubList, footballerList, avgFootballerList);
         List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(clubRepresentations));
 
         // Creating Scores
-        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
         scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
 
         //when + then
         this.mockMvc.perform(get("/scores/getAverageGoals/"))
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(0)))
+                .andExpect(jsonPath("$", hasSize(3)))
                 .andDo(print());
     }
 

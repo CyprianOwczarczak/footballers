@@ -44,19 +44,19 @@ public class ClubService {
         }
     }
 
-//    List<ClubDto> getAllClubsWhichPlayedMoreThan3Matches() {
-//        List<Club> clubList = repository.getAllClubsWhichPlayedMoreThan3Matches();
-//        List<ClubDto> dtos = new LinkedList<>();
-//        for (Club club : clubList) {
-//            ClubDto dtoToBeAdded = ClubDto.builder()
-//                    .id(club.getId())
-//                    .name(club.getName())
-//                    .created(club.getCreated())
-//                    .build();
-//            dtos.add(dtoToBeAdded);
-//        }
-//        return dtos;
-//    }
+    List<ClubDto> getAllClubsWhichPlayedMoreThan3Matches() {
+        List<Club> clubList = repository.getAllClubsWhichPlayedMoreThan3Matches();
+        List<ClubDto> dtos = new LinkedList<>();
+        for (Club club : clubList) {
+            ClubDto dtoToBeAdded = ClubDto.builder()
+                    .id(club.getId())
+                    .name(club.getName())
+                    .created(club.getCreated())
+                    .build();
+            dtos.add(dtoToBeAdded);
+        }
+        return dtos;
+    }
 
     @Transactional
     public void deleteClubById(@PathVariable int id) {

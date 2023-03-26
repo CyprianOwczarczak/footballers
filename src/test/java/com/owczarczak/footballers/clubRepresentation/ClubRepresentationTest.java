@@ -82,7 +82,6 @@ public class ClubRepresentationTest {
                 .andExpectAll(
                         jsonPath("$").isMap(),
                         jsonPath("$.clubName", is("Barcelona")));
-        //todo check if the whole json is correct
     }
 
     @Test

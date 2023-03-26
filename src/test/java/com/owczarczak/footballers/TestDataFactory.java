@@ -172,24 +172,29 @@ public class TestDataFactory {
     public static List<Footballer> getFootballersWithRepresentationsList(List<Club> clubList) {
 
         //Creating footballersList
+        List<Footballer> footballerList1 = getFootballerList();
 
+        Footballer footballer1 = new Footballer();
+        Footballer footballer2 = new Footballer();
 
+        List<Footballer> footballerList2 = List.of(footballer1, footballer2);
+//        List<Footballer> footballerList3 = getFootballerList();
 
         //Creating example representationSets with FootballersList
         Set<ClubRepresentation> clubRepresentationSet1 = Set.of(new ClubRepresentation(clubList.get(0)),
-                new ClubRepresentation(clubList.get(0)),
-                new ClubRepresentation(clubList.get(0)),
-                new ClubRepresentation(clubList.get(0)));
+                new ClubRepresentation(clubList.get(0), footballerList1),
+                new ClubRepresentation(clubList.get(0), footballerList1),
+                new ClubRepresentation(clubList.get(0), footballerList1));
 
         Set<ClubRepresentation> clubRepresentationSet2 = Set.of(new ClubRepresentation(clubList.get(0)),
-                new ClubRepresentation(clubList.get(1)),
-                new ClubRepresentation(clubList.get(1)));
+                new ClubRepresentation(clubList.get(1), footballerList2),
+                new ClubRepresentation(clubList.get(1), footballerList2));
 
         Set<ClubRepresentation> clubRepresentationSet3 = Set.of(new ClubRepresentation(clubList.get(0)),
-                new ClubRepresentation(clubList.get(2)),
-                new ClubRepresentation(clubList.get(2)),
-                new ClubRepresentation(clubList.get(2)),
-                new ClubRepresentation(clubList.get(2)));
+                new ClubRepresentation(clubList.get(2), footballerList1),
+                new ClubRepresentation(clubList.get(2), footballerList1),
+                new ClubRepresentation(clubList.get(2), footballerList1),
+                new ClubRepresentation(clubList.get(2), footballerList1));
 
         List<Footballer> footballerList = new LinkedList<>();
         Collections.addAll(footballerList,
@@ -198,5 +203,27 @@ public class TestDataFactory {
                 new Footballer("333333", "Ikar", 160, clubRepresentationSet3));
 
         return footballerList;
+    }
+
+    public static List<ClubRepresentation> getRepresentationsWithFootballersList(
+            List<Club> clubList, List<Footballer> footballerList1, List<Footballer> footballerList2) {
+        //Creating footballersLists
+        List<ClubRepresentation> clubRepresentations = new LinkedList<>();
+
+        Collections.addAll(clubRepresentations,
+                new ClubRepresentation(clubList.get(0), footballerList1),
+                new ClubRepresentation(clubList.get(0), footballerList1),
+                new ClubRepresentation(clubList.get(0), footballerList1),
+                new ClubRepresentation(clubList.get(0), footballerList1),
+                new ClubRepresentation(clubList.get(1), footballerList2),
+                new ClubRepresentation(clubList.get(1), footballerList2),
+                new ClubRepresentation(clubList.get(2), footballerList1),
+                new ClubRepresentation(clubList.get(2), footballerList1),
+                new ClubRepresentation(clubList.get(2), footballerList1),
+                new ClubRepresentation(clubList.get(2), footballerList1),
+                new ClubRepresentation(clubList.get(3), footballerList2),
+                new ClubRepresentation(clubList.get(3), footballerList2));
+
+        return clubRepresentations;
     }
 }

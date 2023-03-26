@@ -18,6 +18,7 @@ public class ClubRepresentation {
     private Club club;
 
     @ManyToMany
+//            (cascade = CascadeType.REMOVE)
     @JoinTable(name = "club_representation_footballer",
             joinColumns = @JoinColumn(name = "club_representation_id"),
             inverseJoinColumns = @JoinColumn(name = "footballer_id"))
