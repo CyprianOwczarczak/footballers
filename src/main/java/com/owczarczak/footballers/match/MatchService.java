@@ -68,26 +68,26 @@ public class MatchService {
         return dtos;
     }
 
-//    public MatchAddDto addMatch(MatchAddDto matchToBeAdded) {
-//        Match newMatch = Match.builder()
-//                .id(matchToBeAdded.getId())
-//                .guest(matchToBeAdded.getGuest())
-//                .host(matchToBeAdded.getHost())
-//                .nameOfReferee(matchToBeAdded.getNameOfReferee())
-//                .date(matchToBeAdded.getDate())
-//                .scores(matchToBeAdded.getScores())
-//                .build();
-//        Match savedEntity = repository.save(newMatch);
-//
-//        return MatchAddDto.builder()
-//                .id(savedEntity.getId())
-//                .guest(savedEntity.getGuest())
-//                .host(savedEntity.getHost())
-//                .nameOfReferee(savedEntity.getNameOfReferee())
-//                .date(savedEntity.getDate())
-//                .scores(savedEntity.getScores())
-//                .build();
-//    }
+    public MatchAddDto addMatch(MatchAddDto matchToBeAdded) {
+        Match newMatch = Match.builder()
+                .id(matchToBeAdded.getId())
+                .guest(matchToBeAdded.getGuest())
+                .host(matchToBeAdded.getHost())
+                .nameOfReferee(matchToBeAdded.getNameOfReferee())
+                .date(matchToBeAdded.getDate())
+                .scores(matchToBeAdded.getScores())
+                .build();
+        Match savedEntity = repository.save(newMatch);
+
+        return MatchAddDto.builder()
+                .id(savedEntity.getId())
+                .guest(savedEntity.getGuest())
+                .host(savedEntity.getHost())
+                .nameOfReferee(savedEntity.getNameOfReferee())
+                .date(savedEntity.getDate())
+                .scores(savedEntity.getScores())
+                .build();
+    }
 
     @Transactional
     public void deleteMatchById(@PathVariable int id) {

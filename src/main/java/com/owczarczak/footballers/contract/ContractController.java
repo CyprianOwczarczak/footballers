@@ -1,10 +1,10 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.footballer.FootballerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +24,16 @@ public class ContractController {
 
     @GetMapping("/contractsForFootballer/{id}")
     public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable int id) {
+        List<ContractDto> foundContractList = service.getListOfContractsForSpecificFootballer(id);
+        if (foundContractList.isEmpty()) {
+            return notFound().build();
+        } else {
+            return ok().build();
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ContractDto> getContractById(@PathVariable int id) {
         Optional<ContractDto> foundDtoOptional = service.getContractById(id);
         if (foundDtoOptional.isEmpty()) {
             return notFound().build();
@@ -43,32 +53,16 @@ public class ContractController {
         return ok().build();
     }
 
-    //TODO extend the Contract of the Footballer whose contract comes to an end
-    // (pass the number of days to extend the contract in the parameter)
     @PutMapping("/{id}")
-    ResponseEntity<?> extendContractLength(@PathVariable int id,
+    Optional<Contract> extendContractLength(@PathVariable int id,
                                            @RequestParam("monthsToAdd") int monthsToAdd) {
-        if (service.getContractById(id).isEmpty()) {
-            return notFound().build();
-        }
-
-        Optional<ContractDto> result = service.extendContractLength(id, monthsToAdd);
-        return ok(result.get());
-    }
-
-//    @PutMapping("/")
-//    ResponseEntity<?> updateFootballer(@RequestBody FootballerDto footballerToUpdate) {
-//        if (service.getFootballerById(footballerToUpdate.getId()).isEmpty()) {
+//        if (service.getContractById(id).isEmpty()) {
 //            return notFound().build();
+//        } else {
+//            Optional<Contract> result = service.extendContractLength(id, monthsToAdd);
+//            return ok(result.get());
 //        }
-//
-//        ArrayList<String> errorList = returnErrorList(footballerToUpdate);
-//        if (!errorList.isEmpty()) {
-//            return badRequest().body(errorList);
-//        }
-//        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-//        return ok(result.get());
-//    }
 
-
+        return service.extendContractLength(id, monthsToAdd);
+    }
 }

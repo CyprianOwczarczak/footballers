@@ -46,22 +46,6 @@ public class ScoreService {
         }
     }
 
-//    List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
-//        List<ScoreAvgGoalsDto> returnedListOfArrays = repository.getAvgGoalsPerMatchForFootballer();
-//        List<ScoreAvgGoalsDto> dtos = new LinkedList<>();
-//        for (ScoreAvgGoalsDto row : returnedListOfArrays) {
-//            ScoreAvgGoalsDto dtoToBeAdded = ScoreAvgGoalsDto.builder()
-//                    .id(row.getId())
-//                    .footballerName(row.getFootballerName())
-//                    .numberOfGoals(row.getNumberOfGoals())
-//                    .numberOfMatches(row.getNumberOfMatches())
-//                    .averageGoals(row.getAverageGoals())
-//                    .build();
-//            dtos.add(dtoToBeAdded);
-//        }
-//        return dtos;
-//    }
-
     List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
         List<Object[]> returnedListOfArrays = repository.getAvgGoalsPerMatchForFootballer();
         List<ScoreAvgGoalsDto> dtos = new LinkedList<>();

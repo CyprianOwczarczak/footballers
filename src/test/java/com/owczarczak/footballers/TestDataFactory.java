@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -136,16 +135,25 @@ public class TestDataFactory {
     //Create a list of Contracts (we need to import Clubs and Footballers)
     public static List<Contract> getContractList1(List<Club> clubList, List<Footballer> footballerList) {
 
+        //Creating contractStart and contractEnd dates (All Contracts last 3 years
+        LocalDateTime startContract1 = of(2015, 1, 5, 1, 10, 0);
+        LocalDateTime startContract2 = of(2016, 2, 10, 2, 20, 0);
+        LocalDateTime startContract3 = of(2017, 3, 15, 3, 30, 0);
+
+        LocalDateTime endContract1 = of(2018, 1, 5, 1, 10, 0);
+        LocalDateTime endContract2 = of(2019, 2, 10, 2, 20, 0);
+        LocalDateTime endContract3 = of(2020, 3, 15, 3, 30, 0);
+
         //Creating a list of Contracts
         List<Contract> contractList = new LinkedList<>();
         Collections.addAll(contractList,
 
-                new Contract(clubList.get(0), footballerList.get(0),
-                        Instant.now().minus(100, ChronoUnit.DAYS), Instant.now(), 10000),
-                new Contract(clubList.get(1), footballerList.get(1),
-                        Instant.now().minus(200, ChronoUnit.DAYS), Instant.now(), 20000),
-                new Contract(clubList.get(2), footballerList.get(2),
-                        Instant.now().minus(300, ChronoUnit.DAYS), Instant.now(), 30000));
+                new Contract(clubList.get(0), footballerList.get(0), startContract1.toInstant(ZoneOffset.UTC),
+                        endContract1.toInstant(ZoneOffset.UTC), 10000),
+                new Contract(clubList.get(1), footballerList.get(1), startContract2.toInstant(ZoneOffset.UTC),
+                        endContract2.toInstant(ZoneOffset.UTC), 20000),
+                new Contract(clubList.get(2), footballerList.get(2), startContract3.toInstant(ZoneOffset.UTC),
+                        endContract3.toInstant(ZoneOffset.UTC), 30000));
 
         return contractList;
     }
@@ -167,7 +175,6 @@ public class TestDataFactory {
         return scoreList;
     }
 
-    //todo
     //Creating Footballers with sets of representations
     public static List<Footballer> getFootballersWithRepresentationsList(List<Club> clubList) {
 
@@ -176,9 +183,7 @@ public class TestDataFactory {
 
         Footballer footballer1 = new Footballer();
         Footballer footballer2 = new Footballer();
-
         List<Footballer> footballerList2 = List.of(footballer1, footballer2);
-//        List<Footballer> footballerList3 = getFootballerList();
 
         //Creating example representationSets with FootballersList
         Set<ClubRepresentation> clubRepresentationSet1 = Set.of(new ClubRepresentation(clubList.get(0)),

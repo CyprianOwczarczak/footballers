@@ -79,23 +79,36 @@ public class ContractService {
                 .build();
     }
 
-    public Optional<ContractDto> extendContractLength(int id, int monthsToAdd) {
+//    public Optional<ContractDto> extendContractLength(int id, int monthsToAdd) {
+//        if (!repository.existsById(id)) {
+//            return Optional.empty();
+//        } else {
+////            Contract contract = repository.getReferenceById(id);
+//            Optional<Contract> contractOptional = repository.findById(id);
+//            Contract contract = contractOptional.get();
+//
+//            Instant updatedContractEnd = contract.getContractEnd().plus(monthsToAdd, ChronoUnit.MONTHS);
+//
+//            return Optional.ofNullable(ContractDto.builder()
+//                    .id(contract.getId())
+//                    .clubName(contract.getClub().getName())
+//                    .footballerName(contract.getFootballer().getName())
+//                    .contractStart(contract.getContractStart())
+//                    .contractEnd(updatedContractEnd)
+//                    .salary(contract.getSalary())
+//                    .build());
+//        }
+//    }
+
+    public Optional<Contract> extendContractLength(int id, int monthsToAdd) {
+        Contract contractToUpdate;
         if (!repository.existsById(id)) {
             return Optional.empty();
         } else {
-            Contract contract = repository.getReferenceById(id);
-
-            Instant updatedContractEnd = contract.getContractEnd().plus(monthsToAdd, ChronoUnit.MONTHS);
-
-            return Optional.ofNullable(ContractDto.builder()
-                    .id(contract.getId())
-                    .clubName(contract.getClub().getName())
-                    .footballerName(contract.getFootballer().getName())
-                    .contractStart(contract.getContractStart())
-                    .contractEnd(updatedContractEnd)
-                    .salary(contract.getSalary())
-                    .build());
+            contractToUpdate = repository.getReferenceById(id);
+            contractToUpdate.setContractEnd(contractToUpdate.getContractEnd().plus(monthsToAdd, ChronoUnit.MONTHS));
         }
+        return Optional.of(contractToUpdate);
     }
 
     @Transactional

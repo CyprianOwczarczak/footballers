@@ -17,24 +17,6 @@ public class ClubRepresentationService {
     @Autowired
     ClubRepresentationRepository repository;
 
-//    public List<ClubRepresentationDto> getAllClubRepresentatitons() {
-//        List<ClubRepresentation> clubRepresentationList = repository.findAll();
-//        List<ClubRepresentationDto> dtos = new LinkedList<>();
-//        for (ClubRepresentation representation : clubRepresentationList) {
-//            ClubRepresentationDto dtoToBeAdded = ClubRepresentationDto.builder()
-//                    .id(representation.getId())
-//                    .clubId(representation.getClub().getId())
-//                    .clubName(representation.getClub().getName())
-//                    .footballerList(representation.getFootballerList())
-//
-//
-//                    .build();
-//
-//                    dtos.add(dtoToBeAdded);
-//        }
-//        return dtos;
-//    }
-
     public List<ClubRepresentationDto> getAllClubRepresentations() {
         List<ClubRepresentation> clubRepresentationList = repository.findAll();
         List<ClubRepresentationDto> dtos = new LinkedList<>();

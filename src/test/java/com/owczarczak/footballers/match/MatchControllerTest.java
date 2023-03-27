@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -145,25 +147,41 @@ public class MatchControllerTest {
         assertEquals(8, representationRepository.findAll().size());
     }
 
-//    //TODO add POST test
-//    @Test
-//    @DisplayName("Should add match")
-//    void shouldAddMatch() throws Exception {
-//        //given
-//        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
-//        List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
-//
-//        String request = """
+    //TODO add POST test
+    @Test
+    @DisplayName("Should add match")
+    void shouldAddMatch() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
+
+        //todo How to add ClubRepresentation entity to the request
+        String request = """
+                {
+                "id":null,
+                "guest":
+
+                }
+                """;
+
+//        when
+        Match match = new Match(representationList.get(0), representationList.get(4),
+                "Referee1", Instant.now(), Collections.emptyList());
+
+//        then
+        this.mockMvc.perform(post("/"));
+    }
+
+//    String request = """
 //                {
-//
+//                "id":null,
+//                "name":"",
+//                "nip":"776-242-23-45",
+//                "address":{
+//                        "street": "Starołęcka 239",
+//                        "city": "Poznań",
+//                        "zipCode": "61-323"
+//                }
 //                }
 //                """;
-
-        //when
-//        Match match = new Match(representationList.get(0), representationList.get(4),
-//                "Referee1", Instant.now(), Collections.emptyList());
-
-        //then
-//        this.mockMvc.perform(post("/"))
-//    }
 }
