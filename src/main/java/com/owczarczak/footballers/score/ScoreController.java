@@ -42,6 +42,8 @@ public class ScoreController {
         return service.getAvgNew();
     }
 
+    //TODO add Post method
+
     @DeleteMapping("/{id}")
     ResponseEntity deleteMatch(@PathVariable int id) {
         service.deleteMatchById(id);

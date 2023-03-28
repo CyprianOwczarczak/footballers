@@ -42,12 +42,12 @@ public class MatchControllerTest {
     @Autowired
     ClubRepository clubRepository;
 
-    @AfterEach
-    void setup() {
-        matchRepository.deleteAll();
-        representationRepository.deleteAll();
-        clubRepository.deleteAll();
-    }
+//    @AfterEach
+//    void setup() {
+//        matchRepository.deleteAll();
+//        representationRepository.deleteAll();
+//        clubRepository.deleteAll();
+//    }
 
     @Test
     @DisplayName("Should get all matches")
@@ -152,23 +152,37 @@ public class MatchControllerTest {
     @DisplayName("Should add match")
     void shouldAddMatch() throws Exception {
         //given
-        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
-        List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
+//        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+//        List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
 
         String request = """
                 {
-                "id":null,
-                "guest":
-
+                	"pesel": "222222",
+                               
+                	"host":{
+                        "club":{
+                            "name":"ClubNamePost1",
+                            "created":"2015-12-30T19:34:50.63Z"
+                        }
+                    },
+                               
+                    "guest":{
+                        "club":{
+                            "name":"ClubNamePost2",
+                            "created":"2015-12-30T19:34:50.63Z"
+                        }
+                    },
+                               
+                    "nameOfReferee": "RefereePost1",
+                    "date": "2018-12-30T19:34:50.63Z"
+                    "scores":{
+                               
+                    }
                 }
                 """;
-
-//        when
-        Match match = new Match(representationList.get(0), representationList.get(4),
-                "Referee1", Instant.now(), Collections.emptyList());
-
-//        then
+        //when + then
         this.mockMvc.perform(post("/")
-                .content(request));
+                .content(request))
+                .andExpect(jsonPath("$").isMap());
     }
 }

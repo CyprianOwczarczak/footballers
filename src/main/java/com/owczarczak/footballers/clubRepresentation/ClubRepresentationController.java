@@ -31,6 +31,8 @@ public class ClubRepresentationController {
         }
     }
 
+    //TODO add Post method
+
     @DeleteMapping("/{id}")
     ResponseEntity deleteClubRepresentation(@PathVariable int id) {
         service.deleteClubRepresentation(id);

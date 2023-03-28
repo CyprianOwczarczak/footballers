@@ -153,3 +153,8 @@ Drużyny, piłkarze z kontraktami i potem zapisujemy dane historyczne (wszystko 
 Dodać MatchBackfillDto --> duże Dto do dodania wszystkiego na raz
 
 //Testować w Mavenie
+
+29.03
+Dodawać komentarz do każdej poprawionej rzeczy
+Data Getter Setter dokumentacja
+Zamienić importy w Intellij na konkretne (bez gwiazdki)

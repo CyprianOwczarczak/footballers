@@ -1,9 +1,12 @@
 package com.owczarczak.footballers.club;
 
+import com.owczarczak.footballers.footballer.FootballerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +37,18 @@ public class ClubController {
     @GetMapping("/MoreThan3Matches")
     public List<ClubDto> getAllClubsWhichPlayedMoreThan3Matches() {
         return service.getAllClubsWhichPlayedMoreThan3Matches();
+    }
+
+    @PostMapping("/")
+    ResponseEntity<?> addClub(@RequestBody ClubDto newClubDto) {
+        if (service.repository.existsById(newClubDto.getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        ClubDto result = service.addClub(newClubDto);
+        return ResponseEntity
+                .created(URI.create("/" + result.getId()))
+                .body(result);
     }
 
     @DeleteMapping("/{id}")

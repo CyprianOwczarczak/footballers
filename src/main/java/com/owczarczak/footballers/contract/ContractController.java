@@ -21,16 +21,6 @@ public class ContractController {
         return service.getAllContracts();
     }
 
-    @GetMapping("/contractsForFootballer/{id}")
-    public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable int id) {
-        List<ContractDto> foundContractList = service.getListOfContractsForSpecificFootballer(id);
-        if (foundContractList.isEmpty()) {
-            return notFound().build();
-        } else {
-            return ok(foundContractList);
-        }
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ContractDto> getContractById(@PathVariable int id) {
         Optional<ContractDto> foundDtoOptional = service.getContractById(id);
@@ -38,6 +28,16 @@ public class ContractController {
             return notFound().build();
         } else {
             return ok(foundDtoOptional.get());
+        }
+    }
+
+    @GetMapping("/contractsForFootballer/{id}")
+    public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable int id) {
+        List<ContractDto> foundContractList = service.getListOfContractsForSpecificFootballer(id);
+        if (foundContractList.isEmpty()) {
+            return notFound().build();
+        } else {
+            return ok(foundContractList);
         }
     }
 
@@ -51,6 +51,8 @@ public class ContractController {
         service.deleteContractById(id);
         return ok().build();
     }
+
+    //TODO add Post method
 
     @PutMapping("/{id}")
     ResponseEntity extendContractLength(@PathVariable int id,

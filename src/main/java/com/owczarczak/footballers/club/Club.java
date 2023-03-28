@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
+@Builder
 @Entity
 @Table(name = "club")
 public class Club {
