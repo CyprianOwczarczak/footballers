@@ -12,7 +12,7 @@ import java.util.List;
 public interface FootballerRepository extends JpaRepository<Footballer, Integer> {
 
     @Query("SELECT a FROM Footballer a ORDER BY a.height DESC")
-    Page<Footballer> findAllByOrderByHeightDesc(Pageable pageable);
+    Page<Footballer> findAllByOrderBxyHeightDesc(Pageable pageable);
 
     @Query("SELECT f FROM Footballer f WHERE f.name = :name")
     List<Footballer> findByName(@Param("name") String name);

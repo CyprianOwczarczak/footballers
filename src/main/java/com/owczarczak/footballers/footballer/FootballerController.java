@@ -56,7 +56,7 @@ public class FootballerController {
             return ResponseEntity.badRequest().build();
         }
 
-        ArrayList<String> errorList = returnErrorList(newFootballerDto);
+        List<String> errorList = returnErrorList(newFootballerDto);
         if (!errorList.isEmpty()) {
             return ResponseEntity.badRequest().body(errorList);
         }
@@ -72,7 +72,7 @@ public class FootballerController {
             return notFound().build();
         }
 
-        ArrayList<String> errorList = returnErrorList(footballerToUpdate);
+        List<String> errorList = returnErrorList(footballerToUpdate);
         if (!errorList.isEmpty()) {
             return badRequest().body(errorList);
         }
