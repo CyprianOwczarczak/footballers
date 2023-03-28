@@ -155,7 +155,6 @@ public class MatchControllerTest {
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
 
-        //todo How to add ClubRepresentation entity to the request
         String request = """
                 {
                 "id":null,
@@ -169,19 +168,7 @@ public class MatchControllerTest {
                 "Referee1", Instant.now(), Collections.emptyList());
 
 //        then
-        this.mockMvc.perform(post("/"));
+        this.mockMvc.perform(post("/")
+                .content(request));
     }
-
-//    String request = """
-//                {
-//                "id":null,
-//                "name":"",
-//                "nip":"776-242-23-45",
-//                "address":{
-//                        "street": "Starołęcka 239",
-//                        "city": "Poznań",
-//                        "zipCode": "61-323"
-//                }
-//                }
-//                """;
 }

@@ -23,8 +23,9 @@ public class ClubRepresentationService {
         for (ClubRepresentation representation : clubRepresentationList) {
             ClubRepresentationDto dtoToBeAdded = ClubRepresentationDto.builder()
                     .id(representation.getId())
+                    .clubId(representation.getClub().getId())
                     .clubName(representation.getClub().getName())
-                    .footballerListSize(representation.getFootballerList().size())
+                    .footballerList(representation.getFootballerList())
                     .build();
             dtos.add(dtoToBeAdded);
         }
@@ -38,8 +39,9 @@ public class ClubRepresentationService {
             ClubRepresentation clubRepresentation = repository.getReferenceById(id);
             return Optional.ofNullable(ClubRepresentationDto.builder()
                     .id(clubRepresentation.getId())
+                    .clubId(clubRepresentation.getClub().getId())
                     .clubName(clubRepresentation.getClub().getName())
-                    .footballerListSize(clubRepresentation.getFootballerList().size())
+                    .footballerList(clubRepresentation.getFootballerList())
                     .build());
         }
     }
