@@ -13,13 +13,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.owczarczak.footballers.TestDataFactory.*;
-import static java.time.LocalDateTime.of;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -93,25 +89,23 @@ public class ContractControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    //fixme
     @Test
     @DisplayName("Should get list of contracts for specific footballer")
     void shouldGetListOfContractsForSpecificFootballer() throws Exception {
         // given --> creating example data to create the Contracts
-        clubRepository.saveAll(getClubList());
-        List<Footballer> list = footballerRepository.saveAll(getFootballerList());
-        contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
+        List<Club> clubList = clubRepository.saveAll(getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(getFootballerList());
+        contractRepository.saveAll(getContractList1(clubList, footballerList));
 
         //Getting the id of the first footballer from the list to check contracts for him
-        int searchedId = list.get(0).getId();
-
+        int searchedId = footballerList.get(0).getId();
         // when + then
         this.mockMvc.perform(get("/contracts/contractsForFootballer/" + searchedId))
                 .andDo(print())
-                .andExpectAll(jsonPath("$").isArray());
-//                        jsonPath("$[0].clubName", is("Barcelona")),
-//                        jsonPath("$[0].footballerName", is("Lewandowski")),
-//                        jsonPath("$[0].salary", is(10000)));
+                .andExpectAll(jsonPath("$").isArray(),
+                        jsonPath("$[0].clubName", is("Barcelona")),
+                        jsonPath("$[0].footballerName", is("Lewandowski")),
+                        jsonPath("$[0].salary", is(10000)));
     }
 
     @Test
@@ -157,27 +151,23 @@ public class ContractControllerTest {
                 .andDo(print());
     }
 
-    //Fixme --> http 405 method not allowed
     @Test
     void shouldUpdateContractLength() throws Exception {
         //given
         List<Club> clubList = clubRepository.saveAll(getClubList());
-        footballerRepository.saveAll(getFootballerList());
+        List<Footballer> footballerList = footballerRepository.saveAll(getFootballerList());
         List<Contract> contractList =
-                contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
+                contractRepository.saveAll(getContractList1(clubList, footballerList));
+
         int idToUpdate = contractList.get(0).getId();
 
-        Instant contractEnd = contractList.get(0).getContractEnd();
-        System.out.println("ID IS " + idToUpdate);
-
         //when + then
-        this.mockMvc.perform(post("/contracts/" + idToUpdate + "?monthsToAdd=12"))
+        this.mockMvc.perform(put("/contracts/" + idToUpdate + "?daysToAdd=12"))
                 .andDo(print())
-                .andExpect(status().isOk());
-
-//        LocalDateTime endContract1 = of(2018, 1, 5, 1, 10, 0);
-
-
-//        Assertions.assertEquals(contractEnd.plus(12, ChronoUnit.MONTHS), contractRepository.findById(idToUpdate).get().getContractEnd());
+                .andExpectAll(status().isOk(),
+                        jsonPath("$").isMap(),
+                        jsonPath("$.clubName", is("Barcelona")),
+                        jsonPath("$.contractEnd", is("2018-01-17T01:10:00Z"))
+                );
     }
 }

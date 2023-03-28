@@ -82,7 +82,6 @@ public class ClubControllerTest {
                         jsonPath("$.name", is("Barcelona")));
     }
 
-    //todo get the first id and add 1000 or smth OR set the initial id as for example 100
     @Test
     @DisplayName("Should not get club by id")
     void shouldNotGetClubById() throws Exception {

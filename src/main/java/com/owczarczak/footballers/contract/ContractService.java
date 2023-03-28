@@ -79,36 +79,24 @@ public class ContractService {
                 .build();
     }
 
-//    public Optional<ContractDto> extendContractLength(int id, int monthsToAdd) {
-//        if (!repository.existsById(id)) {
-//            return Optional.empty();
-//        } else {
-////            Contract contract = repository.getReferenceById(id);
-//            Optional<Contract> contractOptional = repository.findById(id);
-//            Contract contract = contractOptional.get();
-//
-//            Instant updatedContractEnd = contract.getContractEnd().plus(monthsToAdd, ChronoUnit.MONTHS);
-//
-//            return Optional.ofNullable(ContractDto.builder()
-//                    .id(contract.getId())
-//                    .clubName(contract.getClub().getName())
-//                    .footballerName(contract.getFootballer().getName())
-//                    .contractStart(contract.getContractStart())
-//                    .contractEnd(updatedContractEnd)
-//                    .salary(contract.getSalary())
-//                    .build());
-//        }
-//    }
-
-    public Optional<Contract> extendContractLength(int id, int monthsToAdd) {
+    public Optional<ContractDto> extendContractLength(int id, int daysToAdd) {
         Contract contractToUpdate;
         if (!repository.existsById(id)) {
             return Optional.empty();
-        } else {
-            contractToUpdate = repository.getReferenceById(id);
-            contractToUpdate.setContractEnd(contractToUpdate.getContractEnd().plus(monthsToAdd, ChronoUnit.MONTHS));
         }
-        return Optional.of(contractToUpdate);
+        contractToUpdate = repository.getReferenceById(id);
+        Instant newContractEnd = contractToUpdate.getContractEnd().plus(daysToAdd, ChronoUnit.DAYS);
+        contractToUpdate.setContractEnd(newContractEnd);
+        Contract savedEntity = repository.save(contractToUpdate);
+
+        return Optional.ofNullable(ContractDto.builder()
+                .id(savedEntity.getId())
+                .clubName(savedEntity.getClub().getName())
+                        .footballerName(savedEntity.getFootballer().getName())
+                        .contractStart(savedEntity.getContractStart())
+                        .contractEnd(savedEntity.getContractEnd())
+                        .salary(savedEntity.getSalary())
+                .build());
     }
 
     @Transactional

@@ -45,12 +45,4 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
             from Score s
             """)
     List<ScoreNewDto> getAvgNew();
-
-    @Transactional
-    @Modifying
-    @Query(value = """
-            delete
-            from club_representation_footballer
-            """, nativeQuery = true)
-    void deleteFromJoinTable();
 }

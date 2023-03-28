@@ -1,6 +1,5 @@
 package com.owczarczak.footballers.contract;
 
-import com.owczarczak.footballers.footballer.FootballerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class ContractController {
         if (foundContractList.isEmpty()) {
             return notFound().build();
         } else {
-            return ok().build();
+            return ok(foundContractList);
         }
     }
 
@@ -54,15 +53,13 @@ public class ContractController {
     }
 
     @PutMapping("/{id}")
-    Optional<Contract> extendContractLength(@PathVariable int id,
-                                           @RequestParam("monthsToAdd") int monthsToAdd) {
-//        if (service.getContractById(id).isEmpty()) {
-//            return notFound().build();
-//        } else {
-//            Optional<Contract> result = service.extendContractLength(id, monthsToAdd);
-//            return ok(result.get());
-//        }
-
-        return service.extendContractLength(id, monthsToAdd);
+    ResponseEntity extendContractLength(@PathVariable int id,
+                                        @RequestParam("daysToAdd") int daysToAdd) {
+        if (service.getContractById(id).isEmpty()) {
+            return notFound().build();
+        } else {
+            Optional<ContractDto> result = service.extendContractLength(id, daysToAdd);
+            return ok().body(result);
+        }
     }
 }

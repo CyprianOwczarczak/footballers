@@ -138,3 +138,18 @@ REPORT QUERY --> zwrócenie DTO zamiast Encji w JPQL
 Przykład: "select new com.cyprian.footballers.dtos.UserDto(u.id, u.firstname, u.lastname) from User u" --> 2 przykłady (musi mieć taki konstruktor)
 
 Spring Data JPA projections
+
+28.03
+//Nie pisać kodu który jest tylko do testów
+
+Dodać resztę endpointów
+Zrobić pull requesta
+
+Postman --> stworzyć kolekcję która np. stworzy dwie drużyny, zawodników, i żeby dało się dodać mecz,
+Endpoint gdzie można wysłać Json'a że np. Lewandowski strzelił gola (reprezentacje, mecz) przygotować drużyny,
+mecz itp za pomocą Jsona --> jeśli brakuje endpointa np z dodaniem klubu to dodać tego endpointa żeby to zadziałało (wszystko po kolei osobny)
+
+Drużyny, piłkarze z kontraktami i potem zapisujemy dane historyczne (wszystko na raz w jednym dużym requeście (Dto))
+Dodać MatchBackfillDto --> duże Dto do dodania wszystkiego na raz
+
+//Testować w Mavenie

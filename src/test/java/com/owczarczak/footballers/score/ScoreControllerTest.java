@@ -45,16 +45,6 @@ public class ScoreControllerTest {
     @Autowired
     MatchRepository matchRepository;
 
-    @BeforeEach
-    void setup2() {
-
-        scoreRepository.deleteAll();
-        matchRepository.deleteAll();
-        repRepository.deleteAll();
-        footballerRepository.deleteAll();
-        clubRepository.deleteAll();
-    }
-
     @AfterEach
     void setup() {
         scoreRepository.deleteAll();
@@ -107,8 +97,6 @@ public class ScoreControllerTest {
     @Test
     @DisplayName("Should get average goals per match for footballer")
     void shouldGetAvgGoalsPerMatchForFootballer() throws Exception {
-        scoreRepository.deleteFromJoinTable();
-
         //given
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballersWithRepresentationsList(clubList));

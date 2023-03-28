@@ -24,4 +24,5 @@ public class ClubRepresentationDto {
 //    Instant matchDate;
 
     //todo add what match is it for (match id, date, which clubs played) -- > club name, club id, footballerList(id, etc)
+    //Add more data to this Dto
 }
