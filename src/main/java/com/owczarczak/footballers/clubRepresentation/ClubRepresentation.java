@@ -2,6 +2,8 @@ package com.owczarczak.footballers.clubRepresentation;
 
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.footballer.Footballer;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;

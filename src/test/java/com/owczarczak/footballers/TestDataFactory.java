@@ -10,15 +10,16 @@ import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.score.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static java.time.Instant.now;
 import static java.time.LocalDateTime.of;
+import static java.util.Collections.addAll;
+import static java.util.Collections.emptyList;
 
 public class TestDataFactory {
 
@@ -31,7 +32,7 @@ public class TestDataFactory {
     public static List<Footballer> getFootballerList() {
         List<Footballer> footballerList = new LinkedList<>();
 
-        Collections.addAll(footballerList,
+        addAll(footballerList,
                 new Footballer("111111", "Lewandowski", 150),
                 new Footballer("222222", "Neymar", 160),
                 new Footballer("333333", "Ikar", 160),
@@ -53,7 +54,7 @@ public class TestDataFactory {
         LocalDateTime localDateTime5 = of(2019, 5, 25, 5, 50, 0);
 
         //Adding Clubs to the list
-        Collections.addAll(clubList,
+        addAll(clubList,
                 new Club("Barcelona", localDateTime1.toInstant(ZoneOffset.UTC)),
                 new Club("Lech", localDateTime2.toInstant(ZoneOffset.UTC)),
                 new Club("Real", localDateTime3.toInstant(ZoneOffset.UTC)),
@@ -68,7 +69,7 @@ public class TestDataFactory {
 //        List<Club> clubList = getClubList1();
         List<ClubRepresentation> clubRepresentations = new LinkedList<>();
 
-        Collections.addAll(clubRepresentations,
+        addAll(clubRepresentations,
                 new ClubRepresentation(clubList.get(0)),
                 new ClubRepresentation(clubList.get(0)),
                 new ClubRepresentation(clubList.get(0)),
@@ -105,7 +106,7 @@ public class TestDataFactory {
                 new ClubRepresentation(clubList.get(2)));
 
         List<Footballer> footballerList = new LinkedList<>();
-        Collections.addAll(footballerList,
+        addAll(footballerList,
                 new Footballer("111111", "Lewandowski", 150, clubRepresentationSet1),
                 new Footballer("222222", "Neymar", 160, clubRepresentationSet2),
                 new Footballer("333333", "Ikar", 160, clubRepresentationSet3));
@@ -119,15 +120,15 @@ public class TestDataFactory {
         //Create a list of matches
         // --> Club1 plays 4 matches as host, Club2 plays 2 as guest, Club3 plays 2 as guest
         List<Match> matchList = new LinkedList<>();
-        Collections.addAll(matchList,
+        addAll(matchList,
                 new Match(representationList.get(0), representationList.get(4),
-                        "Referee1", Instant.now(), Collections.emptyList()),
+                        "Referee1", now(), emptyList()),
                 new Match(representationList.get(1), representationList.get(5),
-                        "Referee2", Instant.now(), Collections.emptyList()),
+                        "Referee2", now(), emptyList()),
                 new Match(representationList.get(2), representationList.get(6),
-                        "Referee3", Instant.now(), Collections.emptyList()),
+                        "Referee3", now(), emptyList()),
                 new Match(representationList.get(3), representationList.get(7),
-                        "Referee4", Instant.now(), Collections.emptyList())
+                        "Referee4", now(), emptyList())
         );
         return matchList;
     }
@@ -146,7 +147,7 @@ public class TestDataFactory {
 
         //Creating a list of Contracts
         List<Contract> contractList = new LinkedList<>();
-        Collections.addAll(contractList,
+        addAll(contractList,
 
                 new Contract(clubList.get(0), footballerList.get(0), startContract1.toInstant(ZoneOffset.UTC),
                         endContract1.toInstant(ZoneOffset.UTC), 10000),
@@ -163,7 +164,7 @@ public class TestDataFactory {
 
         //Create a list of Scores
         List<Score> scoreList = new LinkedList<>();
-        Collections.addAll(scoreList,
+        addAll(scoreList,
 
                 new Score(matchList.get(0), footballerList.get(0), 10),
                 new Score(matchList.get(0), footballerList.get(0), 20),
@@ -202,7 +203,7 @@ public class TestDataFactory {
                 new ClubRepresentation(clubList.get(2), footballerList1));
 
         List<Footballer> footballerList = new LinkedList<>();
-        Collections.addAll(footballerList,
+        addAll(footballerList,
                 new Footballer("111111", "Lewandowski", 150, clubRepresentationSet1),
                 new Footballer("222222", "Neymar", 160, clubRepresentationSet2),
                 new Footballer("333333", "Ikar", 160, clubRepresentationSet3));
@@ -215,7 +216,7 @@ public class TestDataFactory {
         //Creating footballersLists
         List<ClubRepresentation> clubRepresentations = new LinkedList<>();
 
-        Collections.addAll(clubRepresentations,
+        addAll(clubRepresentations,
                 new ClubRepresentation(clubList.get(0), footballerList1),
                 new ClubRepresentation(clubList.get(0), footballerList1),
                 new ClubRepresentation(clubList.get(0), footballerList1),
