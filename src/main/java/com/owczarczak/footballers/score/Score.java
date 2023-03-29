@@ -3,7 +3,14 @@ package com.owczarczak.footballers.score;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.match.Match;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "score")
