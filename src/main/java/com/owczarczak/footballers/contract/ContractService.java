@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class ContractService {
     @Autowired
-    ContractRepository repository;
+    private ContractRepository repository;
 
     public List<ContractDto> getAllContracts() {
         List<Contract> contractList = repository.findAll();

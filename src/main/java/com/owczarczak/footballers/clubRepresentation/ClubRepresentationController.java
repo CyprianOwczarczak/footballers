@@ -14,7 +14,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/representation")
 public class ClubRepresentationController {
     @Autowired
-    ClubRepresentationService service;
+    private ClubRepresentationService service;
 
     @GetMapping("/")
     public List<ClubRepresentationDto> getAllRepresentations() {

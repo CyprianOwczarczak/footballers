@@ -12,6 +12,8 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "match")
+@Getter
+@Setter
 public class Match {
 
     @Id
@@ -51,55 +53,6 @@ public class Match {
         this.guest = guest;
         this.nameOfReferee = nameOfReferee;
         this.date = date;
-        this.scores = scores;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public ClubRepresentation getHost() {
-        return host;
-    }
-
-    public void setHost(ClubRepresentation host) {
-        this.host = host;
-    }
-
-    public ClubRepresentation getGuest() {
-        return guest;
-    }
-
-    public void setGuest(ClubRepresentation guest) {
-        this.guest = guest;
-    }
-
-    public String getNameOfReferee() {
-        return nameOfReferee;
-    }
-
-    public void setNameOfReferee(String nameOfReferee) {
-        this.nameOfReferee = nameOfReferee;
-    }
-
-    public Instant getDate() {
-        return date;
-    }
-
-    public void setDate(Instant date) {
-        this.date = date;
-    }
-
-    public List<Score> getScores() {
-        return scores;
-    }
-
-    public void setScores(List<Score> scores) {
         this.scores = scores;
     }
 }
