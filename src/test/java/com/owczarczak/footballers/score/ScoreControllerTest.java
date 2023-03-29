@@ -10,7 +10,6 @@ import com.owczarczak.footballers.footballer.FootballerRepository;
 import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.match.MatchRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +31,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ScoreControllerTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ScoreRepository scoreRepository;
+    private ScoreRepository scoreRepository;
     @Autowired
-    FootballerRepository footballerRepository;
+    private FootballerRepository footballerRepository;
     @Autowired
-    ClubRepository clubRepository;
+    private ClubRepository clubRepository;
     @Autowired
-    ClubRepresentationRepository repRepository;
+    private ClubRepresentationRepository repRepository;
     @Autowired
-    MatchRepository matchRepository;
+    private MatchRepository matchRepository;
 
     @AfterEach
     void setup() {

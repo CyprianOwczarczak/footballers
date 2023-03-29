@@ -3,15 +3,26 @@ package com.owczarczak.footballers.match;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.score.Score;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.Instant;
 import java.util.List;
 
 @Entity
 @Builder
 @Table(name = "match")
+@Getter
+@Setter
 public class Match {
 
     @Id
@@ -20,19 +31,19 @@ public class Match {
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "host_representation_id")
-    ClubRepresentation host;
+    private ClubRepresentation host;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "guest_representation_id")
-    ClubRepresentation guest;
+    private ClubRepresentation guest;
 
-    String nameOfReferee;
+    private String nameOfReferee;
 
-    Instant date;
+    private Instant date;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "match_id")
-    List<Score> scores;
+    private List<Score> scores;
 
     public Match() {
     }
@@ -51,55 +62,6 @@ public class Match {
         this.guest = guest;
         this.nameOfReferee = nameOfReferee;
         this.date = date;
-        this.scores = scores;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public ClubRepresentation getHost() {
-        return host;
-    }
-
-    public void setHost(ClubRepresentation host) {
-        this.host = host;
-    }
-
-    public ClubRepresentation getGuest() {
-        return guest;
-    }
-
-    public void setGuest(ClubRepresentation guest) {
-        this.guest = guest;
-    }
-
-    public String getNameOfReferee() {
-        return nameOfReferee;
-    }
-
-    public void setNameOfReferee(String nameOfReferee) {
-        this.nameOfReferee = nameOfReferee;
-    }
-
-    public Instant getDate() {
-        return date;
-    }
-
-    public void setDate(Instant date) {
-        this.date = date;
-    }
-
-    public List<Score> getScores() {
-        return scores;
-    }
-
-    public void setScores(List<Score> scores) {
         this.scores = scores;
     }
 }

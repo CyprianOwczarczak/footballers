@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class ContractService {
     @Autowired
-    ContractRepository repository;
+    private ContractRepository repository;
 
     public List<ContractDto> getAllContracts() {
         List<Contract> contractList = repository.findAll();
@@ -92,10 +92,10 @@ public class ContractService {
         return Optional.ofNullable(ContractDto.builder()
                 .id(savedEntity.getId())
                 .clubName(savedEntity.getClub().getName())
-                        .footballerName(savedEntity.getFootballer().getName())
-                        .contractStart(savedEntity.getContractStart())
-                        .contractEnd(savedEntity.getContractEnd())
-                        .salary(savedEntity.getSalary())
+                .footballerName(savedEntity.getFootballer().getName())
+                .contractStart(savedEntity.getContractStart())
+                .contractEnd(savedEntity.getContractEnd())
+                .salary(savedEntity.getSalary())
                 .build());
     }
 

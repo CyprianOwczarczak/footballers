@@ -3,7 +3,6 @@ package com.owczarczak.footballers.club;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,7 +15,7 @@ public interface ClubRepository extends JpaRepository<Club, Integer> {
     @Query("SELECT c FROM Club c ORDER BY c.created DESC")
     Page<Club> findAllByOrderByCreatedDesc(Pageable pageable);
 
-//    Wszystkie kluby które zagrały więcej niż 3 mecze
+    //    Wszystkie kluby które zagrały więcej niż 3 mecze
     @Query("""
             select c
             from Club c

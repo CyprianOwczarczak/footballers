@@ -1,7 +1,5 @@
 package com.owczarczak.footballers.score;
 
-import com.owczarczak.footballers.footballer.FootballerDto;
-import com.owczarczak.footballers.match.MatchDto;
 import lombok.Builder;
 import lombok.Data;
 

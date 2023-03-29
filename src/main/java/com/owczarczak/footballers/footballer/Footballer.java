@@ -2,9 +2,20 @@ package com.owczarczak.footballers.footballer;
 
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.contract.Contract;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @Builder
@@ -17,16 +28,16 @@ import java.util.Set;
 public class Footballer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String pesel;
-    String name;
-    int height;
+    private int id;
+    private String pesel;
+    private String name;
+    private int height;
 
     @OneToMany(mappedBy = "footballer")
-    Set<Contract> contractList;
+    private Set<Contract> contractList;
 
     @ManyToMany(mappedBy = "footballerList", cascade = CascadeType.REMOVE)
-    Set<ClubRepresentation> representationList;
+    private Set<ClubRepresentation> representationList;
 
     public Footballer(final String pesel, final String name, final int height) {
         this.pesel = pesel;

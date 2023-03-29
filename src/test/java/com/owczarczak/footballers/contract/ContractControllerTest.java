@@ -15,10 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.owczarczak.footballers.TestDataFactory.*;
+import static com.owczarczak.footballers.TestDataFactory.getClubList;
+import static com.owczarczak.footballers.TestDataFactory.getContractList1;
+import static com.owczarczak.footballers.TestDataFactory.getFootballerList;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,16 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ContractControllerTest {
 
     @Autowired
-    ContractRepository contractRepository;
+    private ContractRepository contractRepository;
 
     @Autowired
-    ClubRepository clubRepository;
+    private ClubRepository clubRepository;
 
     @Autowired
-    FootballerRepository footballerRepository;
+    private FootballerRepository footballerRepository;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @AfterEach
     void setup() {
