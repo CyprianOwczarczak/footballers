@@ -27,13 +27,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ClubControllerTest {
     @Autowired
-    ClubRepository clubRepository;
+    private ClubRepository clubRepository;
 
     @Autowired
-    ClubRepresentationRepository repRepository;
+    private ClubRepresentationRepository repRepository;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @AfterEach
     void setup() {

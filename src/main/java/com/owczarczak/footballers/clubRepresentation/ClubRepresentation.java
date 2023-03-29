@@ -2,7 +2,6 @@ package com.owczarczak.footballers.clubRepresentation;
 
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.footballer.Footballer;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,10 +38,11 @@ public class ClubRepresentation {
     List<Footballer> footballerList;
 
     public ClubRepresentation(Club club) {
-
+        this.club = club;
     }
 
-    public ClubRepresentation(Club club, List<Footballer> footballerList2) {
-
+    public ClubRepresentation(Club club, List<Footballer> footballerList) {
+        this.club = club;
+        this.footballerList = footballerList;
     }
 }

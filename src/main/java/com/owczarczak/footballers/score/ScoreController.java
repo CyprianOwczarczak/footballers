@@ -18,7 +18,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/scores")
 public class ScoreController {
     @Autowired
-    ScoreService service;
+    private ScoreService service;
 
     @GetMapping("/")
     public List<ScoreDto> getAllScores() {

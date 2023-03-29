@@ -31,18 +31,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ScoreControllerTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ScoreRepository scoreRepository;
+    private ScoreRepository scoreRepository;
     @Autowired
-    FootballerRepository footballerRepository;
+    private FootballerRepository footballerRepository;
     @Autowired
-    ClubRepository clubRepository;
+    private ClubRepository clubRepository;
     @Autowired
-    ClubRepresentationRepository repRepository;
+    private ClubRepresentationRepository repRepository;
     @Autowired
-    MatchRepository matchRepository;
+    private MatchRepository matchRepository;
 
     @AfterEach
     void setup() {

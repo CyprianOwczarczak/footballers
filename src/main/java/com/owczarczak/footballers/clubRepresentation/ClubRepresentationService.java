@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ClubRepresentationService {
 
     @Autowired
-    ClubRepresentationRepository repository;
+    private ClubRepresentationRepository repository;
 
     public List<ClubRepresentationDto> getAllClubRepresentations() {
         List<ClubRepresentation> clubRepresentationList = repository.findAll();

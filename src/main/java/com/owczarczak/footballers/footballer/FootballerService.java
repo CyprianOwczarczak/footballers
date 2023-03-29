@@ -18,7 +18,7 @@ import java.util.Optional;
 public class FootballerService {
 
     @Autowired
-    FootballerRepository repository;
+    private FootballerRepository repository;
 
     public List<FootballerDto> getAllFootballers() {
         List<Footballer> footballersList = repository.findAll();

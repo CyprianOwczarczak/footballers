@@ -8,11 +8,11 @@ import java.math.BigInteger;
 @Data
 @Builder
 public class ScoreAvgGoalsDto {
-    Integer id;
-    String footballerName;
-    BigInteger numberOfGoals;
-    BigInteger numberOfMatches;
-    Double averageGoals;
+    private Integer id;
+    private String footballerName;
+    private BigInteger numberOfGoals;
+    private BigInteger numberOfMatches;
+    private Double averageGoals;
 
     public ScoreAvgGoalsDto(Integer id, String footballerName, BigInteger numberOfGoals, BigInteger numberOfMatches, Double averageGoals) {
         this.id = id;

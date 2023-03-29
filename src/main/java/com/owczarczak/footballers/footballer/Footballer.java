@@ -28,16 +28,16 @@ import java.util.Set;
 public class Footballer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String pesel;
-    String name;
-    int height;
+    private int id;
+    private String pesel;
+    private String name;
+    private int height;
 
     @OneToMany(mappedBy = "footballer")
-    Set<Contract> contractList;
+    private Set<Contract> contractList;
 
     @ManyToMany(mappedBy = "footballerList", cascade = CascadeType.REMOVE)
-    Set<ClubRepresentation> representationList;
+    private Set<ClubRepresentation> representationList;
 
     public Footballer(final String pesel, final String name, final int height) {
         this.pesel = pesel;

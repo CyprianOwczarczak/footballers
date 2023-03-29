@@ -24,10 +24,10 @@ import static java.util.Collections.emptyList;
 public class TestDataFactory {
 
     @Autowired
-    ClubRepository clubRepository;
+    private ClubRepository clubRepository;
 
     @Autowired
-    ClubRepresentationRepository representationRepository;
+    private ClubRepresentationRepository representationRepository;
 
     public static List<Footballer> getFootballerList() {
         List<Footballer> footballerList = new LinkedList<>();

@@ -20,7 +20,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/contracts")
 public class ContractController {
     @Autowired
-    ContractService service;
+    private ContractService service;
 
     @GetMapping("/")
     public List<ContractDto> getAllContracts() {

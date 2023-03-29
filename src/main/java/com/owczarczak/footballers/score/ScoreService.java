@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ScoreService {
     @Autowired
-    ScoreRepository repository;
+    private ScoreRepository repository;
 
     List<ScoreDto> getAllScores() {
         List<Score> scoreList = repository.findAll();

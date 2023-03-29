@@ -27,7 +27,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class FootballerController {
 
     @Autowired
-    FootballerService service;
+    private FootballerService service;
 
     @GetMapping("/")
     public List<FootballerDto> getAllFootballers() {

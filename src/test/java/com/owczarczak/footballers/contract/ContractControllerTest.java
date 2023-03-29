@@ -32,16 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ContractControllerTest {
 
     @Autowired
-    ContractRepository contractRepository;
+    private ContractRepository contractRepository;
 
     @Autowired
-    ClubRepository clubRepository;
+    private ClubRepository clubRepository;
 
     @Autowired
-    FootballerRepository footballerRepository;
+    private FootballerRepository footballerRepository;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @AfterEach
     void setup() {

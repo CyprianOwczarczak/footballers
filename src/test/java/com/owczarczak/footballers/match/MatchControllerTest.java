@@ -32,16 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MatchControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    MatchRepository matchRepository;
+    private MatchRepository matchRepository;
 
     @Autowired
-    ClubRepresentationRepository representationRepository;
+    private ClubRepresentationRepository representationRepository;
 
     @Autowired
-    ClubRepository clubRepository;
+    private ClubRepository clubRepository;
 
     @AfterEach
     void setup() {

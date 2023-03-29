@@ -25,7 +25,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class MatchController {
 
     @Autowired
-    MatchService service;
+    private MatchService service;
 
     @GetMapping("/")
     public List<MatchDto> getAllMatches() {
