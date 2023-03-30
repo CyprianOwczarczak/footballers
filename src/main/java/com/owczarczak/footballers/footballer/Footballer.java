@@ -1,12 +1,26 @@
 package com.owczarczak.footballers.footballer;
 
-import lombok.*;
+import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
+import com.owczarczak.footballers.contract.Contract;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.Set;
 
 @Builder
 @Entity
-@Table(name = "footballers")
+@Table(name = "footballer")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,19 +28,28 @@ import javax.persistence.*;
 public class Footballer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String pesel;
-    String name;
-    String club;
-    int goals;
-    int height;
+    private int id;
+    private String pesel;
+    private String name;
+    private int height;
 
-    public Footballer(final String pesel, final String name, final String club, final int goals, final int height) {
+    @OneToMany(mappedBy = "footballer")
+    private Set<Contract> contractList;
+
+    @ManyToMany(mappedBy = "footballerList", cascade = CascadeType.REMOVE)
+    private Set<ClubRepresentation> representationList;
+
+    public Footballer(final String pesel, final String name, final int height) {
         this.pesel = pesel;
         this.name = name;
-        this.club = club;
-        this.goals = goals;
         this.height = height;
+    }
+
+    public Footballer(final String pesel, final String name, final int height, Set<ClubRepresentation> representationList) {
+        this.pesel = pesel;
+        this.name = name;
+        this.height = height;
+        this.representationList = representationList;
     }
 
     @Override
@@ -35,8 +58,6 @@ public class Footballer {
                 "id=" + id +
                 ", pesel='" + pesel + '\'' +
                 ", name='" + name + '\'' +
-                ", club='" + club + '\'' +
-                ", goals=" + goals +
                 ", height=" + height +
                 '}';
     }

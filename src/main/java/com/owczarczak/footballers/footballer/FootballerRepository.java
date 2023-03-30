@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import java.util.List;
 
 public interface FootballerRepository extends JpaRepository<Footballer, Integer> {
@@ -21,12 +19,12 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
 
     @Query("""
             SELECT
-            CASE 
-                WHEN COUNT(f) > 0 THEN true 
-                ELSE false 
-            END 
-            FROM Footballer f 
-            WHERE 
+            CASE
+                WHEN COUNT(f) > 0 THEN true
+                ELSE false
+            END
+            FROM Footballer f
+            WHERE
             f.pesel = :pesel
             """)
     boolean existsByPesel(@Param("pesel") String pesel);
@@ -34,4 +32,12 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
     @Modifying
     @Query("DELETE FROM Footballer f WHERE f.id = :id")
     void deleteAllById(@Param("id") int id);
+
+    //- Którzy piłkarze grali w największej ilości meczów (no Limit option for JPQL)
+    @Query(value = """
+            select f.id, size(f.representationList)
+            from Footballer f
+            order by size(f.representationList) desc
+            """)
+    List<Integer[]> whichFootballersPlayedInMostMatches();
 }

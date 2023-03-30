@@ -18,7 +18,7 @@ import java.util.Optional;
 public class FootballerService {
 
     @Autowired
-    FootballerRepository repository;
+    private FootballerRepository repository;
 
     public List<FootballerDto> getAllFootballers() {
         List<Footballer> footballersList = repository.findAll();
@@ -28,8 +28,6 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
-                    .club(footballer.getClub())
-                    .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
             dtos.add(dtoToBeAdded);
@@ -46,8 +44,6 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
-                    .club(footballer.getClub())
-                    .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build());
         }
@@ -63,8 +59,6 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
-                    .club(footballer.getClub())
-                    .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
             dtos.add(dtoToBeAdded);
@@ -80,8 +74,6 @@ public class FootballerService {
                     .id(footballer.getId())
                     .pesel(footballer.getPesel())
                     .name(footballer.getName())
-                    .club(footballer.getClub())
-                    .goals(footballer.getGoals())
                     .height(footballer.getHeight())
                     .build();
             dtos.add(dtoToBeAdded);
@@ -93,17 +85,14 @@ public class FootballerService {
         Footballer newFootballer = Footballer.builder()
                 .pesel(footballerToBeAdded.getPesel())
                 .name(footballerToBeAdded.getName())
-                .club(footballerToBeAdded.getClub())
-                .goals(footballerToBeAdded.getGoals())
                 .height(footballerToBeAdded.getHeight())
                 .build();
         Footballer savedEntity = repository.save(newFootballer);
+
         return FootballerDto.builder()
                 .id(savedEntity.getId())
                 .pesel(savedEntity.getPesel())
                 .name(savedEntity.getName())
-                .club(savedEntity.getClub())
-                .goals(savedEntity.getGoals())
                 .height(savedEntity.getHeight())
                 .build();
     }
@@ -113,8 +102,6 @@ public class FootballerService {
                 .id(footballerToBeUpdated.getId())
                 .pesel(footballerToBeUpdated.getPesel())
                 .name(footballerToBeUpdated.getName())
-                .club(footballerToBeUpdated.getClub())
-                .goals(footballerToBeUpdated.getGoals())
                 .height(footballerToBeUpdated.getHeight())
                 .build();
         Footballer savedEntity = repository.save(updatedFootballer);
@@ -122,13 +109,25 @@ public class FootballerService {
                 .id(savedEntity.getId())
                 .pesel(savedEntity.getPesel())
                 .name(savedEntity.getName())
-                .club(savedEntity.getClub())
-                .goals(savedEntity.getGoals())
                 .height(savedEntity.getHeight())
                 .build());
     }
 
-@Transactional
+    //Returns FootballerDtoMostMatches with id only
+    public List<FootballerDtoMostMatches> getFootballersWhoPlayedInMostMatches() {
+        List<Integer[]> footballersList = repository.whichFootballersPlayedInMostMatches();
+        List<FootballerDtoMostMatches> dtos = new LinkedList<>();
+        for (Integer[] integers : footballersList) {
+            FootballerDtoMostMatches dtoToBeAdded = FootballerDtoMostMatches.builder()
+                    .id(integers[0])
+                    .representationSize(integers[1])
+                    .build();
+            dtos.add(dtoToBeAdded);
+        }
+        return dtos;
+    }
+
+    @Transactional
     public void deleteFootballer(@PathVariable int id) {
         repository.deleteAllById(id);
     }

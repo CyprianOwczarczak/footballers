@@ -3,28 +3,38 @@ package com.owczarczak.footballers.footballer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/footballers")
 public class FootballerController {
 
     @Autowired
-    FootballerService service;
+    private FootballerService service;
 
     @GetMapping("/")
     public List<FootballerDto> getAllFootballers() {
         return service.getAllFootballers();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FootballerDto> getFootballerById(@PathVariable int id) {
         Optional<FootballerDto> foundDtoOptional = service.getFootballerById(id);
         if (foundDtoOptional.isEmpty()) {
@@ -45,10 +55,9 @@ public class FootballerController {
         return service.getFootballersByName(name);
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity deleteFootballer(@PathVariable int id) {
-        service.deleteFootballer(id);
-        return ok().build();
+    @GetMapping("/mostMatchesPlayed")
+    public List<FootballerDtoMostMatches> getFootballersWhoPlayedInMostMatches() {
+        return service.getFootballersWhoPlayedInMostMatches();
     }
 
     @PostMapping("/")
@@ -81,8 +90,14 @@ public class FootballerController {
         return ok(result.get());
     }
 
-    private List<String> returnErrorList(FootballerDto newFootballerDto) {
-        List<String> errorList = new ArrayList<>();
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteFootballer(@PathVariable int id) {
+        service.deleteFootballer(id);
+        return ok().build();
+    }
+
+    private ArrayList<String> returnErrorList(FootballerDto newFootballerDto) {
+        ArrayList<String> errorList = new ArrayList<>();
 
         if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
             errorList.add("You have to provide a pesel !");

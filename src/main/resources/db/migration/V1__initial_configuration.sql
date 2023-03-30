@@ -1,13 +1,10 @@
-drop table if exists footballers;
-
-create table footballers (
+create table footballer (
 	id serial,
 	pesel varchar(255) not null,
 	name varchar(255) not null,
-	club varchar(255),
+	club varchar(255) not null,
 	goals int,
 	height int not null,
-	saves int,
 	primary key (id),
 	unique (pesel)
 );

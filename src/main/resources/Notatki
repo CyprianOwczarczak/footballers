@@ -14,11 +14,11 @@ Record poczytać co to jest
 
 (za pomocą MapStruct (konwertery)) -> na razie przepisywać ręcznie/ builder z Lomboka
 
-//TODO W osobnym branchu dodać footballera, który będzie miał encję klub, historię klubu, listę meczy i zobaczyć co zwróci RestController (zwróci wszysko, dlatego potrzebujemy DTO)
-//TODO testy najpierw dla repozytoriów
+W osobnym branchu dodać footballera, który będzie miał encję klub, historię klubu, listę meczy i zobaczyć co zwróci RestController (zwróci wszysko, dlatego potrzebujemy DTO)
+testy najpierw dla repozytoriów
 
-//TODO Przerobić na listę klubów w któych grał, i niech to będzie encja, i od kiedy do kiedy grał w tych klubach (kontrakt encja)
-//TODO DTO - Data Transfer Object
+Przerobić na listę klubów w któych grał, i niech to będzie encja, i od kiedy do kiedy grał w tych klubach (kontrakt encja)
+DTO - Data Transfer Object
 // REpository(wypycha Encję) -> Service(wypycha DTO'sa) ->  Controller(wypycha REsponseEntity z DTO'sem
 // Controllery do kontraktu i do klubu
 // Dołożyć obsługę meczy (mecz drużyny obie, lista zawodników obu drużyn, lista goli(kto strzelił),
@@ -57,10 +57,101 @@ walidować też metodę put w controllerze (sprawdzać czy request jest poprawny
 Dokumentacja Spring Data --> notatki
 
 
-    //todo prepaere pull request,
+    //prepaere pull request,
     // prepare database extended with club entity
     //flyway migration V2 (with club) --> name, year of creation etc,
     //create a branch from this branch
-    //make it possible to note in which years which footballer played in which club, how much he earned,
-    //add matches entity, so we can show: who played , which clubs, which footballers, what was the score,
-    // where did they play
+
+22.02.23
+    make it possible to note in which years which footballer played in which club, how much he earned,
+    add matches entity, so we can show: who played , which clubs, which footballers, what was the score,
+     where did they play
+w pgAdminie zrobić tabelki, tak żeby można było odpytać, porobić joiny, umieścić dane przykładowe, przetestować
+Jak będzie działać to przenieść do migracji, zrobić kilka tabelek na raz w jednej migracji
+
+
+27.02
+1. Dodać repozytoria do encji
+2. Napisać testy zapisywania na nowych encjach
+3. Sprawdzić czy faktycznie są zapisywane w bazie danych
+
+4.Przetestować save, get,
+
+
+28.02
+Napisać więcej testów na wszystkie encje, sprawdzić czy używać CASCADE
+
+Za jednym razem zapisać mecz z reprezentacjami, piłkarzami i golami, piłkarzy
+i reprezentację klubów pobrać zew wcześniej zapisanych danych
+
+Następna metoda testowa: mając mecz w bazie danych dopisywać gole do tegoż meczu
+DUŻO TESTÓW (z 30 przynajmniej) na wszystkie możliwe sposoby
+
+Repozytoria query pisać w JPQL-u albo derived query ewentualnie
+Query w JPQL (nie native) przerobione z postgresa,
+Dodać testy do tych nowych Query z repozytoriów
+
+1.03
+Przeczytać o LazyInitializationException
+Wywołać (napisać kod) LazyInitializationException
+
+Query w JPQL przez kilka tabel z Joinami i przetestować je
+✓ Wszystkie kluby które zagrały więcej niż 3 mecze !
+✓ Średnia liczba goli zdobyta przez każdego zawodnika na mecz np.Piłkarz1 zdobył 6,5 gola na mecz (i wypisać wszystkich)
+✓ Który piłkarz pojawił się w największej liczbie meczów (FootballerRepository)
+✓ Średnia długość kontraktów piłkarzy w danym zespole (ContractRepository)
+
+
+6.03
+❌ Dodać migrację ALTER TABLE dodać Constraint foreign key ClubRepresentation not null✓ + foreign key --> nie da się zrobić foreign key w dwie strony
+✓ Add Controllers, Services and DTOs to all Entities
+Add tests for the methods in Controller (every controller in another test class)
+
+7.03
+✓ Stworzyć bazę danych dla testów
+✓ Nadpisać używaną bazę danych dla testów w yaml-u
+- Pisać każde dane od nowa do każego testu (zaczynać na pustej bazie)
+✓ Usunąć dodawanie danych w migracjach (i dodać dane do każdego testu też w FootballerControllerTest)
+
+8.03
+- Przerobić wszystkie testy na given, when, then
+- Zadanie w osobnym projekcie --> własna implementacja listy (z metodami: dodanie elementu do listy,
+ usunięcie pierwszego, usunięcie ostatniego elementu
+ pobranie pierwszego, pobranie ostatniego elementu, pobranie wybranego i
+ usunięcie wybranego elementu, metoda size() zwracająca ilość elementów w tej liśćie
+ Add() i AddFirst()
+ Lista ma dodawać na koniec listy
+ Później iterator własny z metodą hasNext() oraz next()
+ Przykłady, testy
+
+15.03
+Reporting Query w JPA i jak z tego skorzystać i przykład zastosowania
+
+17.03
+DLACZEGO TO NIE DZIAŁA
+
+Uzupełnić wszystkie Controllery żeby miały wszystkie funkcjonalności (repozytoria i inne które mogą się przydać)
+Testy do tych metod z repozytoriów --> happy i unhappy path
+
+Przerobić na reporting query (a la DTO)
+REPORT QUERY --> zwrócenie DTO zamiast Encji w JPQL
+Przykład: "select new com.cyprian.footballers.dtos.UserDto(u.id, u.firstname, u.lastname) from User u" --> 2 przykłady (musi mieć taki konstruktor)
+
+Spring Data JPA projections
+
+28.03
+//Nie pisać kodu który jest tylko do testów
+
+Dodać resztę endpointów
+Zrobić pull requesta
+
+Postman --> stworzyć kolekcję która np. stworzy dwie drużyny, zawodników, i żeby dało się dodać mecz,
+Endpoint gdzie można wysłać Json'a że np. Lewandowski strzelił gola (reprezentacje, mecz) przygotować drużyny,
+mecz itp za pomocą Jsona --> jeśli brakuje endpointa np z dodaniem klubu to dodać tego endpointa żeby to zadziałało (wszystko po kolei osobny)
+
+Drużyny, piłkarze z kontraktami i potem zapisujemy dane historyczne (wszystko na raz w jednym dużym requeście (Dto))
+Dodać MatchBackfillDto --> duże Dto do dodania wszystkiego na raz
+
+//Testować w Mavenie
+
+Kurs Dockera
