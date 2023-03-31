@@ -159,3 +159,19 @@ Dodawać komentarz do każdej poprawionej rzeczy
 Data Getter Setter dokumentacja
 Zamienić importy w Intellij na konkretne (bez gwiazdki)
 Kurs Dockera
+
+31.03
+Stworzyć Dockerfile dla tej aplikacji
+
+Odpalić aplikację z kontenera
+Docker compose z Postgresem i żeby kontener aplikacji zależał od tego czy się postgres odpali
+Zrobić dockerfile'a który odpali javę i wypisze wersje
+Dokumentacja Dockerfile + notatki + przećwiczyć sobie komendy
+
+Zainstalować narzędzie Oracle VirtualBox --> zainstalować Ubuntu
+Przechodzenie między katalogami, tworzenie katalogów, struktura plików, jak zainstalować pakiety z linii command np Apache
+podglądanie plików, komenta cat, more, cd, ps, netstat, kto to jest administrator, jak zostać rootem, sudo su, df, uptime,
+apt-get, rm, obsługa nano, jak utworzyć nowy plik, edytować go nano i zapisać, co robi tail, przekierowanie wyjścia z jednej komendy do drugiej
+clear,
+
+Podstawy Linuxa
