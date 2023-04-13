@@ -3,6 +3,7 @@ package com.owczarczak.footballers.club;
 import com.owczarczak.footballers.contract.Contract;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -40,6 +41,13 @@ public class Club {
     }
 
     public Club(String name, Instant created, List<Contract> contractList) {
+        this.name = name;
+        this.created = created;
+        this.contractList = contractList;
+    }
+
+    public Club(int id, String name, Instant created, List<Contract> contractList) {
+        this.id = id;
         this.name = name;
         this.created = created;
         this.contractList = contractList;

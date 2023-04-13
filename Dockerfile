@@ -1,6 +1,11 @@
-FROM ubuntu
+FROM amazoncorretto
 WORKDIR /myapp
 
-RUN echo "hello"
-CMD [ "/bin/sh" ]
-# CMD java -version
+COPY D:/PROGRAMMING/JAVA/footballers/src /
+
+RUN mvn package
+
+EXPOSE 80
+
+# RUN echo "hello"
+# CMD [ "/bin/sh" ]

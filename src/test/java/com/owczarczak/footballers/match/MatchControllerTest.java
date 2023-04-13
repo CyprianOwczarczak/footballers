@@ -43,12 +43,12 @@ public class MatchControllerTest {
     @Autowired
     private ClubRepository clubRepository;
 
-//    @AfterEach
-//    void setup() {
-//        matchRepository.deleteAll();
-//        representationRepository.deleteAll();
-//        clubRepository.deleteAll();
-//    }
+    @AfterEach
+    void setup() {
+        matchRepository.deleteAll();
+        representationRepository.deleteAll();
+        clubRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("Should get all matches")
