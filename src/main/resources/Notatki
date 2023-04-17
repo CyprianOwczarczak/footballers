@@ -175,3 +175,9 @@ apt-get, rm, obsługa nano, jak utworzyć nowy plik, edytować go nano i zapisa�
 clear,
 
 Podstawy Linuxa
+17.04
+Posprzątać kod, (dodąc testy zaległe)
+Pull request do tego co dodałem (Dockerfile)
+Nowy branch do dodania Zonky do projektu
+
+Potem walidacja

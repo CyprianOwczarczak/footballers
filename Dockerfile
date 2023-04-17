@@ -1,11 +1,13 @@
-FROM amazoncorretto
-WORKDIR /myapp
+FROM openjdk:17
 
-COPY D:/PROGRAMMING/JAVA/footballers/src /
+RUN mkdir /app
 
-RUN mvn package
+COPY target/footballers-0.0.1-SNAPSHOT.jar /app
 
-EXPOSE 80
+WORKDIR /app
 
-# RUN echo "hello"
-# CMD [ "/bin/sh" ]
+CMD ["java", "-jar", "footballers-0.0.1-SNAPSHOT.jar"]
+
+#CMD ["java", "-version"]
+#Open in interactive mode -it
+#We have change the application settings to open postgres on my machine, not on localhost
