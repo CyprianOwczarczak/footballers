@@ -155,3 +155,10 @@ Dodać MatchBackfillDto --> duże Dto do dodania wszystkiego na raz
 //Testować w Mavenie
 
 Kurs Dockera
+
+17.04
+Posprzątać kod, (dodąc testy zaległe)
+Pull request do tego co dodałem (Dockerfile)
+Nowy branch do dodania Zonky do projektu
+
+Potem walidacja
