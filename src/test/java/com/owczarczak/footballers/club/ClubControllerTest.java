@@ -3,13 +3,13 @@ package com.owczarczak.footballers.club;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.util.AssertionErrors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -25,8 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -113,6 +112,7 @@ public class ClubControllerTest {
                         jsonPath("$", hasSize(2)));
     }
 
+    //fixme
     @Test
     void shouldDeleteByCLubId() throws Exception {
         //given
@@ -135,6 +135,7 @@ public class ClubControllerTest {
         assertFalse(containsClubName);
     }
 
+    //fixme
     @Test
     @DisplayName("Should add a club")
     void shouldAddClub() throws Exception {
@@ -144,30 +145,19 @@ public class ClubControllerTest {
 
         String request = """
                 "name":"TestClub1",
-                "created":
+                "created":"2015-12-30T19:34:50.63Z"
                 """;
 
         //when + then
         this.mockMvc.perform(post("/clubs/")
-                .content(request));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(
+//                        status().isCreated(),
+                        jsonPath("$").isMap());
 
-//        new Club("Barcelona", localDateTime1.toInstant(ZoneOffset.UTC)),
-//        String request = """
-//                {
-//                "pesel":"333333",
-//                "name":"testPlayer3",
-//                "height":170
-//                }
-//                """;
-//
-//        this.mockMvc.perform(post("/footballers/")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(request))
-//                .andDo(print())
-//                .andExpectAll(status().isCreated(),
-//                        jsonPath("$").isMap())
-//                .andExpectAll(getJsonValidationRules());
-//    }
+        Assertions.assertEquals(1, clubRepository.findAll().size());
     }
 
     @Test

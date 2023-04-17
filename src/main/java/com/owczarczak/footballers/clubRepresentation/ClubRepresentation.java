@@ -2,6 +2,7 @@ package com.owczarczak.footballers.clubRepresentation;
 
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.footballer.Footballer;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,11 +18,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.List;
 
+@Builder
 @Entity
 @Table(name = "club_representation")
 @Getter
 @Setter
-@NoArgsConstructor
 public class ClubRepresentation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +38,9 @@ public class ClubRepresentation {
             inverseJoinColumns = @JoinColumn(name = "footballer_id"))
     List<Footballer> footballerList;
 
+    public ClubRepresentation() {
+    }
+
     public ClubRepresentation(Club club) {
         this.club = club;
     }
@@ -45,4 +49,5 @@ public class ClubRepresentation {
         this.club = club;
         this.footballerList = footballerList;
     }
+
 }

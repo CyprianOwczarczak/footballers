@@ -1,5 +1,7 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.footballer.Footballer;
+import com.owczarczak.footballers.footballer.FootballerDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,6 +100,32 @@ public class ContractService {
                 .salary(savedEntity.getSalary())
                 .build());
     }
+
+//    public ContractDto addContract(ContractAddDto contractToBeAdded) {
+//        Contract newContract = Contract.builder()
+//                .id(contractToBeAdded)
+//                .club()
+//
+//                .build();
+
+
+
+//        public FootballerDto addFootballer(FootballerDto footballerToBeAdded) {
+//            Footballer newFootballer = Footballer.builder()
+//                    .pesel(footballerToBeAdded.getPesel())
+//                    .name(footballerToBeAdded.getName())
+//                    .height(footballerToBeAdded.getHeight())
+//                    .build();
+//            Footballer savedEntity = repository.save(newFootballer);
+//
+//            return FootballerDto.builder()
+//                    .id(savedEntity.getId())
+//                    .pesel(savedEntity.getPesel())
+//                    .name(savedEntity.getName())
+//                    .height(savedEntity.getHeight())
+//                    .build();
+//        }
+//    }
 
     @Transactional
     public void deleteContractById(@PathVariable int id) {
