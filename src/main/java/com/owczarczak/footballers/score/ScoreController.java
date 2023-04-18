@@ -1,13 +1,17 @@
 package com.owczarczak.footballers.score;
 
+import com.owczarczak.footballers.footballer.FootballerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,12 +44,36 @@ public class ScoreController {
         return service.getAvgGoalsPerMatchForFootballer();
     }
 
-    @GetMapping("/getAverageNew/")
-    public List<ScoreNewDto> getAvgNew() {
-        return service.getAvgNew();
-    }
+//    @GetMapping("/getAverageNew/")
+//    public List<ScoreAddDto> getAvgNew() {
+//        return service.getAvgNew();
+//    }
 
     //TODO add Post method
+//    @PostMapping("/")
+//    ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
+//        if (service.existsByPesel(newFootballerDto.getPesel())) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        List<String> errorList = returnErrorList(newFootballerDto);
+//        if (!errorList.isEmpty()) {
+//            return ResponseEntity.badRequest().body(errorList);
+//        }
+//        FootballerDto result = service.addFootballer(newFootballerDto);
+//        return ResponseEntity
+//                .created(URI.create("/" + result.getId()))
+//                .body(result);
+//    }
+
+    @PostMapping("/")
+    ResponseEntity<?> addScore(@RequestBody ScoreAddDto newScoreDto) {
+        ScoreAddDto result = service.addScore(newScoreDto);
+
+        return ResponseEntity
+                .created(URI.create("/" + result.getId()))
+                .body(result);
+    }
 
     @DeleteMapping("/{id}")
     ResponseEntity deleteMatch(@PathVariable int id) {
