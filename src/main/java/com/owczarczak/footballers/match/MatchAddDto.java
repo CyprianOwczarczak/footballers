@@ -12,9 +12,13 @@ import java.util.List;
 @Builder
 public class MatchAddDto {
     private int id;
-    private ClubRepresentation host;
-    private ClubRepresentation guest;
+    private int hostId;
+    private int guestId;
     private String nameOfReferee;
-    private Instant date;
-    private List<Score> scores;
+    private String date;
+//    private
+    //TODO
+    //Add ScoreDto list
+    //json-> String javowy
+    //custom mapper w jacksonie
 }

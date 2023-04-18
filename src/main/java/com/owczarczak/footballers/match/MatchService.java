@@ -1,11 +1,14 @@
 package com.owczarczak.footballers.match;
 
+import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
+import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +18,12 @@ import java.util.Optional;
 public class MatchService {
 
     @Autowired
-    MatchRepository repository;
+    MatchRepository matchRepository;
+    @Autowired
+    ClubRepresentationRepository representationRepository;
 
     List<MatchDto> getAllMatches() {
-        List<Match> matchList = repository.findAll();
+        List<Match> matchList = matchRepository.findAll();
         List<MatchDto> dtos = new LinkedList<>();
         for (Match match : matchList) {
             MatchDto dtoToBeAdded = MatchDto.builder()
@@ -34,10 +39,10 @@ public class MatchService {
     }
 
     Optional<MatchDto> getMatchById(@PathVariable int id) {
-        if (!repository.existsById(id)) {
+        if (!matchRepository.existsById(id)) {
             return Optional.empty();
         } else {
-            Match match = repository.getReferenceById(id);
+            Match match = matchRepository.getReferenceById(id);
             return Optional.ofNullable(MatchDto.builder()
                     .id(match.getId())
                     .hostClubName(match.getHost().getClub().getName())
@@ -49,7 +54,7 @@ public class MatchService {
     }
 
     List<MatchDto> findByRefereeName(String nameOfReferee) {
-        List<Match> matchList = repository.findByRefereeName(nameOfReferee);
+        List<Match> matchList = matchRepository.findByRefereeName(nameOfReferee);
         List<MatchDto> dtos = new LinkedList<>();
         for (Match match : matchList) {
             MatchDto dtoToBeAdded = MatchDto.builder()
@@ -65,30 +70,33 @@ public class MatchService {
     }
 
     public MatchAddDto addMatch(MatchAddDto matchToBeAdded) {
+        ClubRepresentation guest = representationRepository.findById(matchToBeAdded.getGuestId()).get();
+        ClubRepresentation host = representationRepository.findById(matchToBeAdded.getHostId()).get();
+
         Match newMatch = Match.builder()
                 .id(matchToBeAdded.getId())
-                .guest(matchToBeAdded.getGuest())
-                .host(matchToBeAdded.getHost())
+                .guest(guest)
+                .host(host)
                 .nameOfReferee(matchToBeAdded.getNameOfReferee())
-                .date(matchToBeAdded.getDate())
-                .scores(matchToBeAdded.getScores())
+                .date(Instant.parse(matchToBeAdded.getDate()))
+//                .scores(matchToBeAdded.)
                 .build();
-        Match savedEntity = repository.save(newMatch);
+        Match savedEntity = matchRepository.save(newMatch);
 
         return MatchAddDto.builder()
                 .id(savedEntity.getId())
-                .guest(savedEntity.getGuest())
-                .host(savedEntity.getHost())
+                .guestId(savedEntity.getGuest().getId())
+                .hostId(savedEntity.getHost().getId())
                 .nameOfReferee(savedEntity.getNameOfReferee())
-                .date(savedEntity.getDate())
-                .scores(savedEntity.getScores())
+                .date(savedEntity.getDate().toString())
+//                .scores(savedEntity.getScores())
                 .build();
     }
 
     @Transactional
     public void deleteMatchById(@PathVariable int id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        if (matchRepository.existsById(id)) {
+            matchRepository.deleteById(id);
         }
     }
 }

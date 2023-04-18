@@ -156,29 +156,13 @@ public class MatchControllerTest {
 //        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
 //        List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
 
+        //TODO change this request to ids and parameters
         String request = """
                 {
-                	"pesel": "222222",
-                               
-                	"host":{
-                        "club":{
-                            "name":"ClubNamePost1",
-                            "created":"2015-12-30T19:34:50.63Z"
-                        }
-                    },
-                               
-                    "guest":{
-                        "club":{
-                            "name":"ClubNamePost2",
-                            "created":"2015-12-30T19:34:50.63Z"
-                        }
-                    },
-                               
-                    "nameOfReferee": "RefereePost1",
-                    "date": "2018-12-30T19:34:50.63Z"
-                    "scores":{
-                               
-                    }
+                "guestId":%d,
+                "hostId":%d,
+                "nameOfReferee":PostReferee,
+                "date":
                 }
                 """;
         //when + then

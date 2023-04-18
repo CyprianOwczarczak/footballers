@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.club;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerDto;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ public class ClubService {
 
     @Autowired
     ClubRepository repository;
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     List<ClubDto> getAllClubs() {
         List<Club> clubList = repository.findAll();

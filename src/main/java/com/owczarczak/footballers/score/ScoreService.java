@@ -2,7 +2,9 @@ package com.owczarczak.footballers.score;
 
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerDto;
+import com.owczarczak.footballers.footballer.FootballerRepository;
 import com.owczarczak.footballers.match.Match;
+import com.owczarczak.footballers.match.MatchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ScoreService {
     @Autowired
-    private ScoreRepository repository;
+    private ScoreRepository scoreRepository;
+    @Autowired
+    private MatchRepository matchRepository;
+    @Autowired
+    private FootballerRepository footballerRepository;
 
     List<ScoreDto> getAllScores() {
-        List<Score> scoreList = repository.findAll();
+        List<Score> scoreList = scoreRepository.findAll();
         List<ScoreDto> dtos = new LinkedList<>();
         for (Score score : scoreList) {
             ScoreDto dtoToBeAdded = ScoreDto.builder()
@@ -36,10 +42,10 @@ public class ScoreService {
     }
 
     Optional<ScoreDto> getScoreById(@PathVariable int id) {
-        if (!repository.existsById(id)) {
+        if (!scoreRepository.existsById(id)) {
             return Optional.empty();
         } else {
-            Score score = repository.getReferenceById(id);
+            Score score = scoreRepository.getReferenceById(id);
             return Optional.ofNullable(ScoreDto.builder()
                     .id(score.getId())
                     .matchId(score.getMatch().getId())
@@ -50,7 +56,7 @@ public class ScoreService {
     }
 
     List<ScoreAvgGoalsDto> getAvgGoalsPerMatchForFootballer() {
-        List<Object[]> returnedListOfArrays = repository.getAvgGoalsPerMatchForFootballer();
+        List<Object[]> returnedListOfArrays = scoreRepository.getAvgGoalsPerMatchForFootballer();
         List<ScoreAvgGoalsDto> dtos = new LinkedList<>();
         for (Object[] row : returnedListOfArrays) {
             ScoreAvgGoalsDto dtoToBeAdded = ScoreAvgGoalsDto.builder()
@@ -65,32 +71,19 @@ public class ScoreService {
         return dtos;
     }
 
-//    List<ScoreAddDto> getAvgNew() {
-//        List<ScoreAddDto> returnedList = repository.getAvgNew();
-//        List<ScoreAddDto> dtos = new LinkedList<>();
-//        for (ScoreAddDto score : returnedList) {
-//            ScoreAddDto dtoToBeAdded = ScoreAddDto.builder()
-//                    .id(score.getId())
-//                    .matchId(score.getMatchId())
-//                    .matchDate(score.getMatchDate())
-//                    .footballerId(score.getFootballerId())
-//                    .footballerPesel(score.getFootballerPesel())
-//                    .footballerName(score.getFootballerName())
-//                    .minuteScored(score.getMinuteScored())
-//                    .build();
-//            dtos.add(dtoToBeAdded);
-//        }
-//        return dtos;
-//    }
-
     public ScoreAddDto addScore(ScoreAddDto scoreToBeAdded) {
 
+        Optional<Match> matchOptional = matchRepository.findById(scoreToBeAdded.getMatchId());
+        Match match = matchOptional.get();
+        Optional<Footballer> footballerOptional = footballerRepository.findById(scoreToBeAdded.getFootballerId());
+        Footballer footballer = footballerOptional.get();
+
         Score newScore = Score.builder()
-                .match(repository.getReferenceById(scoreToBeAdded.getMatchId()).getMatch())
-                .footballer(repository.getReferenceById(scoreToBeAdded.getFootballerId()).getFootballer())
+                .match(match)
+                .footballer(footballer)
                 .minuteScored(scoreToBeAdded.getMinuteScored())
                 .build();
-        Score savedEntity = repository.save(newScore);
+        Score savedEntity = scoreRepository.save(newScore);
 
         return ScoreAddDto.builder()
                 .id(savedEntity.getId())
@@ -102,8 +95,8 @@ public class ScoreService {
 
     @Transactional
     public void deleteMatchById(@PathVariable int id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        if (scoreRepository.existsById(id)) {
+            scoreRepository.deleteById(id);
         }
     }
 }

@@ -49,7 +49,7 @@ public class MatchController {
 
     @PostMapping("/")
     ResponseEntity<?> addMatch(@RequestBody MatchAddDto newMatchDto) {
-        if (service.repository.existsById(newMatchDto.getId())) {
+        if (service.matchRepository.existsById(newMatchDto.getId())) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -72,12 +72,12 @@ public class MatchController {
     private ArrayList<String> returnErrorList(MatchAddDto newMatchDto) {
         ArrayList<String> errorList = new ArrayList<>();
 
-        if (newMatchDto.getHost() == null) {
-            errorList.add("You have to provide a host !");
-        }
-        if (newMatchDto.getGuest() == null) {
-            errorList.add("You have to provide a guest !");
-        }
+//        if (newMatchDto.getHost() == null) {
+//            errorList.add("You have to provide a host !");
+//        }
+//        if (newMatchDto.getGuest() == null) {
+//            errorList.add("You have to provide a guest !");
+//        }
         if (StringUtils.isEmpty(newMatchDto.getNameOfReferee())) {
             errorList.add("You have to provide a referee name !");
         }

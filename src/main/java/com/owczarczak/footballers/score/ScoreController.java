@@ -49,23 +49,6 @@ public class ScoreController {
 //        return service.getAvgNew();
 //    }
 
-    //TODO add Post method
-//    @PostMapping("/")
-//    ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
-//        if (service.existsByPesel(newFootballerDto.getPesel())) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//
-//        List<String> errorList = returnErrorList(newFootballerDto);
-//        if (!errorList.isEmpty()) {
-//            return ResponseEntity.badRequest().body(errorList);
-//        }
-//        FootballerDto result = service.addFootballer(newFootballerDto);
-//        return ResponseEntity
-//                .created(URI.create("/" + result.getId()))
-//                .body(result);
-//    }
-
     @PostMapping("/")
     ResponseEntity<?> addScore(@RequestBody ScoreAddDto newScoreDto) {
         ScoreAddDto result = service.addScore(newScoreDto);

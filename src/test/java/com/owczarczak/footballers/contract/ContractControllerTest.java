@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.footballer.Footballer;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -127,6 +130,35 @@ public class ContractControllerTest {
                 .andExpectAll(
                         jsonPath("$").isMap(),
                         jsonPath("$.averageLength", is(1096)));
+    }
+
+    //fixme
+    @Test
+    void shouldAddContract() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        int clubId = clubList.get(0).getId();
+        int footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "footballerId":%d,
+                "contractStart":"2012-12-30",
+                "contractEnd":"2015-12-30",
+                "salary":1000
+                }
+                """.formatted(clubId, footballerId);
+
+        //when + then
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isCreated(),
+                        jsonPath("$").isMap());
     }
 
     @Test

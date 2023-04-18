@@ -120,23 +120,6 @@ public class ScoreControllerTest {
                 .andDo(print());
     }
 
-//    @Test
-//    void shouldGetNewAvg() throws Exception {
-//        //given
-//        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
-//        List<ClubRepresentation> clubRepresentations = TestDataFactory.getRepresentationList1(clubList);
-//        List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(clubRepresentations));
-//        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
-//
-//        List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
-//
-//        //when + then
-//        this.mockMvc.perform(get("/scores/getAverageNew/"))
-//                .andDo(print())
-//                .andExpect(jsonPath("$").isArray());
-//    }
-
-    //fixme - Unable to find Score with id 582
     @Test
     @DisplayName("Should add a score")
     void shouldAddScore() throws Exception {
@@ -147,8 +130,8 @@ public class ScoreControllerTest {
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
 
-        int matchId = matchList.get(0).getId();
-        int footballerId = footballerList.get(0).getId();
+        int matchId = matchList.get(1).getId();
+        int footballerId = footballerList.get(1).getId();
 
         String request = """
                 {

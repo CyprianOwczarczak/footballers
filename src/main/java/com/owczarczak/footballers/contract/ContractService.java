@@ -1,7 +1,7 @@
 package com.owczarczak.footballers.contract;
 
-import com.owczarczak.footballers.footballer.Footballer;
-import com.owczarczak.footballers.footballer.FootballerDto;
+import com.owczarczak.footballers.club.ClubRepository;
+import com.owczarczak.footballers.footballer.FootballerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,14 @@ import java.util.Optional;
 
 public class ContractService {
     @Autowired
-    private ContractRepository repository;
+    private ContractRepository contractRepository;
+    @Autowired
+    private ClubRepository clubRepository;
+    @Autowired
+    private FootballerRepository footballerRepository;
 
     public List<ContractDto> getAllContracts() {
-        List<Contract> contractList = repository.findAll();
+        List<Contract> contractList = contractRepository.findAll();
         List<ContractDto> dtos = new LinkedList<>();
         for (Contract contract : contractList) {
             ContractDto dtoToBeAdded = ContractDto.builder()
@@ -40,10 +44,10 @@ public class ContractService {
     }
 
     Optional<ContractDto> getContractById(@PathVariable int id) {
-        if (!repository.existsById(id)) {
+        if (!contractRepository.existsById(id)) {
             return Optional.empty();
         } else {
-            Contract contract = repository.getReferenceById(id);
+            Contract contract = contractRepository.getReferenceById(id);
             return Optional.ofNullable(ContractDto.builder()
                     .id(contract.getId())
                     .clubName(contract.getClub().getName())
@@ -56,7 +60,7 @@ public class ContractService {
     }
 
     public List<ContractDto> getListOfContractsForSpecificFootballer(int footballerId) {
-        List<Contract> contractList = repository.getListOfContractsForSpecificFootballer(footballerId);
+        List<Contract> contractList = contractRepository.getListOfContractsForSpecificFootballer(footballerId);
         List<ContractDto> dtos = new LinkedList<>();
         for (Contract contract : contractList) {
             ContractDto dtoToBeAdded = ContractDto.builder()
@@ -74,7 +78,7 @@ public class ContractService {
 
     public ContractLengthDto getMeanLenghtOfContractsInClub(int clubId) {
         //Id klubu pobieramy z parametru
-        BigDecimal averageLength = repository.getMeanLenghtOfContractsInClub(clubId);
+        BigDecimal averageLength = contractRepository.getMeanLenghtOfContractsInClub(clubId);
         return ContractLengthDto.builder()
                 .clubId(clubId)
                 .averageLength(averageLength.intValue())
@@ -83,13 +87,13 @@ public class ContractService {
 
     public Optional<ContractDto> extendContractLength(int id, int daysToAdd) {
         Contract contractToUpdate;
-        if (!repository.existsById(id)) {
+        if (!contractRepository.existsById(id)) {
             return Optional.empty();
         }
-        contractToUpdate = repository.getReferenceById(id);
+        contractToUpdate = contractRepository.getReferenceById(id);
         Instant newContractEnd = contractToUpdate.getContractEnd().plus(daysToAdd, ChronoUnit.DAYS);
         contractToUpdate.setContractEnd(newContractEnd);
-        Contract savedEntity = repository.save(contractToUpdate);
+        Contract savedEntity = contractRepository.save(contractToUpdate);
 
         return Optional.ofNullable(ContractDto.builder()
                 .id(savedEntity.getId())
@@ -101,36 +105,30 @@ public class ContractService {
                 .build());
     }
 
-//    public ContractDto addContract(ContractAddDto contractToBeAdded) {
-//        Contract newContract = Contract.builder()
-//                .id(contractToBeAdded)
-//                .club()
-//
-//                .build();
+    public ContractAddDto addContract(ContractAddDto contractToBeAdded) {
+        Contract newContract = Contract.builder()
+                .club(clubRepository.findById(contractToBeAdded.getClubId()).get())
+                .footballer(footballerRepository.findById(contractToBeAdded.getFootballerId()).get())
+                .contractStart(Instant.parse(contractToBeAdded.getContractStart()))
+                .contractEnd(Instant.parse(contractToBeAdded.getContractEnd()))
+                .salary(contractToBeAdded.getSalary())
+                .build();
+        Contract savedEntity = contractRepository.save(newContract);
 
-
-
-//        public FootballerDto addFootballer(FootballerDto footballerToBeAdded) {
-//            Footballer newFootballer = Footballer.builder()
-//                    .pesel(footballerToBeAdded.getPesel())
-//                    .name(footballerToBeAdded.getName())
-//                    .height(footballerToBeAdded.getHeight())
-//                    .build();
-//            Footballer savedEntity = repository.save(newFootballer);
-//
-//            return FootballerDto.builder()
-//                    .id(savedEntity.getId())
-//                    .pesel(savedEntity.getPesel())
-//                    .name(savedEntity.getName())
-//                    .height(savedEntity.getHeight())
-//                    .build();
-//        }
-//    }
+        return ContractAddDto.builder()
+                .id(savedEntity.getId())
+                .clubId(savedEntity.getClub().getId())
+                .footballerId(savedEntity.getFootballer().getId())
+                .contractStart(savedEntity.getContractStart().toString())
+                .contractEnd(savedEntity.getContractEnd().toString())
+                .salary(savedEntity.getSalary())
+                .build();
+    }
 
     @Transactional
     public void deleteContractById(@PathVariable int id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        if (contractRepository.existsById(id)) {
+            contractRepository.deleteById(id);
         }
     }
 }

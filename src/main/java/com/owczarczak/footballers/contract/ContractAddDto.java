@@ -11,9 +11,9 @@ import java.time.Instant;
 @Builder
 public class ContractAddDto {
     private int id;
-    private Club club;
-    private Footballer footballer;
-    private Instant contractStart;
-    private Instant contractEnd;
+    private int clubId;
+    private int footballerId;
+    private String contractStart;
+    private String contractEnd;
     private int salary;
 }

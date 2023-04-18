@@ -50,4 +50,13 @@ public class Contract {
         this.contractEnd = contractEnd;
         this.salary = salary;
     }
+
+    public Contract(int id, Club club, Footballer footballer, Instant contractStart, Instant contractEnd, int salary) {
+        this.id = id;
+        this.club = club;
+        this.footballer = footballer;
+        this.contractStart = contractStart;
+        this.contractEnd = contractEnd;
+        this.salary = salary;
+    }
 }

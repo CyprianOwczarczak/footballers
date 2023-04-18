@@ -50,4 +50,9 @@ public class ClubRepresentation {
         this.footballerList = footballerList;
     }
 
+    public ClubRepresentation(int id, Club club, List<Footballer> footballerList) {
+        this.id = id;
+        this.club = club;
+        this.footballerList = footballerList;
+    }
 }

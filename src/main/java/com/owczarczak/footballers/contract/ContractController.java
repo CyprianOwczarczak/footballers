@@ -1,6 +1,7 @@
 package com.owczarczak.footballers.contract;
 
 import com.owczarczak.footballers.footballer.FootballerDto;
+import com.owczarczak.footballers.score.ScoreAddDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,31 +63,14 @@ public class ContractController {
         return ok().build();
     }
 
-    //TODO add Post method
+    @PostMapping("/")
+    ResponseEntity<?> addContract(@RequestBody ContractAddDto newContractDto) {
+        ContractAddDto result = service.addContract(newContractDto);
 
-//    @PostMapping("/")
-//    ResponseEntity<?> addFootballer(@RequestBody FootballerDto newFootballerDto) {
-//        if (service.existsByPesel(newFootballerDto.getPesel())) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//
-//        List<String> errorList = returnErrorList(newFootballerDto);
-//        if (!errorList.isEmpty()) {
-//            return ResponseEntity.badRequest().body(errorList);
-//        }
-//        FootballerDto result = service.addFootballer(newFootballerDto);
-//        return ResponseEntity
-//                .created(URI.create("/" + result.getId()))
-//                .body(result);
-//    }
-
-//    @PostMapping("/")
-//    ResponseEntity<?> addContract(@RequestBody ContractDto contractDto) {
-//        if (service.getContractById(contractDto.getId()).isEmpty()) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//        ContractDto result = service
-//    }
+        return ResponseEntity
+                .created(URI.create("/" + result.getId()))
+                .body(result);
+    }
 
     @PutMapping("/{id}")
     ResponseEntity extendContractLength(@PathVariable int id,
