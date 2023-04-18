@@ -1,5 +1,8 @@
 package com.owczarczak.footballers.score;
 
+import com.owczarczak.footballers.footballer.Footballer;
+import com.owczarczak.footballers.footballer.FootballerDto;
+import com.owczarczak.footballers.match.Match;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,22 +65,39 @@ public class ScoreService {
         return dtos;
     }
 
-    List<ScoreNewDto> getAvgNew() {
-        List<ScoreNewDto> returnedList = repository.getAvgNew();
-        List<ScoreNewDto> dtos = new LinkedList<>();
-        for (ScoreNewDto score : returnedList) {
-            ScoreNewDto dtoToBeAdded = ScoreNewDto.builder()
-                    .id(score.getId())
-                    .matchId(score.getMatchId())
-                    .matchDate(score.getMatchDate())
-                    .footballerId(score.getFootballerId())
-                    .footballerPesel(score.getFootballerPesel())
-                    .footballerName(score.getFootballerName())
-                    .minuteScored(score.getMinuteScored())
-                    .build();
-            dtos.add(dtoToBeAdded);
-        }
-        return dtos;
+//    List<ScoreAddDto> getAvgNew() {
+//        List<ScoreAddDto> returnedList = repository.getAvgNew();
+//        List<ScoreAddDto> dtos = new LinkedList<>();
+//        for (ScoreAddDto score : returnedList) {
+//            ScoreAddDto dtoToBeAdded = ScoreAddDto.builder()
+//                    .id(score.getId())
+//                    .matchId(score.getMatchId())
+//                    .matchDate(score.getMatchDate())
+//                    .footballerId(score.getFootballerId())
+//                    .footballerPesel(score.getFootballerPesel())
+//                    .footballerName(score.getFootballerName())
+//                    .minuteScored(score.getMinuteScored())
+//                    .build();
+//            dtos.add(dtoToBeAdded);
+//        }
+//        return dtos;
+//    }
+
+    public ScoreAddDto addScore(ScoreAddDto scoreToBeAdded) {
+
+        Score newScore = Score.builder()
+                .match(repository.getReferenceById(scoreToBeAdded.getMatchId()).getMatch())
+                .footballer(repository.getReferenceById(scoreToBeAdded.getFootballerId()).getFootballer())
+                .minuteScored(scoreToBeAdded.getMinuteScored())
+                .build();
+        Score savedEntity = repository.save(newScore);
+
+        return ScoreAddDto.builder()
+                .id(savedEntity.getId())
+                .matchId(savedEntity.getMatch().getId())
+                .footballerId(savedEntity.getFootballer().getId())
+                .minuteScored(savedEntity.getMinuteScored())
+                .build();
     }
 
     @Transactional

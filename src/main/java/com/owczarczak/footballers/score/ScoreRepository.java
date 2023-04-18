@@ -37,10 +37,10 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
             """, nativeQuery = true)
     List<Object[]> getAvgGoalsPerMatchForFootballer();
 
-    @Query("""
-            select new com.owczarczak.footballers.score.ScoreNewDto(
-            s.id, s.match.id, s.match.date, s.footballer.id, s.footballer.pesel, s.footballer.name, s.minuteScored)
-            from Score s
-            """)
-    List<ScoreNewDto> getAvgNew();
+//    @Query("""
+//            select new com.owczarczak.footballers.score.ScoreNewDto(
+//            s.id, s.match.id, s.match.date, s.footballer.id, s.footballer.pesel, s.footballer.name, s.minuteScored)
+//            from Score s
+//            """)
+//    List<ScoreAddDto> getAvgNew();
 }
