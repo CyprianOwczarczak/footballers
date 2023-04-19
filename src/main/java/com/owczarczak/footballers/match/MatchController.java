@@ -72,6 +72,7 @@ public class MatchController {
     private ArrayList<String> returnErrorList(MatchAddDto newMatchDto) {
         ArrayList<String> errorList = new ArrayList<>();
 
+        //TODO
 //        if (newMatchDto.getHost() == null) {
 //            errorList.add("You have to provide a host !");
 //        }

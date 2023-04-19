@@ -3,8 +3,6 @@ package com.owczarczak.footballers.match;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data

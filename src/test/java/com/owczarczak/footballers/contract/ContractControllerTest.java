@@ -203,7 +203,7 @@ public class ContractControllerTest {
                 .andExpectAll(status().isOk(),
                         jsonPath("$").isMap(),
                         jsonPath("$.clubName", is("Barcelona")),
-                        jsonPath("$.contractEnd", is("2018-01-17T01:10:00Z"))
+                        jsonPath("$.contractEnd", is("2018-01-17"))
                 );
     }
 }

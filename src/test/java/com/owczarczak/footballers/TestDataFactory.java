@@ -11,6 +11,7 @@ import com.owczarczak.footballers.score.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -118,13 +119,13 @@ public class TestDataFactory {
         List<Match> matchList = new LinkedList<>();
         addAll(matchList,
                 new Match(representationList.get(0), representationList.get(4),
-                        "Referee1", now(), emptyList()),
+                        "Referee1", LocalDateTime.now(), emptyList()),
                 new Match(representationList.get(1), representationList.get(5),
-                        "Referee2", now(), emptyList()),
+                        "Referee2", LocalDateTime.now(), emptyList()),
                 new Match(representationList.get(2), representationList.get(6),
-                        "Referee3", now(), emptyList()),
+                        "Referee3", LocalDateTime.now(), emptyList()),
                 new Match(representationList.get(3), representationList.get(7),
-                        "Referee4", now(), emptyList())
+                        "Referee4", LocalDateTime.now(), emptyList())
         );
         return matchList;
     }

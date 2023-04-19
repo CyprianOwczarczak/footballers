@@ -33,13 +33,6 @@ public class ClubService {
                     .created(club.getCreated())
                     .build();
             dtos.add(dtoToBeAdded);
-
-            try {
-                String jsonString = mapper.writeValueAsString(dtos);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-
         }
         return dtos;
     }

@@ -12,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -110,7 +108,6 @@ public class ClubControllerTest {
                         jsonPath("$", hasSize(2)));
     }
 
-    //fixme
     @Test
     void shouldDeleteByCLubId() throws Exception {
         //given
@@ -133,17 +130,14 @@ public class ClubControllerTest {
         assertFalse(containsClubName);
     }
 
-    //fixme
     @Test
     @DisplayName("Should add a club")
     void shouldAddClub() throws Exception {
-        //given
-        LocalDate localDate1 = LocalDate.of(1970, 1, 1);
-        Club club = new Club("Manchester", localDate1, Collections.emptyList());
-
         String request = """
-                "name":"TestClub1",
-                "created":"2015-12-30T19:34:50.63Z"
+                {
+                	"name":"TestClub1",
+                    "created":"2015-12-30"
+                }
                 """;
 
         //when + then
@@ -152,7 +146,7 @@ public class ClubControllerTest {
                         .content(request))
                 .andDo(print())
                 .andExpectAll(
-//                        status().isCreated(),
+                        status().isCreated(),
                         jsonPath("$").isMap());
 
         Assertions.assertEquals(1, clubRepository.findAll().size());

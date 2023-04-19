@@ -5,6 +5,7 @@ import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
+import com.owczarczak.footballers.score.ScoreDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -153,16 +155,21 @@ public class MatchControllerTest {
     @DisplayName("Should add match")
     void shouldAddMatch() throws Exception {
         //given
-//        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
 //        List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
 
+//        int guestId = clubList.get(0).getId();
+//        int hostId = clubList.get(1).getId();
+
         //TODO change this request to ids and parameters
+        //TODO The only place where clubRepresentations are creted is here !
         String request = """
                 {
                 "guestId":%d,
                 "hostId":%d,
-                "nameOfReferee":PostReferee,
-                "date":
+                "nameOfReferee":"PostReferee",
+                "date":"2000-01-01T17:09:42.411",
+                "scoresList"
                 }
                 """;
         //when + then

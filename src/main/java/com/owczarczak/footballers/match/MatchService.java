@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
-import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -79,6 +78,7 @@ public class MatchService {
                 .host(host)
                 .nameOfReferee(matchToBeAdded.getNameOfReferee())
                 .date(matchToBeAdded.getDate())
+                //fixme
 //                .scores(matchToBeAdded.)
                 .build();
         Match savedEntity = matchRepository.save(newMatch);

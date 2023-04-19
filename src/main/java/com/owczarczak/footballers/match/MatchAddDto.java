@@ -20,8 +20,4 @@ public class MatchAddDto {
     private String nameOfReferee;
     private LocalDateTime date;
     private List<ScoreDto> scoresList;
-    //TODO
-    //Add ScoreDto list
-    //json-> String javowy
-    //custom mapper w jacksonie
 }

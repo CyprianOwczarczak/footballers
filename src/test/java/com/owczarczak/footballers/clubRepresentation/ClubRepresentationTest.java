@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -19,7 +18,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -119,51 +117,5 @@ public class ClubRepresentationTest {
         this.mockMvc.perform(delete("/representation/" + 1))
                 .andDo(print())
                 .andExpect(jsonPath("$").doesNotExist());
-    }
-
-//    @Test
-//    @DisplayName("Should add a footballer")
-//    void shouldAddFootballer() throws Exception {
-//        String request = """
-//                {
-//                "pesel":"333333",
-//                "name":"testPlayer3",
-//                "height":170
-//                }
-//                """;
-//
-//        this.mockMvc.perform(post("/footballers/")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(request))
-//                .andDo(print())
-//                .andExpectAll(status().isCreated(),
-//                        jsonPath("$").isMap())
-//                .andExpectAll(getJsonValidationRules());
-//    }
-
-    @Test
-    void shouldAddRepresentation() throws Exception {
-        String request = """
-                "club":{
-                
-                }
-                "footballerList":
-                
-                """;
-
-//        .id(representationToBeAdded.getId())
-//                .club(representationToBeAdded.getClub())
-//                .footballerList
-
-//        {
-//            "pesel":"333333",
-//                "name":"testPlayer3",
-//                "height":170
-//        }
-
-        this.mockMvc.perform(post("/representation/"))
-                .andDo(print())
-                .andExpectAll(status().isCreated(),
-                        jsonPath("$").isMap());
     }
 }

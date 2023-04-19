@@ -1,11 +1,8 @@
 package com.owczarczak.footballers.contract;
 
-import com.owczarczak.footballers.club.Club;
-import com.owczarczak.footballers.footballer.Footballer;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
