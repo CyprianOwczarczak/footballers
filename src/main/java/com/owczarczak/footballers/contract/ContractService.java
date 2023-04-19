@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class ContractService {
             return Optional.empty();
         }
         contractToUpdate = contractRepository.getReferenceById(id);
-        Instant newContractEnd = contractToUpdate.getContractEnd().plus(daysToAdd, ChronoUnit.DAYS);
+        LocalDate newContractEnd = contractToUpdate.getContractEnd().plus(daysToAdd, ChronoUnit.DAYS);
         contractToUpdate.setContractEnd(newContractEnd);
         Contract savedEntity = contractRepository.save(contractToUpdate);
 
@@ -109,8 +110,8 @@ public class ContractService {
         Contract newContract = Contract.builder()
                 .club(clubRepository.findById(contractToBeAdded.getClubId()).get())
                 .footballer(footballerRepository.findById(contractToBeAdded.getFootballerId()).get())
-                .contractStart(Instant.parse(contractToBeAdded.getContractStart()))
-                .contractEnd(Instant.parse(contractToBeAdded.getContractEnd()))
+                .contractStart(contractToBeAdded.getContractStart())
+                .contractEnd(contractToBeAdded.getContractEnd())
                 .salary(contractToBeAdded.getSalary())
                 .build();
         Contract savedEntity = contractRepository.save(newContract);
@@ -119,8 +120,8 @@ public class ContractService {
                 .id(savedEntity.getId())
                 .clubId(savedEntity.getClub().getId())
                 .footballerId(savedEntity.getFootballer().getId())
-                .contractStart(savedEntity.getContractStart().toString())
-                .contractEnd(savedEntity.getContractEnd().toString())
+                .contractStart(savedEntity.getContractStart())
+                .contractEnd(savedEntity.getContractEnd())
                 .salary(savedEntity.getSalary())
                 .build();
     }

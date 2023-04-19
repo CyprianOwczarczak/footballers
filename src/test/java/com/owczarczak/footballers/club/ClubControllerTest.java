@@ -12,12 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-import static java.time.LocalDateTime.of;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -140,8 +138,8 @@ public class ClubControllerTest {
     @DisplayName("Should add a club")
     void shouldAddClub() throws Exception {
         //given
-        LocalDateTime localDateTime1 = of(2000, 1, 5, 1, 10, 0);
-        Club club = new Club("Manchester", localDateTime1.toInstant(ZoneOffset.UTC), Collections.emptyList());
+        LocalDate localDate1 = LocalDate.of(1970, 1, 1);
+        Club club = new Club("Manchester", localDate1, Collections.emptyList());
 
         String request = """
                 "name":"TestClub1",

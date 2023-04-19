@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ public class MatchAddDto {
     private int hostId;
     private int guestId;
     private String nameOfReferee;
-    private LocalDate date;
+    private LocalDateTime date;
     private List<ScoreDto> scoresList;
     //TODO
     //Add ScoreDto list

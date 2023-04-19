@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Builder
@@ -44,7 +43,7 @@ public class Contract {
     public Contract() {
     }
 
-    public Contract(Club club, Footballer footballer, Instant contractStart, Instant contractEnd, int salary) {
+    public Contract(Club club, Footballer footballer, LocalDate contractStart, LocalDate contractEnd, int salary) {
         this.club = club;
         this.footballer = footballer;
         this.contractStart = contractStart;
@@ -52,7 +51,7 @@ public class Contract {
         this.salary = salary;
     }
 
-    public Contract(int id, Club club, Footballer footballer, Instant contractStart, Instant contractEnd, int salary) {
+    public Contract(int id, Club club, Footballer footballer, LocalDate contractStart, LocalDate contractEnd, int salary) {
         this.id = id;
         this.club = club;
         this.footballer = footballer;

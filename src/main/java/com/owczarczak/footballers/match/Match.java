@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -40,7 +41,7 @@ public class Match {
 
     private String nameOfReferee;
 
-    private LocalDate date;
+    private LocalDateTime date;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "match_id")
@@ -49,7 +50,7 @@ public class Match {
     public Match() {
     }
 
-    public Match(int id, ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, Instant date, List<Score> scores) {
+    public Match(int id, ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, LocalDateTime date, List<Score> scores) {
         this.id = id;
         this.host = host;
         this.guest = guest;
@@ -58,7 +59,7 @@ public class Match {
         this.scores = scores;
     }
 
-    public Match(ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, Instant date, List<Score> scores) {
+    public Match(ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, LocalDateTime date, List<Score> scores) {
         this.host = host;
         this.guest = guest;
         this.nameOfReferee = nameOfReferee;

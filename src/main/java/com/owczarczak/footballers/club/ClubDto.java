@@ -12,7 +12,10 @@ import java.time.LocalDate;
 @Builder
 public class ClubDto {
     private int id;
+
     private String name;
+
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate created;
 
     //TODO Zserializować całe DTO, LocalDate na wyjściu ma być typu String i z powrotem ma się deserializować jako LocalDate

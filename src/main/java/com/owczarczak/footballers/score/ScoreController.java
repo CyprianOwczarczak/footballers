@@ -44,11 +44,6 @@ public class ScoreController {
         return service.getAvgGoalsPerMatchForFootballer();
     }
 
-//    @GetMapping("/getAverageNew/")
-//    public List<ScoreAddDto> getAvgNew() {
-//        return service.getAvgNew();
-//    }
-
     @PostMapping("/")
     ResponseEntity<?> addScore(@RequestBody ScoreAddDto newScoreDto) {
         ScoreAddDto result = service.addScore(newScoreDto);

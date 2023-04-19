@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -13,5 +14,5 @@ public class MatchDto {
     private String hostClubName;
     private String guestClubName;
     private String nameOfReferee;
-    private LocalDate date;
+    private LocalDateTime date;
 }

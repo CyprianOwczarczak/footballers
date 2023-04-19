@@ -78,7 +78,7 @@ public class MatchService {
                 .guest(guest)
                 .host(host)
                 .nameOfReferee(matchToBeAdded.getNameOfReferee())
-                .date(Instant.parse(matchToBeAdded.getDate()))
+                .date(matchToBeAdded.getDate())
 //                .scores(matchToBeAdded.)
                 .build();
         Match savedEntity = matchRepository.save(newMatch);
@@ -88,7 +88,7 @@ public class MatchService {
                 .guestId(savedEntity.getGuest().getId())
                 .hostId(savedEntity.getHost().getId())
                 .nameOfReferee(savedEntity.getNameOfReferee())
-                .date(savedEntity.getDate().toString())
+                .date(savedEntity.getDate())
 //                .scores(savedEntity.getScores())
                 .build();
     }
