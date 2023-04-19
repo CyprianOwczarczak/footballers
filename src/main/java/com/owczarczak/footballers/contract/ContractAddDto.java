@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -13,7 +14,7 @@ public class ContractAddDto {
     private int id;
     private int clubId;
     private int footballerId;
-    private String contractStart;
-    private String contractEnd;
+    private LocalDate contractStart;
+    private LocalDate contractEnd;
     private int salary;
 }

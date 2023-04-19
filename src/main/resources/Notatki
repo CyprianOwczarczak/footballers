@@ -181,3 +181,10 @@ Pull request do tego co dodałem (Dockerfile)
 Nowy branch do dodania Zonky do projektu
 
 Potem walidacja
+
+19.04
+Dokumentacja do com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+Jak mapować daty z Javy 8
+Przejrzeć branche i zrobić pull requesty i samemu je przejrzeć i zmerge'ować
+Zonky
+Sprawdzić czy wszystkie testy się odpalają

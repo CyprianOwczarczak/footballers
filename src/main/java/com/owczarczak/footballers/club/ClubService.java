@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.club;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerDto;
@@ -20,7 +21,7 @@ public class ClubService {
     @Autowired
     ClubRepository repository;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper();
 
     List<ClubDto> getAllClubs() {
         List<Club> clubList = repository.findAll();
@@ -32,6 +33,13 @@ public class ClubService {
                     .created(club.getCreated())
                     .build();
             dtos.add(dtoToBeAdded);
+
+            try {
+                String jsonString = mapper.writeValueAsString(dtos);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
         }
         return dtos;
     }

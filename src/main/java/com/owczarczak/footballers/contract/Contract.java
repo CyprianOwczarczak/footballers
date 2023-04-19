@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Builder
 @Entity
@@ -34,9 +35,9 @@ public class Contract {
     @JoinColumn(name = "footballer_id")
     private Footballer footballer;
 
-    private Instant contractStart;
+    private LocalDate contractStart;
 
-    private Instant contractEnd;
+    private LocalDate contractEnd;
 
     private int salary;
 

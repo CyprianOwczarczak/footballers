@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.club;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.boot.jackson.JsonObjectSerializer;
@@ -12,6 +13,14 @@ import java.time.LocalDate;
 public class ClubDto {
     private int id;
     private String name;
-    //TODO zamiast Instant dać LocalDAte albo LocalDateTime i potem przerobić z JsonSerializer
     private LocalDate created;
+
+    //TODO Zserializować całe DTO, LocalDate na wyjściu ma być typu String i z powrotem ma się deserializować jako LocalDate
+
+    //Mam otrzymać takiego JSON'a i jeśli prześlę takiego JSON'a to ma go zaakceptować
+//    {
+//        "id":1,
+//            "name":"Piotr",
+//            "created":"2022-07-10"
+//    }
 }
