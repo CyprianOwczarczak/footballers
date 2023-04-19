@@ -150,7 +150,6 @@ public class MatchControllerTest {
         assertEquals(8, representationRepository.findAll().size());
     }
 
-    //TODO add POST test
     @Test
     @DisplayName("Should add match")
     void shouldAddMatch() throws Exception {
@@ -161,8 +160,7 @@ public class MatchControllerTest {
 //        int guestId = clubList.get(0).getId();
 //        int hostId = clubList.get(1).getId();
 
-        //TODO change this request to ids and parameters
-        //TODO The only place where clubRepresentations are creted is here !
+        //TODO The ClubRepresentations have to be created here
         String request = """
                 {
                 "guestId":%d,

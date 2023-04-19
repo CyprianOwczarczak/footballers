@@ -1,6 +1,7 @@
 package com.owczarczak.footballers.match;
 
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
+import com.owczarczak.footballers.clubRepresentation.ClubRepresentationDto;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,29 +68,36 @@ public class MatchService {
         }
         return dtos;
     }
-
     public MatchAddDto addMatch(MatchAddDto matchToBeAdded) {
-        ClubRepresentation guest = representationRepository.findById(matchToBeAdded.getGuestId()).get();
-        ClubRepresentation host = representationRepository.findById(matchToBeAdded.getHostId()).get();
+//        ClubRepresentation guest = representationRepository.findById(matchToBeAdded.getGuestId()).get();
+//        ClubRepresentation host = representationRepository.findById(matchToBeAdded.getHostId()).get();
+
 
         Match newMatch = Match.builder()
                 .id(matchToBeAdded.getId())
-                .guest(guest)
-                .host(host)
+                .guest(convertRepresentationDto(matchToBeAdded.getGuestRepresentation()))
+                .host(convertRepresentationDto(matchToBeAdded.getHostRepresentation()))
                 .nameOfReferee(matchToBeAdded.getNameOfReferee())
                 .date(matchToBeAdded.getDate())
                 //fixme
-//                .scores(matchToBeAdded.)
+                .scores(matchToBeAdded.getScoresList())
                 .build();
         Match savedEntity = matchRepository.save(newMatch);
 
         return MatchAddDto.builder()
                 .id(savedEntity.getId())
-                .guestId(savedEntity.getGuest().getId())
-                .hostId(savedEntity.getHost().getId())
+                .guestRepresentation(savedEntity.getGuest())
+                .hostRepresentation(savedEntity.getHost().getId())
                 .nameOfReferee(savedEntity.getNameOfReferee())
                 .date(savedEntity.getDate())
 //                .scores(savedEntity.getScores())
+                .build();
+    }
+
+    private ClubRepresentation convertRepresentationDto(ClubRepresentationDto representationDto) {
+        return ClubRepresentation.builder()
+                .club(representationRepository.findById(representationDto.getId()).get().getClub())
+                .footballerList(representationDto.getFootballerList())
                 .build();
     }
 

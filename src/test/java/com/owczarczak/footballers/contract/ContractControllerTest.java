@@ -132,7 +132,6 @@ public class ContractControllerTest {
                         jsonPath("$.averageLength", is(1096)));
     }
 
-    //fixme
     @Test
     void shouldAddContract() throws Exception {
         //given

@@ -45,8 +45,6 @@ public class ClubController {
 
     @PostMapping("/")
     ResponseEntity<?> addClub(@RequestBody ClubDto newClubDto) {
-        //TODO add validation if club exists by name
-
         ClubDto result = service.addClub(newClubDto);
         return ResponseEntity
                 .created(URI.create("/" + result.getId()))
