@@ -35,11 +35,7 @@ public class MatchController {
     @GetMapping("/{id}")
     public ResponseEntity<MatchDto> getMatchById(@PathVariable int id) {
         Optional<MatchDto> foundDtoOptional = service.getMatchById(id);
-        if (foundDtoOptional.isEmpty()) {
-            return notFound().build();
-        } else {
-            return ok(foundDtoOptional.get());
-        }
+        return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
 
     @GetMapping("/byRefereeName/")
@@ -49,14 +45,15 @@ public class MatchController {
 
     @PostMapping("/")
     ResponseEntity<?> addMatch(@RequestBody MatchAddDto newMatchDto) {
-        if (service.matchRepository.existsById(newMatchDto.getId())) {
-            return ResponseEntity.badRequest().build();
-        }
+        //TODO
+//        if (service.matchRepository.existsById(newMatchDto.getId())) {
+//            return ResponseEntity.badRequest().build();
+//        }
 
-        ArrayList<String> errorList = returnErrorList(newMatchDto);
-        if (!errorList.isEmpty()) {
-            return ResponseEntity.badRequest().body(errorList);
-        }
+//        ArrayList<String> errorList = returnErrorList(newMatchDto);
+//        if (!errorList.isEmpty()) {
+//            return ResponseEntity.badRequest().body(errorList);
+//        }
 
         MatchAddDto result = service.addMatch(newMatchDto);
         return ResponseEntity.created(URI.create("/" + result.getId()))

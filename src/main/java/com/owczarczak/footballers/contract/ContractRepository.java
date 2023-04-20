@@ -18,7 +18,6 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
             """)
     List<Contract> getListOfContractsForSpecificFootballer(@Param("fId") int fId);
 
-    //- Średnia długość kontraktów piłkarzy w danym zespole
     //Długość kontraktów w dniach, Średnia w danym klubie
     @Query(value = """
             select

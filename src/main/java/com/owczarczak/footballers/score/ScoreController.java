@@ -32,11 +32,7 @@ public class ScoreController {
     @GetMapping("/{id}")
     public ResponseEntity<ScoreDto> getScoreById(@PathVariable int id) {
         Optional<ScoreDto> foundDtoOptional = service.getScoreById(id);
-        if (foundDtoOptional.isEmpty()) {
-            return notFound().build();
-        } else {
-            return ok(foundDtoOptional.get());
-        }
+        return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
 
     @GetMapping("/getAverageGoals/")
@@ -54,7 +50,7 @@ public class ScoreController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteMatch(@PathVariable int id) {
+    ResponseEntity<?> deleteMatch(@PathVariable int id) {
         service.deleteMatchById(id);
         return ok().build();
     }

@@ -74,6 +74,7 @@ public class ScoreService {
     public ScoreAddDto addScore(ScoreAddDto scoreToBeAdded) {
 
         Optional<Match> matchOptional = matchRepository.findById(scoreToBeAdded.getMatchId());
+        //TODO optional
         Match match = matchOptional.get();
         Optional<Footballer> footballerOptional = footballerRepository.findById(scoreToBeAdded.getFootballerId());
         Footballer footballer = footballerOptional.get();

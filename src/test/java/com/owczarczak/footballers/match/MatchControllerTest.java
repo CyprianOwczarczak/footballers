@@ -5,6 +5,8 @@ import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
+import com.owczarczak.footballers.footballer.Footballer;
+import com.owczarczak.footballers.footballer.FootballerRepository;
 import lombok.Builder;
 import lombok.Data;
 import org.junit.jupiter.api.AfterEach;
@@ -45,11 +47,15 @@ public class MatchControllerTest {
     @Autowired
     private ClubRepository clubRepository;
 
+    @Autowired
+    FootballerRepository footballerRepository;
+
     @AfterEach
     void setup() {
         matchRepository.deleteAll();
         representationRepository.deleteAll();
         clubRepository.deleteAll();
+        footballerRepository.deleteAll();
     }
 
     @Test
@@ -155,49 +161,42 @@ public class MatchControllerTest {
     void shouldAddMatch() throws Exception {
         //given
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
 
-        //TODO The ClubRepresentations have to be created here
+        int clubId1 = clubList.get(0).getId();
+        int clubId2 = clubList.get(1).getId();
+
+        int footballerId1 = footballerList.get(0).getId();
+        int footballerId2 = footballerList.get(1).getId();
+        int footballerId3 = footballerList.get(2).getId();
+        int footballerId4 = footballerList.get(3).getId();
+
         String request = """
                 {
                 "guestRepresentation":{
-                "club": {
-                "id":1,
-                "name":"Barcelona",
-                "created":"2012-12-30"
-                }},
+                "clubId":%d,
+                "footballersIdList": [%d,%d]
+                },
                 
                 "hostRepresentation":{
-                "club": {
-                "id":2,
-                "name":"Real",
-                "created":"2015-12-30"
-                }},
+                "clubId":%d,
+                "footballersIdList": [%d,%d]
+                },
                 
                 "nameOfReferee":"PostReferee",
                 "date":"2000-01-01T17:09:42.411"
                 }
-                """;
-
-//        public class ClubRepresentationAddDto {
-//            private ClubDto club;
-//
-//            private List<FootballerDto> footballerList;
-//        }
-
-//        @Data
-//        @Builder
-//        public class ClubDto {
-//            private int id;
-//
-//            private String name;
-//
-//            private LocalDate created;
-//        }
+                """.formatted(clubId1, footballerId1, footballerId2, clubId2, footballerId3, footballerId4);
 
         //when + then
-        this.mockMvc.perform(post("/")
+        this.mockMvc.perform(post("/matches/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
-                .andExpect(jsonPath("$").isMap());
+                .andExpectAll(
+                        jsonPath("$").isMap(),
+                        jsonPath("$.nameOfReferee", is("PostReferee")),
+                        jsonPath("$.date", is("2000-01-01T17:09:42.411")),
+                        status().isCreated());
+        assertEquals(1, matchRepository.findAll().size());
     }
 }

@@ -1,12 +1,9 @@
 package com.owczarczak.footballers.clubRepresentation;
 
 import com.owczarczak.footballers.club.Club;
-import com.owczarczak.footballers.club.ClubDto;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.footballer.Footballer;
-import com.owczarczak.footballers.footballer.FootballerDto;
-import com.owczarczak.footballers.score.Score;
-import com.owczarczak.footballers.score.ScoreAddDto;
+import com.owczarczak.footballers.footballer.FootballerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +23,9 @@ public class ClubRepresentationService {
 
     @Autowired
     ClubRepository clubRepository;
+
+    @Autowired
+    FootballerService footballerService;
 
     public List<ClubRepresentationDto> getAllClubRepresentations() {
         List<ClubRepresentation> clubRepresentationList = repository.findAll();
@@ -63,42 +63,23 @@ public class ClubRepresentationService {
         }
     }
 
-    //TODO Divide those methods into different Services
-
-//    ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
     public ClubRepresentation toEntity(ClubRepresentationAddDto representationDto) {
-        return ClubRepresentation.builder()
-                //TODO obsłużyć NullPointerException z Optionala (orElseThrow)
-                .club(clubRepository.findById(representationDto.getClub().getId()).get())
-                .footballerList(toFootballerEntityList(representationDto.getFootballerList()))
-                .build();
-    }
+        Club optionalClub = clubRepository.findById(representationDto.getClubId()).orElseThrow(RuntimeException::new);
+        //TODO check if footballers from the lsit have correct ids
 
-    public List<Footballer> toFootballerEntityList(List<FootballerDto> footballerDtos) {
-        List<Footballer> convertedFootballers = new LinkedList<>();
-        for (FootballerDto footballerDto : footballerDtos) {
-            Footballer footballerToAdd = Footballer.builder()
-                    .pesel(footballerDto.getPesel())
-                    .name(footballerDto.getName())
-                    .height(footballerDto.getHeight())
-                    .build();
-            convertedFootballers.add(footballerToAdd);
-        }
-        return convertedFootballers;
+        return ClubRepresentation.builder()
+                //TODO obsłużyć NullPointerException z Optionala (orElseThrow) (wydzielić osobno)
+                .club(optionalClub)
+                .footballerList(footballerService.convertIdToEntityList(representationDto.getFootballersIdList()))
+                .build();
     }
 
     //Convert Club representation without FootballerList
     public ClubRepresentationAddDto toRepresentationDto(ClubRepresentation representation) {
         return ClubRepresentationAddDto.builder()
                 .id(representation.getId())
-                .club(toClubDto(representation.getClub()))
-                .build();
-    }
-//  ✓✓✓✓✓✓✓✓
-    public ClubDto toClubDto(Club club) {
-        return ClubDto.builder()
-                .name(club.getName())
-                .created(club.getCreated())
+                .clubId(representation.getClub().getId())
+                .footballersIdList(footballerService.convertEntityToIdList(representation.getFootballerList()))
                 .build();
     }
 }

@@ -33,11 +33,7 @@ public class ContractController {
     @GetMapping("/{id}")
     public ResponseEntity<ContractDto> getContractById(@PathVariable int id) {
         Optional<ContractDto> foundDtoOptional = service.getContractById(id);
-        if (foundDtoOptional.isEmpty()) {
-            return notFound().build();
-        } else {
-            return ok(foundDtoOptional.get());
-        }
+        return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
 
     @GetMapping("/contractsForFootballer/{id}")
@@ -56,7 +52,7 @@ public class ContractController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteContract(@PathVariable int id) {
+    ResponseEntity<?> deleteContract(@PathVariable int id) {
         service.deleteContractById(id);
         return ok().build();
     }
@@ -71,8 +67,8 @@ public class ContractController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity extendContractLength(@PathVariable int id,
-                                        @RequestParam("daysToAdd") int daysToAdd) {
+    ResponseEntity<?> extendContractLength(@PathVariable int id,
+                                           @RequestParam("daysToAdd") int daysToAdd) {
         if (service.getContractById(id).isEmpty()) {
             return notFound().build();
         } else {

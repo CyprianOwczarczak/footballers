@@ -72,8 +72,7 @@ public class ScoreControllerTest {
         //when + then
         this.mockMvc.perform(get("/matches/"))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray())
-        ;
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test

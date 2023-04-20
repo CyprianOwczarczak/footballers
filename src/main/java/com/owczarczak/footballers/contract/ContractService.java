@@ -107,7 +107,9 @@ public class ContractService {
 
     public ContractAddDto addContract(ContractAddDto contractToBeAdded) {
         Contract newContract = Contract.builder()
+                //TODO Optional
                 .club(clubRepository.findById(contractToBeAdded.getClubId()).get())
+//                .club(Optional.ofNullable(clubRepository.findById(contractToBeAdded.getClubId()).get()).orElseThrow(ChangeSetPersister.NotFoundException::new))
                 .footballer(footballerRepository.findById(contractToBeAdded.getFootballerId()).get())
                 .contractStart(contractToBeAdded.getContractStart())
                 .contractEnd(contractToBeAdded.getContractEnd())
