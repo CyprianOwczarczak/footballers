@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.footballer;
 
+import com.owczarczak.footballers.club.Club;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -140,9 +141,9 @@ public class FootballerService {
         List<Footballer> listToReturn = new LinkedList<>();
 
         for (Integer id : idList) {
-            //TODO optional
-            Footballer footballer = repository.findById(id).get();
-            listToReturn.add(footballer);
+            Footballer optionalFootballer = repository.findById(id).orElseThrow(RuntimeException::new);
+
+            listToReturn.add(optionalFootballer);
         }
         return listToReturn;
     }

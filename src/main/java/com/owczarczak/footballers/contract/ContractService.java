@@ -1,6 +1,8 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
+import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +79,7 @@ public class ContractService {
     }
 
     public ContractLengthDto getMeanLenghtOfContractsInClub(int clubId) {
-        //Id klubu pobieramy z parametru
+        //We get the club id from the parameter
         BigDecimal averageLength = contractRepository.getMeanLenghtOfContractsInClub(clubId);
         return ContractLengthDto.builder()
                 .clubId(clubId)
@@ -106,11 +108,14 @@ public class ContractService {
     }
 
     public ContractAddDto addContract(ContractAddDto contractToBeAdded) {
+
+        Club optionalClub = clubRepository.findById(contractToBeAdded.getClubId()).orElseThrow(RuntimeException::new);
+        Footballer optionalFootballer = footballerRepository
+                .findById(contractToBeAdded.getFootballerId()).orElseThrow(RuntimeException::new);
+
         Contract newContract = Contract.builder()
-                //TODO Optional
-                .club(clubRepository.findById(contractToBeAdded.getClubId()).get())
-//                .club(Optional.ofNullable(clubRepository.findById(contractToBeAdded.getClubId()).get()).orElseThrow(ChangeSetPersister.NotFoundException::new))
-                .footballer(footballerRepository.findById(contractToBeAdded.getFootballerId()).get())
+                .club(optionalClub)
+                .footballer(optionalFootballer)
                 .contractStart(contractToBeAdded.getContractStart())
                 .contractEnd(contractToBeAdded.getContractEnd())
                 .salary(contractToBeAdded.getSalary())

@@ -15,7 +15,7 @@ public interface ClubRepository extends JpaRepository<Club, Integer> {
     @Query("SELECT c FROM Club c ORDER BY c.created DESC")
     Page<Club> findAllByOrderByCreatedDesc(Pageable pageable);
 
-    //    Wszystkie kluby które zagrały więcej niż 3 mecze
+    // All clubs which played more than 3 matches
     @Query("""
             select c
             from Club c

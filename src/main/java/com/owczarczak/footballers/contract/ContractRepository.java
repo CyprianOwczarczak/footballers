@@ -18,7 +18,7 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
             """)
     List<Contract> getListOfContractsForSpecificFootballer(@Param("fId") int fId);
 
-    //Długość kontraktów w dniach, Średnia w danym klubie
+    //The lenght of a contract in days, average in a given club
     @Query(value = """
             select
             avg(cast(c.contract_end as date) - cast(c.contract_start as date))

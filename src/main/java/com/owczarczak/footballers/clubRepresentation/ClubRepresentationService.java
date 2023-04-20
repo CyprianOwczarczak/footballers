@@ -65,21 +65,27 @@ public class ClubRepresentationService {
 
     public ClubRepresentation toEntity(ClubRepresentationAddDto representationDto) {
         Club optionalClub = clubRepository.findById(representationDto.getClubId()).orElseThrow(RuntimeException::new);
-        //TODO check if footballers from the lsit have correct ids
+        validateFootballerList(footballerService.convertIdToEntityList(representationDto.getFootballersIdList()));
 
         return ClubRepresentation.builder()
-                //TODO obsłużyć NullPointerException z Optionala (orElseThrow) (wydzielić osobno)
                 .club(optionalClub)
                 .footballerList(footballerService.convertIdToEntityList(representationDto.getFootballersIdList()))
                 .build();
     }
 
-    //Convert Club representation without FootballerList
     public ClubRepresentationAddDto toRepresentationDto(ClubRepresentation representation) {
         return ClubRepresentationAddDto.builder()
                 .id(representation.getId())
                 .clubId(representation.getClub().getId())
                 .footballersIdList(footballerService.convertEntityToIdList(representation.getFootballerList()))
                 .build();
+    }
+
+    private void validateFootballerList(List<Footballer> footballerList) {
+        for (Footballer footballer : footballerList) {
+            if (footballerService.getFootballerById(footballer.getId()).isEmpty()) {
+                throw new RuntimeException();
+            }
+        }
     }
 }

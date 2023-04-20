@@ -82,9 +82,10 @@ public class FootballerController {
         if (!errorList.isEmpty()) {
             return badRequest().body(errorList);
         }
-        //TODO optional
-        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-        return ok(result.get());
+        FootballerDto result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate)
+                .orElseThrow(RuntimeException::new);
+
+        return ok(result);
     }
 
     @DeleteMapping("/{id}")

@@ -1,9 +1,5 @@
 package com.owczarczak.footballers.club;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.owczarczak.footballers.footballer.Footballer;
-import com.owczarczak.footballers.footballer.FootballerDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +16,6 @@ public class ClubService {
 
     @Autowired
     ClubRepository repository;
-
-    ObjectMapper mapper = new ObjectMapper();
 
     List<ClubDto> getAllClubs() {
         List<Club> clubList = repository.findAll();

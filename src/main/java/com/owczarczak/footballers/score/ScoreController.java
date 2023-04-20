@@ -1,6 +1,5 @@
 package com.owczarczak.footballers.score;
 
-import com.owczarczak.footballers.footballer.FootballerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

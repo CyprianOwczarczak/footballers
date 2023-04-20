@@ -36,7 +36,7 @@ public class ClubRepresentationController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteClubRepresentation(@PathVariable int id) {
+    ResponseEntity<?> deleteClubRepresentation(@PathVariable int id) {
         service.deleteClubRepresentation(id);
         return ok().build();
     }

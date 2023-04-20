@@ -1,7 +1,6 @@
 package com.owczarczak.footballers.score;
 
 import com.owczarczak.footballers.footballer.Footballer;
-import com.owczarczak.footballers.footballer.FootballerDto;
 import com.owczarczak.footballers.footballer.FootballerRepository;
 import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.match.MatchRepository;
@@ -72,16 +71,13 @@ public class ScoreService {
     }
 
     public ScoreAddDto addScore(ScoreAddDto scoreToBeAdded) {
-
-        Optional<Match> matchOptional = matchRepository.findById(scoreToBeAdded.getMatchId());
-        //TODO optional
-        Match match = matchOptional.get();
-        Optional<Footballer> footballerOptional = footballerRepository.findById(scoreToBeAdded.getFootballerId());
-        Footballer footballer = footballerOptional.get();
+        Match matchOptional = matchRepository.findById(scoreToBeAdded.getMatchId()).orElseThrow(RuntimeException::new);
+        Footballer footballerOptional = footballerRepository
+                .findById(scoreToBeAdded.getFootballerId()).orElseThrow(RuntimeException::new);
 
         Score newScore = Score.builder()
-                .match(match)
-                .footballer(footballer)
+                .match(matchOptional)
+                .footballer(footballerOptional)
                 .minuteScored(scoreToBeAdded.getMinuteScored())
                 .build();
         Score savedEntity = scoreRepository.save(newScore);
