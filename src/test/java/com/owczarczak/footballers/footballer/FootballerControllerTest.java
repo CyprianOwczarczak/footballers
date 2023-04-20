@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import javax.transaction.Transactional;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -451,7 +451,7 @@ class FootballerControllerTest {
     void shouldReturnFootballersWhoPlayedInMostMatches() throws Exception {
         //Jeden klub, jedna reprezentacja, jeden zawodnik
 
-        Club club = new Club("ExampleClub", Instant.now());
+        Club club = new Club("ExampleClub", LocalDate.now());
         Club clubReturned = clubRepository.save(club);
         ClubRepresentation clubRepresentation = new ClubRepresentation(clubReturned, Collections.emptyList());
         ClubRepresentation representationReturned = representationRepository.save(clubRepresentation);

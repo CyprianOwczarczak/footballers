@@ -35,11 +35,7 @@ public class MatchController {
     @GetMapping("/{id}")
     public ResponseEntity<MatchDto> getMatchById(@PathVariable int id) {
         Optional<MatchDto> foundDtoOptional = service.getMatchById(id);
-        if (foundDtoOptional.isEmpty()) {
-            return notFound().build();
-        } else {
-            return ok(foundDtoOptional.get());
-        }
+        return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
 
     @GetMapping("/byRefereeName/")
@@ -49,10 +45,6 @@ public class MatchController {
 
     @PostMapping("/")
     ResponseEntity<?> addMatch(@RequestBody MatchAddDto newMatchDto) {
-        if (service.repository.existsById(newMatchDto.getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-
         ArrayList<String> errorList = returnErrorList(newMatchDto);
         if (!errorList.isEmpty()) {
             return ResponseEntity.badRequest().body(errorList);
@@ -64,7 +56,7 @@ public class MatchController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteMatch(@PathVariable int id) {
+    ResponseEntity<?> deleteMatch(@PathVariable int id) {
         service.deleteMatchById(id);
         return ok().build();
     }
@@ -72,11 +64,11 @@ public class MatchController {
     private ArrayList<String> returnErrorList(MatchAddDto newMatchDto) {
         ArrayList<String> errorList = new ArrayList<>();
 
-        if (newMatchDto.getHost() == null) {
-            errorList.add("You have to provide a host !");
-        }
-        if (newMatchDto.getGuest() == null) {
+        if (newMatchDto.getGuestRepresentation() == null) {
             errorList.add("You have to provide a guest !");
+        }
+        if (newMatchDto.getHostRepresentation() == null) {
+            errorList.add("You have to provide a host !");
         }
         if (StringUtils.isEmpty(newMatchDto.getNameOfReferee())) {
             errorList.add("You have to provide a referee name !");

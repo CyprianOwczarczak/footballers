@@ -3,11 +3,13 @@ package com.owczarczak.footballers.club;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -19,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,6 +128,28 @@ public class ClubControllerTest {
 
         boolean containsClubName = clubs.stream().anyMatch(i -> i.equals("Barcelona"));
         assertFalse(containsClubName);
+    }
+
+    @Test
+    @DisplayName("Should add a club")
+    void shouldAddClub() throws Exception {
+        String request = """
+                {
+                	"name":"TestClub1",
+                    "created":"2015-12-30"
+                }
+                """;
+
+        //when + then
+        this.mockMvc.perform(post("/clubs/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(
+                        status().isCreated(),
+                        jsonPath("$").isMap());
+
+        Assertions.assertEquals(1, clubRepository.findAll().size());
     }
 
     @Test

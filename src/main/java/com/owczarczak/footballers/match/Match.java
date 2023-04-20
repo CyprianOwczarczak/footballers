@@ -1,7 +1,6 @@
 package com.owczarczak.footballers.match;
 
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
-import com.owczarczak.footballers.score.Score;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.Instant;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -39,29 +36,23 @@ public class Match {
 
     private String nameOfReferee;
 
-    private Instant date;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "match_id")
-    private List<Score> scores;
+    private LocalDateTime date;
 
     public Match() {
     }
 
-    public Match(int id, ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, Instant date, List<Score> scores) {
+    public Match(int id, ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, LocalDateTime date) {
         this.id = id;
         this.host = host;
         this.guest = guest;
         this.nameOfReferee = nameOfReferee;
         this.date = date;
-        this.scores = scores;
     }
 
-    public Match(ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, Instant date, List<Score> scores) {
+    public Match(ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, LocalDateTime date) {
         this.host = host;
         this.guest = guest;
         this.nameOfReferee = nameOfReferee;
         this.date = date;
-        this.scores = scores;
     }
 }

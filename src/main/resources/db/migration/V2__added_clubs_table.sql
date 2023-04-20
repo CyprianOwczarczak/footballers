@@ -12,7 +12,7 @@ drop column if exists goals;
 create table club(
 	id serial,
 	name varchar(255) not null,
-	created timestamp,
+	created date,
 	primary key (id),
 	unique (name)
 );
@@ -21,8 +21,8 @@ create table contract(
 	id serial,
 	club_id int,
 	footballer_id int,
-	contract_start timestamp,
-	contract_end timestamp,
+	contract_start date,
+	contract_end date,
 	salary int,
     primary key (id),
 	constraint fk_club foreign key(club_id) references club(id),

@@ -10,20 +10,17 @@ import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.score.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import static java.time.Instant.now;
-import static java.time.LocalDateTime.of;
 import static java.util.Collections.addAll;
 import static java.util.Collections.emptyList;
 
 public class TestDataFactory {
-
-    @Autowired
     private ClubRepository clubRepository;
 
     @Autowired
@@ -47,19 +44,19 @@ public class TestDataFactory {
         List<Club> clubList = new LinkedList<>();
 
         //Creating dates of founding the clubs
-        LocalDateTime localDateTime1 = of(2015, 1, 5, 1, 10, 0);
-        LocalDateTime localDateTime2 = of(2016, 2, 10, 2, 20, 0);
-        LocalDateTime localDateTime3 = of(2017, 3, 15, 3, 30, 0);
-        LocalDateTime localDateTime4 = of(2018, 4, 20, 4, 40, 0);
-        LocalDateTime localDateTime5 = of(2019, 5, 25, 5, 50, 0);
+        LocalDate localDate1 = LocalDate.of(2015, 1, 5);
+        LocalDate localDate2 = LocalDate.of(2016, 2, 10);
+        LocalDate localDate3 = LocalDate.of(2017, 3, 15);
+        LocalDate localDate4 = LocalDate.of(2018, 4, 20);
+        LocalDate localDate5 = LocalDate.of(2019, 5, 25);
 
         //Adding Clubs to the list
         addAll(clubList,
-                new Club("Barcelona", localDateTime1.toInstant(ZoneOffset.UTC)),
-                new Club("Lech", localDateTime2.toInstant(ZoneOffset.UTC)),
-                new Club("Real", localDateTime3.toInstant(ZoneOffset.UTC)),
-                new Club("Manchester", localDateTime4.toInstant(ZoneOffset.UTC)),
-                new Club("Bayern", localDateTime5.toInstant(ZoneOffset.UTC)));
+                new Club("Barcelona", localDate1),
+                new Club("Lech", localDate2),
+                new Club("Real", localDate3),
+                new Club("Manchester", localDate4),
+                new Club("Bayern", localDate5));
 
         return clubList;
     }
@@ -122,13 +119,13 @@ public class TestDataFactory {
         List<Match> matchList = new LinkedList<>();
         addAll(matchList,
                 new Match(representationList.get(0), representationList.get(4),
-                        "Referee1", now(), emptyList()),
+                        "Referee1", LocalDateTime.now()),
                 new Match(representationList.get(1), representationList.get(5),
-                        "Referee2", now(), emptyList()),
+                        "Referee2", LocalDateTime.now()),
                 new Match(representationList.get(2), representationList.get(6),
-                        "Referee3", now(), emptyList()),
+                        "Referee3", LocalDateTime.now()),
                 new Match(representationList.get(3), representationList.get(7),
-                        "Referee4", now(), emptyList())
+                        "Referee4", LocalDateTime.now())
         );
         return matchList;
     }
@@ -137,24 +134,24 @@ public class TestDataFactory {
     public static List<Contract> getContractList1(List<Club> clubList, List<Footballer> footballerList) {
 
         //Creating contractStart and contractEnd dates (All Contracts last 3 years
-        LocalDateTime startContract1 = of(2015, 1, 5, 1, 10, 0);
-        LocalDateTime startContract2 = of(2016, 2, 10, 2, 20, 0);
-        LocalDateTime startContract3 = of(2017, 3, 15, 3, 30, 0);
+        LocalDate startContract1 = LocalDate.of(2015, 1, 5);
+        LocalDate startContract2 = LocalDate.of(2016, 2, 10);
+        LocalDate startContract3 = LocalDate.of(2017, 3, 15);
 
-        LocalDateTime endContract1 = of(2018, 1, 5, 1, 10, 0);
-        LocalDateTime endContract2 = of(2019, 2, 10, 2, 20, 0);
-        LocalDateTime endContract3 = of(2020, 3, 15, 3, 30, 0);
+        LocalDate endContract1 = LocalDate.of(2018, 1, 5);
+        LocalDate endContract2 = LocalDate.of(2019, 2, 10);
+        LocalDate endContract3 = LocalDate.of(2020, 3, 15);
 
         //Creating a list of Contracts
         List<Contract> contractList = new LinkedList<>();
         addAll(contractList,
 
-                new Contract(clubList.get(0), footballerList.get(0), startContract1.toInstant(ZoneOffset.UTC),
-                        endContract1.toInstant(ZoneOffset.UTC), 10000),
-                new Contract(clubList.get(1), footballerList.get(1), startContract2.toInstant(ZoneOffset.UTC),
-                        endContract2.toInstant(ZoneOffset.UTC), 20000),
-                new Contract(clubList.get(2), footballerList.get(2), startContract3.toInstant(ZoneOffset.UTC),
-                        endContract3.toInstant(ZoneOffset.UTC), 30000));
+                new Contract(clubList.get(0), footballerList.get(0), startContract1,
+                        endContract1, 10000),
+                new Contract(clubList.get(1), footballerList.get(1), startContract2,
+                        endContract2, 20000),
+                new Contract(clubList.get(2), footballerList.get(2), startContract3,
+                        endContract3, 30000));
 
         return contractList;
     }

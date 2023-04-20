@@ -2,6 +2,7 @@ package com.owczarczak.footballers.contract;
 
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.footballer.Footballer;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.Instant;
+import java.time.LocalDate;
 
+@Builder
 @Entity
 @Table(name = "contract")
 @Getter
@@ -32,16 +34,25 @@ public class Contract {
     @JoinColumn(name = "footballer_id")
     private Footballer footballer;
 
-    private Instant contractStart;
+    private LocalDate contractStart;
 
-    private Instant contractEnd;
+    private LocalDate contractEnd;
 
     private int salary;
 
     public Contract() {
     }
 
-    public Contract(Club club, Footballer footballer, Instant contractStart, Instant contractEnd, int salary) {
+    public Contract(Club club, Footballer footballer, LocalDate contractStart, LocalDate contractEnd, int salary) {
+        this.club = club;
+        this.footballer = footballer;
+        this.contractStart = contractStart;
+        this.contractEnd = contractEnd;
+        this.salary = salary;
+    }
+
+    public Contract(int id, Club club, Footballer footballer, LocalDate contractStart, LocalDate contractEnd, int salary) {
+        this.id = id;
         this.club = club;
         this.footballer = footballer;
         this.contractStart = contractStart;

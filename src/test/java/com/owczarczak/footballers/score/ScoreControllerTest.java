@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,8 +72,7 @@ public class ScoreControllerTest {
         //when + then
         this.mockMvc.perform(get("/matches/"))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray())
-        ;
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -119,19 +120,33 @@ public class ScoreControllerTest {
     }
 
     @Test
-    void shouldGetNewAvg() throws Exception {
-        //given
+    @DisplayName("Should add a score")
+    void shouldAddScore() throws Exception {
+        //given - adding matches and footballers the scores will refer to
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         List<ClubRepresentation> clubRepresentations = TestDataFactory.getRepresentationList1(clubList);
         List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(clubRepresentations));
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
-
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
 
+        int matchId = matchList.get(1).getId();
+        int footballerId = footballerList.get(1).getId();
+
+        String request = """
+                {
+                "matchId":%d,
+                "footballerId":%d,
+                "minuteScored":20
+                }
+                """.formatted(matchId, footballerId);
+
         //when + then
-        this.mockMvc.perform(get("/scores/getAverageNew/"))
+        this.mockMvc.perform(post("/scores/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
                 .andDo(print())
-                .andExpect(jsonPath("$").isArray());
+                .andExpectAll(status().isCreated(),
+                        jsonPath("$").isMap());
     }
 
     @Test

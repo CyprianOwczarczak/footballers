@@ -5,11 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,12 @@ public class ContractController {
         return service.getAllContracts();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ContractDto> getContractById(@PathVariable int id) {
+        Optional<ContractDto> foundDtoOptional = service.getContractById(id);
+        return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
+    }
+
     @GetMapping("/contractsForFootballer/{id}")
     public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable int id) {
         List<ContractDto> foundContractList = service.getListOfContractsForSpecificFootballer(id);
@@ -37,30 +46,29 @@ public class ContractController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ContractDto> getContractById(@PathVariable int id) {
-        Optional<ContractDto> foundDtoOptional = service.getContractById(id);
-        if (foundDtoOptional.isEmpty()) {
-            return notFound().build();
-        } else {
-            return ok(foundDtoOptional.get());
-        }
-    }
-
     @GetMapping("/lengthOf/{clubId}")
     public ContractLengthDto getMeanLengthOfContractsInClub(@PathVariable("clubId") int clubId) {
         return service.getMeanLenghtOfContractsInClub(clubId);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteContract(@PathVariable int id) {
+    ResponseEntity<?> deleteContract(@PathVariable int id) {
         service.deleteContractById(id);
         return ok().build();
     }
 
+    @PostMapping("/")
+    ResponseEntity<?> addContract(@RequestBody ContractAddDto newContractDto) {
+        ContractAddDto result = service.addContract(newContractDto);
+
+        return ResponseEntity
+                .created(URI.create("/" + result.getId()))
+                .body(result);
+    }
+
     @PutMapping("/{id}")
-    ResponseEntity extendContractLength(@PathVariable int id,
-                                        @RequestParam("daysToAdd") int daysToAdd) {
+    ResponseEntity<?> extendContractLength(@PathVariable int id,
+                                           @RequestParam("daysToAdd") int daysToAdd) {
         if (service.getContractById(id).isEmpty()) {
             return notFound().build();
         } else {

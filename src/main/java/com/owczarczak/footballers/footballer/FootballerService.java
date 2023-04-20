@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.footballer;
 
+import com.owczarczak.footballers.club.Club;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -134,5 +135,26 @@ public class FootballerService {
 
     public boolean existsByPesel(String pesel) {
         return repository.existsByPesel(pesel);
+    }
+
+    public List<Footballer> convertIdToEntityList(List<Integer> idList) {
+        List<Footballer> listToReturn = new LinkedList<>();
+
+        for (Integer id : idList) {
+            Footballer optionalFootballer = repository.findById(id).orElseThrow(RuntimeException::new);
+
+            listToReturn.add(optionalFootballer);
+        }
+        return listToReturn;
+    }
+
+    public List<Integer> convertEntityToIdList(List<Footballer> footballerList) {
+        List<Integer> listToReturn = new LinkedList<>();
+
+        for (Footballer footballer : footballerList) {
+            int id = footballer.getId();
+            listToReturn.add(id);
+        }
+        return listToReturn;
     }
 }

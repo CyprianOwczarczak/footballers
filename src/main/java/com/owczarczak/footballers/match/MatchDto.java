@@ -3,7 +3,7 @@ package com.owczarczak.footballers.match;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -12,5 +12,5 @@ public class MatchDto {
     private String hostClubName;
     private String guestClubName;
     private String nameOfReferee;
-    private Instant date;
+    private LocalDateTime date;
 }

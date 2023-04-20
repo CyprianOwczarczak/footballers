@@ -2,6 +2,7 @@ package com.owczarczak.footballers.score;
 
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.match.Match;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+@Builder
 @Entity
 @Table(name = "score")
 @Getter
@@ -37,6 +39,13 @@ public class Score {
     }
 
     public Score(Match match, Footballer footballer, int minuteScored) {
+        this.match = match;
+        this.footballer = footballer;
+        this.minuteScored = minuteScored;
+    }
+
+    public Score(int id, Match match, Footballer footballer, int minuteScored) {
+        this.id = id;
         this.match = match;
         this.footballer = footballer;
         this.minuteScored = minuteScored;

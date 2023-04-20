@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-public class ContractDto {
+public class ContractAddDto {
     private int id;
-    private String clubName;
-    private String footballerName;
+    private int clubId;
+    private int footballerId;
     private LocalDate contractStart;
     private LocalDate contractEnd;
     private int salary;

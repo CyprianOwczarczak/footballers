@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ClubService {
 
     @Autowired
-    private ClubRepository repository;
+    ClubRepository repository;
 
     List<ClubDto> getAllClubs() {
         List<Club> clubList = repository.findAll();
@@ -56,6 +56,22 @@ public class ClubService {
             dtos.add(dtoToBeAdded);
         }
         return dtos;
+    }
+
+    public ClubDto addClub(ClubDto clubToBeAdded) {
+        Club newClub = Club.builder()
+                .id(clubToBeAdded.getId())
+                .name(clubToBeAdded.getName())
+                .created(clubToBeAdded.getCreated())
+                .build();
+
+        Club savedEntity = repository.save(newClub);
+
+        return ClubDto.builder()
+                .id(savedEntity.getId())
+                .name(savedEntity.getName())
+                .created(savedEntity.getCreated())
+                .build();
     }
 
     @Transactional

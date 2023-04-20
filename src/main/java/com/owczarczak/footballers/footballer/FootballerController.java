@@ -37,11 +37,7 @@ public class FootballerController {
     @GetMapping("/{id}")
     public ResponseEntity<FootballerDto> getFootballerById(@PathVariable int id) {
         Optional<FootballerDto> foundDtoOptional = service.getFootballerById(id);
-        if (foundDtoOptional.isEmpty()) {
-            return notFound().build();
-        } else {
-            return ok(foundDtoOptional.get());
-        }
+        return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
 
     @GetMapping(path = "/topXByHeight/")
@@ -86,12 +82,14 @@ public class FootballerController {
         if (!errorList.isEmpty()) {
             return badRequest().body(errorList);
         }
-        Optional<FootballerDto> result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate);
-        return ok(result.get());
+        FootballerDto result = service.updateFootballer(footballerToUpdate.getId(), footballerToUpdate)
+                .orElseThrow(RuntimeException::new);
+
+        return ok(result);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteFootballer(@PathVariable int id) {
+    ResponseEntity<?> deleteFootballer(@PathVariable int id) {
         service.deleteFootballer(id);
         return ok().build();
     }
