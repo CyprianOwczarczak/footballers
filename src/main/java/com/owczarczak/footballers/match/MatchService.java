@@ -1,8 +1,10 @@
 package com.owczarczak.footballers.match;
 
-import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
-import com.owczarczak.footballers.clubRepresentation.ClubRepresentationDto;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
+import com.owczarczak.footballers.clubRepresentation.ClubRepresentationService;
+import com.owczarczak.footballers.footballer.FootballerRepository;
+import com.owczarczak.footballers.score.Score;
+import com.owczarczak.footballers.score.ScoreAddDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,11 @@ public class MatchService {
     MatchRepository matchRepository;
     @Autowired
     ClubRepresentationRepository representationRepository;
+    @Autowired
+    ClubRepresentationService representationService;
+
+    @Autowired
+    FootballerRepository footballerRepository;
 
     List<MatchDto> getAllMatches() {
         List<Match> matchList = matchRepository.findAll();
@@ -68,37 +75,59 @@ public class MatchService {
         }
         return dtos;
     }
-    public MatchAddDto addMatch(MatchAddDto matchToBeAdded) {
-//        ClubRepresentation guest = representationRepository.findById(matchToBeAdded.getGuestId()).get();
-//        ClubRepresentation host = representationRepository.findById(matchToBeAdded.getHostId()).get();
 
+    public MatchAddDto addMatch(MatchAddDto matchToBeAdded) {
 
         Match newMatch = Match.builder()
-                .id(matchToBeAdded.getId())
-                .guest(convertRepresentationDto(matchToBeAdded.getGuestRepresentation()))
-                .host(convertRepresentationDto(matchToBeAdded.getHostRepresentation()))
+                .guest(representationService.toEntity(matchToBeAdded.getGuestRepresentation()))
+                .host(representationService.toEntity(matchToBeAdded.getHostRepresentation()))
                 .nameOfReferee(matchToBeAdded.getNameOfReferee())
                 .date(matchToBeAdded.getDate())
-                //fixme
-                .scores(matchToBeAdded.getScoresList())
+                .scores(toScoreEntityList(matchToBeAdded.getScoresList()))
                 .build();
         Match savedEntity = matchRepository.save(newMatch);
 
         return MatchAddDto.builder()
                 .id(savedEntity.getId())
-                .guestRepresentation(savedEntity.getGuest())
-                .hostRepresentation(savedEntity.getHost().getId())
+                .guestRepresentation(representationService.toRepresentationDto(savedEntity.getGuest()))
+                .hostRepresentation(representationService.toRepresentationDto(savedEntity.getHost()))
                 .nameOfReferee(savedEntity.getNameOfReferee())
                 .date(savedEntity.getDate())
-//                .scores(savedEntity.getScores())
+                .scoresList(listToDto(savedEntity.getScores()))
                 .build();
     }
 
-    private ClubRepresentation convertRepresentationDto(ClubRepresentationDto representationDto) {
-        return ClubRepresentation.builder()
-                .club(representationRepository.findById(representationDto.getId()).get().getClub())
-                .footballerList(representationDto.getFootballerList())
-                .build();
+
+
+    List<Score> toScoreEntityList(List<ScoreAddDto> scoreDtos) {
+        List<Score> convertedScores = new LinkedList<>();
+
+        for (ScoreAddDto scoreDto : scoreDtos) {
+            Score scoreToAdd = Score.builder()
+                    //TODO po utworzeniu meczu przejechać po całej liście Score i dodać utowrzony mecz do pól Score'ów
+//                    .match(matchRepository.findById(scoreDtos.get(i).getMatchId()).get())
+                    .footballer(footballerRepository.findById(scoreDto.getFootballerId()).get())
+                    .minuteScored(scoreDto.getMinuteScored())
+                    .build();
+
+            convertedScores.add(scoreToAdd);
+        }
+        return convertedScores;
+    }
+
+    //ScoreList refer back to MatchId
+    private List<ScoreAddDto> listToDto(List<Score> scoreList) {
+        List<ScoreAddDto> convertedScores = new LinkedList<>();
+
+        for (Score score : scoreList) {
+            ScoreAddDto scoreToAdd = ScoreAddDto.builder()
+                    .matchId(score.getMatch().getId())
+                    .footballerId(score.getFootballer().getId())
+                    .minuteScored(score.getMinuteScored())
+                    .build();
+            convertedScores.add(scoreToAdd);
+        }
+        return convertedScores;
     }
 
     @Transactional

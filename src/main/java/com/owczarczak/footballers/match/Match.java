@@ -44,6 +44,7 @@ public class Match {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "match_id")
     private List<Score> scores;
+    //TODO usunąć Listę punktów z encji Mecz, ale w Dto punkty mogą zostać
 
     public Match() {
     }

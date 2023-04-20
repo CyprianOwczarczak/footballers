@@ -1,7 +1,9 @@
 package com.owczarczak.footballers.match;
 
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
+import com.owczarczak.footballers.clubRepresentation.ClubRepresentationAddDto;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationDto;
+import com.owczarczak.footballers.score.ScoreAddDto;
 import com.owczarczak.footballers.score.ScoreDto;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +15,9 @@ import java.util.List;
 @Builder
 public class MatchAddDto {
     private int id;
-    private ClubRepresentationDto guestRepresentation;
-    private ClubRepresentationDto hostRepresentation;
+    private ClubRepresentationAddDto guestRepresentation;
+    private ClubRepresentationAddDto hostRepresentation;
     private String nameOfReferee;
     private LocalDateTime date;
-    private List<ScoreDto> scoresList;
+    private List<ScoreAddDto> scoresList;
 }

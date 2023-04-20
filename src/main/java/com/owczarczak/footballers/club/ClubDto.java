@@ -16,5 +16,4 @@ public class ClubDto {
     private String name;
 
     private LocalDate created;
-
 }

@@ -188,3 +188,7 @@ Jak mapować daty z Javy 8
 Przejrzeć branche i zrobić pull requesty i samemu je przejrzeć i zmerge'ować
 Zonky
 Sprawdzić czy wszystkie testy się odpalają
+
+20.04
+Jak działają wyjątki, łapanie rzucanie z przykładami, rodzaje wyjątków, które należy łapać a które nie i dlaczego
+Jak utworzyć i rzucić własny wyjątek,
