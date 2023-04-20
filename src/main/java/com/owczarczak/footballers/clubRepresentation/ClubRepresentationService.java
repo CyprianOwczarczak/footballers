@@ -63,6 +63,8 @@ public class ClubRepresentationService {
         }
     }
 
+    //TODO Divide those methods into different Services
+
 //    ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
     public ClubRepresentation toEntity(ClubRepresentationAddDto representationDto) {
         return ClubRepresentation.builder()

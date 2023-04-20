@@ -119,13 +119,13 @@ public class TestDataFactory {
         List<Match> matchList = new LinkedList<>();
         addAll(matchList,
                 new Match(representationList.get(0), representationList.get(4),
-                        "Referee1", LocalDateTime.now(), emptyList()),
+                        "Referee1", LocalDateTime.now()),
                 new Match(representationList.get(1), representationList.get(5),
-                        "Referee2", LocalDateTime.now(), emptyList()),
+                        "Referee2", LocalDateTime.now()),
                 new Match(representationList.get(2), representationList.get(6),
-                        "Referee3", LocalDateTime.now(), emptyList()),
+                        "Referee3", LocalDateTime.now()),
                 new Match(representationList.get(3), representationList.get(7),
-                        "Referee4", LocalDateTime.now(), emptyList())
+                        "Referee4", LocalDateTime.now())
         );
         return matchList;
     }

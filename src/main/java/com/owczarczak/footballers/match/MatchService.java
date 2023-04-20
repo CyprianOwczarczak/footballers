@@ -22,12 +22,7 @@ public class MatchService {
     @Autowired
     MatchRepository matchRepository;
     @Autowired
-    ClubRepresentationRepository representationRepository;
-    @Autowired
     ClubRepresentationService representationService;
-
-    @Autowired
-    FootballerRepository footballerRepository;
 
     List<MatchDto> getAllMatches() {
         List<Match> matchList = matchRepository.findAll();
@@ -77,13 +72,11 @@ public class MatchService {
     }
 
     public MatchAddDto addMatch(MatchAddDto matchToBeAdded) {
-
         Match newMatch = Match.builder()
                 .guest(representationService.toEntity(matchToBeAdded.getGuestRepresentation()))
                 .host(representationService.toEntity(matchToBeAdded.getHostRepresentation()))
                 .nameOfReferee(matchToBeAdded.getNameOfReferee())
                 .date(matchToBeAdded.getDate())
-                .scores(toScoreEntityList(matchToBeAdded.getScoresList()))
                 .build();
         Match savedEntity = matchRepository.save(newMatch);
 
@@ -93,41 +86,7 @@ public class MatchService {
                 .hostRepresentation(representationService.toRepresentationDto(savedEntity.getHost()))
                 .nameOfReferee(savedEntity.getNameOfReferee())
                 .date(savedEntity.getDate())
-                .scoresList(listToDto(savedEntity.getScores()))
                 .build();
-    }
-
-
-
-    List<Score> toScoreEntityList(List<ScoreAddDto> scoreDtos) {
-        List<Score> convertedScores = new LinkedList<>();
-
-        for (ScoreAddDto scoreDto : scoreDtos) {
-            Score scoreToAdd = Score.builder()
-                    //TODO po utworzeniu meczu przejechać po całej liście Score i dodać utowrzony mecz do pól Score'ów
-//                    .match(matchRepository.findById(scoreDtos.get(i).getMatchId()).get())
-                    .footballer(footballerRepository.findById(scoreDto.getFootballerId()).get())
-                    .minuteScored(scoreDto.getMinuteScored())
-                    .build();
-
-            convertedScores.add(scoreToAdd);
-        }
-        return convertedScores;
-    }
-
-    //ScoreList refer back to MatchId
-    private List<ScoreAddDto> listToDto(List<Score> scoreList) {
-        List<ScoreAddDto> convertedScores = new LinkedList<>();
-
-        for (Score score : scoreList) {
-            ScoreAddDto scoreToAdd = ScoreAddDto.builder()
-                    .matchId(score.getMatch().getId())
-                    .footballerId(score.getFootballer().getId())
-                    .minuteScored(score.getMinuteScored())
-                    .build();
-            convertedScores.add(scoreToAdd);
-        }
-        return convertedScores;
     }
 
     @Transactional

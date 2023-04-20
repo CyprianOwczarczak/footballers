@@ -19,5 +19,4 @@ public class MatchAddDto {
     private ClubRepresentationAddDto hostRepresentation;
     private String nameOfReferee;
     private LocalDateTime date;
-    private List<ScoreAddDto> scoresList;
 }

@@ -5,18 +5,18 @@ import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
-import com.owczarczak.footballers.score.ScoreDto;
+import lombok.Builder;
+import lombok.Data;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Collections;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -155,24 +155,49 @@ public class MatchControllerTest {
     void shouldAddMatch() throws Exception {
         //given
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
-//        List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
-
-//        int guestId = clubList.get(0).getId();
-//        int hostId = clubList.get(1).getId();
 
         //TODO The ClubRepresentations have to be created here
         String request = """
                 {
-                "guestId":%d,
-                "hostId":%d,
+                "guestRepresentation":{
+                "club": {
+                "id":1,
+                "name":"Barcelona",
+                "created":"2012-12-30"
+                }},
+                
+                "hostRepresentation":{
+                "club": {
+                "id":2,
+                "name":"Real",
+                "created":"2015-12-30"
+                }},
+                
                 "nameOfReferee":"PostReferee",
-                "date":"2000-01-01T17:09:42.411",
-                "scoresList"
+                "date":"2000-01-01T17:09:42.411"
                 }
                 """;
+
+//        public class ClubRepresentationAddDto {
+//            private ClubDto club;
+//
+//            private List<FootballerDto> footballerList;
+//        }
+
+//        @Data
+//        @Builder
+//        public class ClubDto {
+//            private int id;
+//
+//            private String name;
+//
+//            private LocalDate created;
+//        }
+
         //when + then
         this.mockMvc.perform(post("/")
-                .content(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
                 .andExpect(jsonPath("$").isMap());
     }
 }

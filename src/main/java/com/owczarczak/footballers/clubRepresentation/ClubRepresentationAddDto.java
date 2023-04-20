@@ -13,6 +13,7 @@ import java.util.List;
 public class ClubRepresentationAddDto {
     private int id;
 
+    //Fixme change ClubDto to ClubId and remove FootballerDto List ?
     private ClubDto club;
 
     private List<FootballerDto> footballerList;
