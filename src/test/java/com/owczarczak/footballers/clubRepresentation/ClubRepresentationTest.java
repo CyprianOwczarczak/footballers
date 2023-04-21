@@ -74,7 +74,7 @@ public class ClubRepresentationTest {
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         List<ClubRepresentation> representationList =
                 representationRepository.saveAll(TestDataFactory.getRepresentationList1(clubList));
-        int clubRepresentationId = representationList.get(0).getId();
+        Long clubRepresentationId = representationList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(get("/representation/" + clubRepresentationId))
@@ -100,7 +100,7 @@ public class ClubRepresentationTest {
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         List<ClubRepresentation> representationList =
                 representationRepository.saveAll(TestDataFactory.getRepresentationList1(clubList));
-        int clubRepresentationId = representationList.get(2).getId();
+        Long clubRepresentationId = representationList.get(2).getId();
 
         //when + then
         this.mockMvc.perform(delete("/representation/" + clubRepresentationId))

@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class ContractLengthDto {
-    private int clubId;
-    private int averageLength;
+    private Long clubId;
+    private Long averageLength;
 }

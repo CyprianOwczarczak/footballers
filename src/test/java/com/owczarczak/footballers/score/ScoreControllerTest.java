@@ -86,7 +86,7 @@ public class ScoreControllerTest {
         // Creating Scores
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
-        int scoreId = scoreList.get(0).getId();
+        Long scoreId = scoreList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(get("/scores/" + scoreId))
@@ -129,8 +129,8 @@ public class ScoreControllerTest {
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
 
-        int matchId = matchList.get(1).getId();
-        int footballerId = footballerList.get(1).getId();
+        Long matchId = matchList.get(1).getId();
+        Long footballerId = footballerList.get(1).getId();
 
         String request = """
                 {
@@ -158,7 +158,7 @@ public class ScoreControllerTest {
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
 
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
-        int scoreId = scoreList.get(0).getId() + 2;
+        Long scoreId = scoreList.get(0).getId() + 2;
 
         //when + then
         this.mockMvc.perform(delete("/scores/" + scoreId))
@@ -183,7 +183,7 @@ public class ScoreControllerTest {
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
 
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
-        int scoreId = scoreList.get(0).getId() + 1000;
+        Long scoreId = scoreList.get(0).getId() + 1000;
 
         //when + then
         this.mockMvc.perform(delete("/scores/" + scoreId))

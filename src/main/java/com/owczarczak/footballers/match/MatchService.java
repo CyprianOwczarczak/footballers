@@ -40,7 +40,7 @@ public class MatchService {
         return dtos;
     }
 
-    Optional<MatchDto> getMatchById(@PathVariable int id) {
+    Optional<MatchDto> getMatchById(@PathVariable Long id) {
         if (!matchRepository.existsById(id)) {
             return Optional.empty();
         } else {
@@ -90,7 +90,7 @@ public class MatchService {
     }
 
     @Transactional
-    public void deleteMatchById(@PathVariable int id) {
+    public void deleteMatchById(@PathVariable Long id) {
         if (matchRepository.existsById(id)) {
             matchRepository.deleteById(id);
         }

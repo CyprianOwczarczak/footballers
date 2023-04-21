@@ -8,10 +8,10 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class ContractAddDto {
-    private int id;
-    private int clubId;
-    private int footballerId;
+    private Long id;
+    private Long clubId;
+    private Long footballerId;
     private LocalDate contractStart;
     private LocalDate contractEnd;
-    private int salary;
+    private Integer salary;
 }

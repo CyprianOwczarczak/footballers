@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class MatchAddDto {
-    private int id;
+    private Long id;
     private ClubRepresentationAddDto guestRepresentation;
     private ClubRepresentationAddDto hostRepresentation;
     private String nameOfReferee;

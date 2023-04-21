@@ -77,7 +77,7 @@ public class ContractControllerTest {
         List<Contract> contractList =
                 contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
 
-        int contractId = contractList.get(0).getId();
+        Long contractId = contractList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(get("/contracts/" + contractId))
@@ -105,7 +105,7 @@ public class ContractControllerTest {
         contractRepository.saveAll(getContractList1(clubList, footballerList));
 
         //Getting the id of the first footballer from the list to check contracts for him
-        int searchedId = footballerList.get(0).getId();
+        Long searchedId = footballerList.get(0).getId();
         // when + then
         this.mockMvc.perform(get("/contracts/contractsForFootballer/" + searchedId))
                 .andDo(print())
@@ -122,7 +122,7 @@ public class ContractControllerTest {
         List<Club> clubList = clubRepository.saveAll(getClubList());
         footballerRepository.saveAll(getFootballerList());
         contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
-        int clubId = clubList.get(0).getId();
+        Long clubId = clubList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(get("/contracts/lengthOf/" + clubId))
@@ -138,8 +138,8 @@ public class ContractControllerTest {
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
 
-        int clubId = clubList.get(0).getId();
-        int footballerId = footballerList.get(0).getId();
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
 
         String request = """
                 {
@@ -169,7 +169,7 @@ public class ContractControllerTest {
         List<Contract> contractList =
                 contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
 
-        int clubId = contractList.get(0).getId();
+        Long clubId = contractList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(delete("/contracts/" + clubId))
@@ -194,7 +194,7 @@ public class ContractControllerTest {
         List<Contract> contractList =
                 contractRepository.saveAll(getContractList1(clubList, footballerList));
 
-        int idToUpdate = contractList.get(0).getId();
+        Long idToUpdate = contractList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(put("/contracts/" + idToUpdate + "?daysToAdd=12"))

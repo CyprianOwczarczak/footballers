@@ -31,13 +31,13 @@ public class ContractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContractDto> getContractById(@PathVariable int id) {
+    public ResponseEntity<ContractDto> getContractById(@PathVariable Long id) {
         Optional<ContractDto> foundDtoOptional = service.getContractById(id);
         return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
 
     @GetMapping("/contractsForFootballer/{id}")
-    public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable int id) {
+    public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable Long id) {
         List<ContractDto> foundContractList = service.getListOfContractsForSpecificFootballer(id);
         if (foundContractList.isEmpty()) {
             return notFound().build();
@@ -47,12 +47,12 @@ public class ContractController {
     }
 
     @GetMapping("/lengthOf/{clubId}")
-    public ContractLengthDto getMeanLengthOfContractsInClub(@PathVariable("clubId") int clubId) {
+    public ContractLengthDto getMeanLengthOfContractsInClub(@PathVariable("clubId") Long clubId) {
         return service.getMeanLenghtOfContractsInClub(clubId);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteContract(@PathVariable int id) {
+    ResponseEntity<?> deleteContract(@PathVariable Long id) {
         service.deleteContractById(id);
         return ok().build();
     }
@@ -67,8 +67,8 @@ public class ContractController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> extendContractLength(@PathVariable int id,
-                                           @RequestParam("daysToAdd") int daysToAdd) {
+    ResponseEntity<?> extendContractLength(@PathVariable Long id,
+                                           @RequestParam("daysToAdd") Long daysToAdd) {
         if (service.getContractById(id).isEmpty()) {
             return notFound().build();
         } else {

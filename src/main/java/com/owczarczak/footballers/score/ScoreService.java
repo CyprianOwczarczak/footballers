@@ -15,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hibernate.criterion.Projections.id;
+
 @Service
 @RequiredArgsConstructor
 public class ScoreService {
@@ -40,7 +42,7 @@ public class ScoreService {
         return dtos;
     }
 
-    Optional<ScoreDto> getScoreById(@PathVariable int id) {
+    Optional<ScoreDto> getScoreById(@PathVariable Long id) {
         if (!scoreRepository.existsById(id)) {
             return Optional.empty();
         } else {
@@ -59,10 +61,10 @@ public class ScoreService {
         List<ScoreAvgGoalsDto> dtos = new LinkedList<>();
         for (Object[] row : returnedListOfArrays) {
             ScoreAvgGoalsDto dtoToBeAdded = ScoreAvgGoalsDto.builder()
-                    .id((Integer) row[0])
+                    .id(((BigInteger) row[0]).longValue())
                     .footballerName((String) row[1])
-                    .numberOfGoals((BigInteger) row[2])
-                    .numberOfMatches((BigInteger) row[3])
+                    .numberOfGoals(((BigInteger) row[2]).intValue())
+                    .numberOfMatches(((BigInteger) row[3]).intValue())
                     .averageGoals((Double) row[4])
                     .build();
             dtos.add(dtoToBeAdded);
@@ -91,7 +93,7 @@ public class ScoreService {
     }
 
     @Transactional
-    public void deleteMatchById(@PathVariable int id) {
+    public void deleteMatchById(@PathVariable Long id) {
         if (scoreRepository.existsById(id)) {
             scoreRepository.deleteById(id);
         }

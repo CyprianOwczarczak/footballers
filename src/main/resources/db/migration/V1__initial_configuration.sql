@@ -1,5 +1,5 @@
 create table footballer (
-	id serial,
+	id bigserial,
 	pesel varchar(255) not null,
 	name varchar(255) not null,
 	club varchar(255) not null,

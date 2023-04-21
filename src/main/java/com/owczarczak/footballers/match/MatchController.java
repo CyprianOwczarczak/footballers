@@ -33,7 +33,7 @@ public class MatchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MatchDto> getMatchById(@PathVariable int id) {
+    public ResponseEntity<MatchDto> getMatchById(@PathVariable Long id) {
         Optional<MatchDto> foundDtoOptional = service.getMatchById(id);
         return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
@@ -56,7 +56,7 @@ public class MatchController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteMatch(@PathVariable int id) {
+    ResponseEntity<?> deleteMatch(@PathVariable Long id) {
         service.deleteMatchById(id);
         return ok().build();
     }

@@ -74,7 +74,7 @@ public class ClubControllerTest {
     void shouldGetClubById() throws Exception {
         //given
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
-        int clubId = clubList.get(0).getId();
+        Long clubId = clubList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(get("/clubs/" + clubId))
@@ -112,9 +112,9 @@ public class ClubControllerTest {
     void shouldDeleteByCLubId() throws Exception {
         //given
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
-        int initialSize = clubList.size();
+        Long initialSize = (long) clubList.size();
 
-        int clubId = clubList.get(0).getId();
+        Long clubId = clubList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(delete("/clubs/" + clubId))

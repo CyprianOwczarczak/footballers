@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ClubRepository extends JpaRepository<Club, Integer> {
+public interface ClubRepository extends JpaRepository<Club, Long> {
     @Query("SELECT c FROM Club c WHERE c.name = :name")
     List<Club> findByName(@Param("name") String name);
 

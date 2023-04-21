@@ -45,7 +45,7 @@ public class ContractService {
         return dtos;
     }
 
-    Optional<ContractDto> getContractById(@PathVariable int id) {
+    Optional<ContractDto> getContractById(@PathVariable Long id) {
         if (!contractRepository.existsById(id)) {
             return Optional.empty();
         } else {
@@ -61,7 +61,7 @@ public class ContractService {
         }
     }
 
-    public List<ContractDto> getListOfContractsForSpecificFootballer(int footballerId) {
+    public List<ContractDto> getListOfContractsForSpecificFootballer(Long footballerId) {
         List<Contract> contractList = contractRepository.getListOfContractsForSpecificFootballer(footballerId);
         List<ContractDto> dtos = new LinkedList<>();
         for (Contract contract : contractList) {
@@ -78,16 +78,16 @@ public class ContractService {
         return dtos;
     }
 
-    public ContractLengthDto getMeanLenghtOfContractsInClub(int clubId) {
+    public ContractLengthDto getMeanLenghtOfContractsInClub(Long clubId) {
         //We get the club id from the parameter
         BigDecimal averageLength = contractRepository.getMeanLenghtOfContractsInClub(clubId);
         return ContractLengthDto.builder()
                 .clubId(clubId)
-                .averageLength(averageLength.intValue())
+                .averageLength(averageLength.longValue())
                 .build();
     }
 
-    public Optional<ContractDto> extendContractLength(int id, int daysToAdd) {
+    public Optional<ContractDto> extendContractLength(Long id, Long daysToAdd) {
         Contract contractToUpdate;
         if (!contractRepository.existsById(id)) {
             return Optional.empty();
@@ -133,7 +133,7 @@ public class ContractService {
     }
 
     @Transactional
-    public void deleteContractById(@PathVariable int id) {
+    public void deleteContractById(@PathVariable Long id) {
         if (contractRepository.existsById(id)) {
             contractRepository.deleteById(id);
         }

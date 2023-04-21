@@ -82,7 +82,7 @@ public class MatchControllerTest {
         List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
         List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(representationList));
 
-        int matchId = matchList.get(1).getId();
+        Long matchId = matchList.get(1).getId();
 
         //when + then
         this.mockMvc.perform(get("/matches/" + matchId))
@@ -108,7 +108,7 @@ public class MatchControllerTest {
         List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
         List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(representationList));
 
-        int matchId = matchList.get(0).getId();
+        Integer matchId = Math.toIntExact(matchList.get(0).getId());
 
         this.mockMvc.perform(get("/matches/byRefereeName/?name=Referee1"))
                 .andExpectAll(
@@ -125,7 +125,7 @@ public class MatchControllerTest {
         List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
         List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(representationList));
 
-        int matchId = matchList.get(0).getId();
+        Long matchId = matchList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(delete("/matches/" + matchId))
@@ -146,7 +146,7 @@ public class MatchControllerTest {
         List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
         List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(representationList));
 
-        int matchId = matchList.get(0).getId() + 1000;
+        Long matchId = matchList.get(0).getId() + 1000;
 
         //when + then
         this.mockMvc.perform(delete("/matches/" + matchId))
@@ -163,13 +163,13 @@ public class MatchControllerTest {
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
 
-        int clubId1 = clubList.get(0).getId();
-        int clubId2 = clubList.get(1).getId();
+        Long clubId1 = clubList.get(0).getId();
+        Long clubId2 = clubList.get(1).getId();
 
-        int footballerId1 = footballerList.get(0).getId();
-        int footballerId2 = footballerList.get(1).getId();
-        int footballerId3 = footballerList.get(2).getId();
-        int footballerId4 = footballerList.get(3).getId();
+        Long footballerId1 = footballerList.get(0).getId();
+        Long footballerId2 = footballerList.get(1).getId();
+        Long footballerId3 = footballerList.get(2).getId();
+        Long footballerId4 = footballerList.get(3).getId();
 
         String request = """
                 {

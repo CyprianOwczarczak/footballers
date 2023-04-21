@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class MatchDto {
-    private int id;
+    private Long id;
     private String hostClubName;
     private String guestClubName;
     private String nameOfReferee;

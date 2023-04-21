@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class FootballerDtoMostMatches {
-    private int id;
-    private int representationSize;
+    private Long id;
+    private Integer representationSize;
 }

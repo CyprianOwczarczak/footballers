@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ScoreRepository extends JpaRepository<Score, Integer> {
+public interface ScoreRepository extends JpaRepository<Score, Long> {
 
     // Average amount of goals per match for each player
     @Query(value = """

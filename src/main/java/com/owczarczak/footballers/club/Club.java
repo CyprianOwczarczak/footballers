@@ -22,7 +22,7 @@ import java.util.List;
 public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
@@ -45,7 +45,7 @@ public class Club {
         this.contractList = contractList;
     }
 
-    public Club(int id, String name, LocalDate created, List<Contract> contractList) {
+    public Club(Long id, String name, LocalDate created, List<Contract> contractList) {
         this.id = id;
         this.name = name;
         this.created = created;

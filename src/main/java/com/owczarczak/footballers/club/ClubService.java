@@ -31,7 +31,7 @@ public class ClubService {
         return dtos;
     }
 
-    Optional<ClubDto> getClubById(@PathVariable int id) {
+    Optional<ClubDto> getClubById(@PathVariable Long id) {
         if (!repository.existsById(id)) {
             return Optional.empty();
         } else {
@@ -75,7 +75,7 @@ public class ClubService {
     }
 
     @Transactional
-    public void deleteClubById(@PathVariable int id) {
+    public void deleteClubById(@PathVariable Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         }

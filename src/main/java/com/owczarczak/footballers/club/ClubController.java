@@ -29,7 +29,7 @@ public class ClubController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClubDto> getClubById(@PathVariable int id) {
+    public ResponseEntity<ClubDto> getClubById(@PathVariable Long id) {
         Optional<ClubDto> foundDtoOptional = service.getClubById(id);
         if (foundDtoOptional.isEmpty()) {
             return notFound().build();
@@ -52,7 +52,7 @@ public class ClubController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteClub(@PathVariable int id) {
+    ResponseEntity<?> deleteClub(@PathVariable Long id) {
         service.deleteClubById(id);
         return ok().build();
     }
