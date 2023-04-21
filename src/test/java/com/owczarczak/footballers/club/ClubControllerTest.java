@@ -21,10 +21,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ClubControllerIntegrationTest extends IntegrationTestBasedClass {
+public class ClubControllerTest extends IntegrationTestBasedClass {
     @Autowired
     private ClubRepository clubRepository;
 
@@ -102,7 +103,7 @@ public class ClubControllerIntegrationTest extends IntegrationTestBasedClass {
     void shouldDeleteByCLubId() throws Exception {
         //given
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
-        Long initialSize = (long) clubList.size();
+        long initialSize = (long) clubList.size();
 
         Long clubId = clubList.get(0).getId();
 
@@ -140,6 +141,56 @@ public class ClubControllerIntegrationTest extends IntegrationTestBasedClass {
                         jsonPath("$").isMap());
 
         Assertions.assertEquals(1, clubRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("Should not add club when name is not provided")
+    void shouldNotAddClubWhenNameIsNotProvided() throws Exception {
+        String request = """
+                {
+                "created":"2015-12-30"
+                }
+                """;
+        this.mockMvc.perform(post("/clubs/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a club name !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add club when creation date is not provided")
+    void shouldNotAddClubWhenCreationDateIsNotProvided() throws Exception {
+        String request = """
+                {
+                "name":"TestClub1"
+                }
+                """;
+        this.mockMvc.perform(post("/clubs/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a creation date !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add club when name and creation date is not provided")
+    void shouldNotAddClubWhenNameAndCreationDateIsNotProvided() throws Exception {
+        String request = """
+                {
+                }
+                """;
+        this.mockMvc.perform(post("/clubs/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a club name !","You have to provide a creation date !"]"""));
     }
 
     @Test

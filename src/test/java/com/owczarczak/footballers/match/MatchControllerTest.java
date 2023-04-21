@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -187,5 +188,87 @@ public class MatchControllerTest extends IntegrationTestBasedClass {
                         jsonPath("$.date", is("2000-01-01T17:09:42.411")),
                         status().isCreated());
         assertEquals(1, matchRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("Should not add match when guest is not provided")
+    void shouldnotAddMatchWhenGuestNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId1 = clubList.get(0).getId();
+        Long clubId2 = clubList.get(1).getId();
+
+        Long footballerId1 = footballerList.get(0).getId();
+        Long footballerId2 = footballerList.get(1).getId();
+        Long footballerId3 = footballerList.get(2).getId();
+        Long footballerId4 = footballerList.get(3).getId();
+
+        String request = """
+                {
+                "guestRepresentation":{
+                },
+                                
+                "hostRepresentation":{
+                "clubId":%d,
+                "footballersIdList": [%d,%d]
+                },
+                                
+                "nameOfReferee":"PostReferee",
+                "date":"2000-01-01T17:09:42.411"
+                }
+                """.formatted(clubId2, footballerId3, footballerId4);
+
+        //when +,0 then
+        this.mockMvc.perform(post("/matches/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        status().isBadRequest(),
+                        content().string("[\"You have to provide a guest's club id !\"," +
+                                "\"You have to provide a guest's footballers list id !\"]"));
+    }
+
+    @Test
+    @DisplayName("Should not add match when host club id is not provided")
+    void shouldnotAddMatchWhenHostClubIdNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId1 = clubList.get(0).getId();
+        Long clubId2 = clubList.get(1).getId();
+
+        Long footballerId1 = footballerList.get(0).getId();
+        Long footballerId2 = footballerList.get(1).getId();
+        Long footballerId3 = footballerList.get(2).getId();
+        Long footballerId4 = footballerList.get(3).getId();
+
+        String request = """
+                {
+                "guestRepresentation":{
+                "clubId":%d,
+                "footballersIdList": [%d,%d]
+                },
+                                
+                "hostRepresentation":{
+                "footballersIdList": [%d,%d]
+                },
+                                
+                "nameOfReferee":"PostReferee",
+                "date":"2000-01-01T17:09:42.411"
+                }
+                """.formatted(clubId1, footballerId1, footballerId2, footballerId3, footballerId4);
+
+        //when +,0 then
+        this.mockMvc.perform(post("/matches/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andExpectAll(
+                        jsonPath("$").isArray(),
+                        status().isBadRequest(),
+                        content().string("[\"You have to provide a host's club id !\"]"));
     }
 }

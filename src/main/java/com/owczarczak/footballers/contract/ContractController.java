@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.club.ClubDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +61,11 @@ public class ContractController {
 
     @PostMapping("/")
     ResponseEntity<?> addContract(@RequestBody ContractAddDto newContractDto) {
+        ArrayList<String> errorList = returnErrorList(newContractDto);
+        if (!errorList.isEmpty()) {
+            return ResponseEntity.badRequest().body(errorList);
+        }
+
         ContractAddDto result = service.addContract(newContractDto);
 
         return ResponseEntity
@@ -75,5 +82,26 @@ public class ContractController {
             Optional<ContractDto> result = service.extendContractLength(id, daysToAdd);
             return ok().body(result);
         }
+    }
+
+    private ArrayList<String> returnErrorList(ContractAddDto newContractDto) {
+        ArrayList<String> errorList = new ArrayList<>();
+
+        if (newContractDto.getClubId() == null) {
+            errorList.add("You have to provide a club id !");
+        }
+        if (newContractDto.getFootballerId() == null) {
+            errorList.add("You have to provide a footballer id !");
+        }
+        if (newContractDto.getContractStart() == null) {
+            errorList.add("You have to provide a contract start date !");
+        }
+        if (newContractDto.getContractEnd() == null) {
+            errorList.add("You have to provide a contract end date !");
+        }
+        if (newContractDto.getSalary() == null) {
+            errorList.add("You have to provide a salary !");
+        }
+        return errorList;
     }
 }

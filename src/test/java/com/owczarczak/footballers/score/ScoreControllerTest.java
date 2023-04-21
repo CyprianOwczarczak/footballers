@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -120,24 +121,107 @@ public class ScoreControllerTest extends IntegrationTestBasedClass {
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
 
-        Long matchId = matchList.get(1).getId();
         Long footballerId = footballerList.get(1).getId();
 
         String request = """
                 {
-                "matchId":%d,
                 "footballerId":%d,
                 "minuteScored":20
                 }
-                """.formatted(matchId, footballerId);
+                """.formatted(footballerId);
 
-        //when + then
         this.mockMvc.perform(post("/scores/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andDo(print())
-                .andExpectAll(status().isCreated(),
-                        jsonPath("$").isMap());
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a match id !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add a score when the match id is not provided")
+    void shouldNotAddScoreWhenMatchIdNotProvided() throws Exception {
+        //given - adding matches and footballers the scores will refer to
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<ClubRepresentation> clubRepresentations = TestDataFactory.getRepresentationList1(clubList);
+        List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(clubRepresentations));
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+        List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
+
+        Long footballerId = footballerList.get(1).getId();
+
+        String request = """
+                {
+                "footballerId":%d,
+                "minuteScored":20
+                }
+                """.formatted(footballerId);
+
+        this.mockMvc.perform(post("/scores/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a match id !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add a score when the footballer id is not provided")
+    void shouldNotAddScoreWhenFootballerIdNotProvided() throws Exception {
+        //given - adding matches and footballers the scores will refer to
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<ClubRepresentation> clubRepresentations = TestDataFactory.getRepresentationList1(clubList);
+        List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(clubRepresentations));
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+        List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
+
+        Long matchId = matchList.get(1).getId();
+
+        String request = """
+                {
+                "matchId":%d,
+                "minuteScored":20
+                }
+                """.formatted(matchId);
+
+        this.mockMvc.perform(post("/scores/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a footballer id !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add a score when the minute scored is not provided")
+    void shouldNotAddScoreWhenScoreMinuteNotProvided() throws Exception {
+        //given - adding matches and footballers the scores will refer to
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<ClubRepresentation> clubRepresentations = TestDataFactory.getRepresentationList1(clubList);
+        List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(clubRepresentations));
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+        List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
+
+        Long matchId = matchList.get(1).getId();
+        Long footballerId = footballerList.get(1).getId();
+
+        String request = """
+               {
+                "matchId":%d,
+                "footballerId":%d
+                }
+                """.formatted(matchId, footballerId);
+
+        this.mockMvc.perform(post("/scores/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a minute in which the goal was scored !"]"""));
     }
 
     @Test
@@ -149,7 +233,7 @@ public class ScoreControllerTest extends IntegrationTestBasedClass {
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
 
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
-        Long scoreId = scoreList.get(0).getId() + 2;
+        long scoreId = scoreList.get(0).getId() + 2;
 
         //when + then
         this.mockMvc.perform(delete("/scores/" + scoreId))
@@ -174,7 +258,7 @@ public class ScoreControllerTest extends IntegrationTestBasedClass {
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
 
         List<Score> scoreList = scoreRepository.saveAll(TestDataFactory.getScoresList(matchList, footballerList));
-        Long scoreId = scoreList.get(0).getId() + 1000;
+        long scoreId = scoreList.get(0).getId() + 1000;
 
         //when + then
         this.mockMvc.perform(delete("/scores/" + scoreId))

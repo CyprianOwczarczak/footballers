@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -151,6 +152,146 @@ public class ContractControllerTest extends IntegrationTestBasedClass {
                 .andDo(print())
                 .andExpectAll(status().isCreated(),
                         jsonPath("$").isMap());
+    }
+
+    @Test
+    @DisplayName("Should not add contract when club id is not provided")
+    void shoudlNotAddContractWhenClubIdNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "footballerId":%d,
+                "contractStart":"2012-12-30",
+                "contractEnd":"2015-12-30",
+                "salary":1000
+                }
+                """.formatted(footballerId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a club id !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add contract when footballer id is not provided")
+    void shoudlNotAddContractWhenFootballerIdNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "contractStart":"2012-12-30",
+                "contractEnd":"2015-12-30",
+                "salary":1000
+                }
+                """.formatted(clubId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a footballer id !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add contract when contract start id is not provided")
+    void shoudlNotAddContractWhenContractStartNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "footballerId":%d,
+                "contractEnd":"2015-12-30",
+                "salary":1000
+                }
+                """.formatted(clubId, footballerId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a contract start date !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add contract when contract end is not provided")
+    void shoudlNotAddContractWhenContractEndNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "footballerId":%d,
+                "contractStart":"2012-12-30",
+                "salary":1000
+                }
+                """.formatted(clubId, footballerId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a contract end date !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add contract when salary is not provided")
+    void shoudlNotAddContractWhenSalaryNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "footballerId":%d,
+                "contractStart":"2012-12-30",
+                "contractEnd":"2015-12-30"
+                }
+                """.formatted(clubId, footballerId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a salary !"]"""));
     }
 
     @Test

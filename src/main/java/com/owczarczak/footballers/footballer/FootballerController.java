@@ -113,23 +113,4 @@ public class FootballerController {
         }
         return errorList;
     }
-
-//    private ArrayList<String> returnErrorListUpdate(FootballerDto newFootballerDto) {
-//        ArrayList<String> errorList = new ArrayList<>();
-//
-//        if (newFootballerDto.getId() == null) {
-//            errorList.add("You have to provide an id !");
-//        }
-//
-//        if (StringUtils.isEmpty(newFootballerDto.getPesel())) {
-//            errorList.add("You have to provide a pesel !");
-//        }
-//        if (StringUtils.isEmpty(newFootballerDto.getName())) {
-//            errorList.add("You have to provide a name !");
-//        }
-//        if (newFootballerDto.getHeight() == null) {
-//            errorList.add("You have to provide height !");
-//        }
-//        return errorList;
-//    }
 }

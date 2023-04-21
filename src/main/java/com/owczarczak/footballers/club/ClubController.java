@@ -1,5 +1,7 @@
 package com.owczarczak.footballers.club;
 
+import com.owczarczak.footballers.match.MatchAddDto;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +48,11 @@ public class ClubController {
 
     @PostMapping("/")
     ResponseEntity<?> addClub(@RequestBody ClubDto newClubDto) {
+        ArrayList<String> errorList = returnErrorList(newClubDto);
+        if (!errorList.isEmpty()) {
+            return ResponseEntity.badRequest().body(errorList);
+        }
+
         ClubDto result = service.addClub(newClubDto);
         return ResponseEntity
                 .created(URI.create("/" + result.getId()))
@@ -55,5 +63,17 @@ public class ClubController {
     ResponseEntity<?> deleteClub(@PathVariable Long id) {
         service.deleteClubById(id);
         return ok().build();
+    }
+
+    private ArrayList<String> returnErrorList(ClubDto newClubDto) {
+        ArrayList<String> errorList = new ArrayList<>();
+
+        if (newClubDto.getName() == null) {
+            errorList.add("You have to provide a club name !");
+        }
+        if (newClubDto.getCreated() == null) {
+            errorList.add("You have to provide a creation date !");
+        }
+        return errorList;
     }
 }
