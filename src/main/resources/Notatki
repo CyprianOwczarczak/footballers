@@ -197,3 +197,7 @@ Jak utworzyć i rzucić własny wyjątek,
 Zamienić wszystkie int na Long
 Dodać errorlistę przy reszcie method Post
 Unhappy path testy do method Post (z errorlisty)
+Klasa bazowa której damy wymagane adnotacje i potem wszystkie klasy testowe będą dziedziczyć po tej klasie
+Codility --> https://app.codility.com/programmers/lessons/1-iterations/
+Postman requesty dopisać
+

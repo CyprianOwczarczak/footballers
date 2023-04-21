@@ -1,11 +1,11 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.IntegrationTestBasedClass;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ContractControllerTest {
+public class ContractControllerTest extends IntegrationTestBasedClass {
 
     @Autowired
     private ContractRepository contractRepository;
@@ -46,13 +46,6 @@ public class ContractControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @AfterEach
-    void setup() {
-        contractRepository.deleteAll();
-        clubRepository.deleteAll();
-        footballerRepository.deleteAll();
-    }
-
     @Test
     @DisplayName("Should get all contracts")
     void shouldGetAllContracts() throws Exception {
@@ -60,7 +53,7 @@ public class ContractControllerTest {
         clubRepository.saveAll(getClubList());
         footballerRepository.saveAll(getFootballerList());
         contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
-        //when
+        //when + then
         this.mockMvc.perform(get("/contracts/"))
                 .andDo(print())
                 .andExpectAll(

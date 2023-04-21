@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.score;
 
+import com.owczarczak.footballers.IntegrationTestBasedClass;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
@@ -9,7 +10,6 @@ import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerRepository;
 import com.owczarczak.footballers.match.Match;
 import com.owczarczak.footballers.match.MatchRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ScoreControllerTest {
+public class ScoreControllerTest extends IntegrationTestBasedClass {
     @Autowired
     private MockMvc mockMvc;
 
@@ -45,15 +45,6 @@ public class ScoreControllerTest {
     private ClubRepresentationRepository repRepository;
     @Autowired
     private MatchRepository matchRepository;
-
-    @AfterEach
-    void setup() {
-        scoreRepository.deleteAll();
-        matchRepository.deleteAll();
-        repRepository.deleteAll();
-        footballerRepository.deleteAll();
-        clubRepository.deleteAll();
-    }
 
     @Test
     void shouldGetAllScores() throws Exception {

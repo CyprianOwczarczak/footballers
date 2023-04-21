@@ -1,9 +1,9 @@
 package com.owczarczak.footballers.clubRepresentation;
 
+import com.owczarczak.footballers.IntegrationTestBasedClass;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ClubRepresentationTest {
+public class ClubRepresentationTest extends IntegrationTestBasedClass {
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,12 +34,6 @@ public class ClubRepresentationTest {
 
     @Autowired
     private ClubRepository clubRepository;
-
-    @AfterEach
-    void setup() {
-        representationRepository.deleteAll();
-        clubRepository.deleteAll();
-    }
 
     @Test
     @DisplayName("Should get all club representations")

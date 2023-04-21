@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.match;
 
+import com.owczarczak.footballers.IntegrationTestBasedClass;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
@@ -7,9 +8,6 @@ import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerRepository;
-import lombok.Builder;
-import lombok.Data;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -33,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MatchControllerTest {
+public class MatchControllerTest extends IntegrationTestBasedClass {
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,14 +46,6 @@ public class MatchControllerTest {
 
     @Autowired
     FootballerRepository footballerRepository;
-
-    @AfterEach
-    void setup() {
-        matchRepository.deleteAll();
-        representationRepository.deleteAll();
-        clubRepository.deleteAll();
-        footballerRepository.deleteAll();
-    }
 
     @Test
     @DisplayName("Should get all matches")
@@ -146,7 +135,7 @@ public class MatchControllerTest {
         List<ClubRepresentation> representationList = TestDataFactory.getRepresentationList1(clubList);
         List<Match> matchList = matchRepository.saveAll(TestDataFactory.getMatchList(representationList));
 
-        Long matchId = matchList.get(0).getId() + 1000;
+        long matchId = matchList.get(0).getId() + 1000;
 
         //when + then
         this.mockMvc.perform(delete("/matches/" + matchId))
@@ -177,12 +166,12 @@ public class MatchControllerTest {
                 "clubId":%d,
                 "footballersIdList": [%d,%d]
                 },
-                
+                                
                 "hostRepresentation":{
                 "clubId":%d,
                 "footballersIdList": [%d,%d]
                 },
-                
+                                
                 "nameOfReferee":"PostReferee",
                 "date":"2000-01-01T17:09:42.411"
                 }

@@ -1,10 +1,10 @@
 package com.owczarczak.footballers.footballer;
 
+import com.owczarczak.footballers.IntegrationTestBasedClass;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class FootballerControllerTest {
+class FootballerControllerTest extends IntegrationTestBasedClass {
 
     @Autowired
     private FootballerRepository footballerRepository;
@@ -49,13 +49,6 @@ class FootballerControllerTest {
 
     @Autowired
     private ClubRepresentationRepository representationRepository;
-
-    @AfterEach
-    void setup() {
-        representationRepository.deleteAll();
-        clubRepository.deleteAll();
-        footballerRepository.deleteAll();
-    }
 
     @Autowired
     FootballerService service;
