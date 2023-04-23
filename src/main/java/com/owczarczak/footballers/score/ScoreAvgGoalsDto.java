@@ -3,18 +3,16 @@ package com.owczarczak.footballers.score;
 import lombok.Builder;
 import lombok.Data;
 
-import java.math.BigInteger;
-
 @Data
 @Builder
 public class ScoreAvgGoalsDto {
-    private Integer id;
+    private Long id;
     private String footballerName;
-    private BigInteger numberOfGoals;
-    private BigInteger numberOfMatches;
+    private Integer numberOfGoals;
+    private Integer numberOfMatches;
     private Double averageGoals;
 
-    public ScoreAvgGoalsDto(Integer id, String footballerName, BigInteger numberOfGoals, BigInteger numberOfMatches, Double averageGoals) {
+    public ScoreAvgGoalsDto(Long id, String footballerName, Integer numberOfGoals, Integer numberOfMatches, Double averageGoals) {
         this.id = id;
         this.footballerName = footballerName;
         this.numberOfGoals = numberOfGoals;

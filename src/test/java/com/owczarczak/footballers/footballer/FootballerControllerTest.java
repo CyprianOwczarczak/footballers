@@ -1,10 +1,10 @@
 package com.owczarczak.footballers.footballer;
 
+import com.owczarczak.footballers.IntegrationTestBasedClass;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentation;
 import com.owczarczak.footballers.clubRepresentation.ClubRepresentationRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class FootballerControllerTest {
+class FootballerControllerTest extends IntegrationTestBasedClass {
 
     @Autowired
     private FootballerRepository footballerRepository;
@@ -49,13 +49,6 @@ class FootballerControllerTest {
 
     @Autowired
     private ClubRepresentationRepository representationRepository;
-
-    @AfterEach
-    void setup() {
-        representationRepository.deleteAll();
-        clubRepository.deleteAll();
-        footballerRepository.deleteAll();
-    }
 
     @Autowired
     FootballerService service;
@@ -77,7 +70,7 @@ class FootballerControllerTest {
         footballerRepository.save(getFootballer1());
         footballerRepository.save(getFootballer2());
 
-        int footballerToBeReturned = footballerRepository.save(getFootballer3()).getId();
+        Long footballerToBeReturned = footballerRepository.save(getFootballer3()).getId();
         this.mockMvc.perform(get("/footballers/" + footballerToBeReturned))
                 .andDo(print())
                 .andExpectAll(getJsonValidationRules());
@@ -193,7 +186,7 @@ class FootballerControllerTest {
     @DisplayName("Should update footballer")
     void shouldUpdateFootballer() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
+        Long footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
 
         String request = """
                 {
@@ -218,7 +211,7 @@ class FootballerControllerTest {
     @DisplayName("Should fail to update footballer")
     void shouldNotUpdateFootballerWhenIdDoesntExist() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
+        Long footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
 
         String request = """
                 {
@@ -243,7 +236,7 @@ class FootballerControllerTest {
     @DisplayName("Should delete a footballer")
     void shouldDeleteFootballer() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerToBeDeleted = footballerRepository.save(getFootballer2()).getId();
+        Long footballerToBeDeleted = footballerRepository.save(getFootballer2()).getId();
         footballerRepository.save(getFootballer3());
         this.mockMvc.perform(delete("/footballers/" + footballerToBeDeleted))
                 .andDo(print())
@@ -257,7 +250,7 @@ class FootballerControllerTest {
     @DisplayName("Should not delete a footballer when id doesn't exist")
     void shouldNotDeleteFootballerWhenIdDoesntExist() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerToBeDeleted = footballerRepository.save(getFootballer2()).getId();
+        Long footballerToBeDeleted = footballerRepository.save(getFootballer2()).getId();
         footballerToBeDeleted += 100;
         this.mockMvc.perform(delete("/footballers/" + footballerToBeDeleted))
                 .andDo(print())
@@ -339,7 +332,7 @@ class FootballerControllerTest {
     @DisplayName("Should not update footballer when pesel, name and height is not provided")
     void shouldNotUpdateFootballerWhenPeselAndNameAndHeightIsNotProvided() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
+        Long footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
         String request = """
                 {
                 "id":footballer.id
@@ -359,7 +352,7 @@ class FootballerControllerTest {
     @DisplayName("Should not update footballer when pesel is not provided")
     void shouldNotUpdateFootballerWhenPeselIsNotProvided() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
+        Long footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
         String request = """
                 {
                 "id":footballer.id,
@@ -382,7 +375,7 @@ class FootballerControllerTest {
     @DisplayName("Should not update footballer when name is not provided")
     void shouldNotUpdateFootballerWhenNameIsNotProvided() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
+        Long footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
         String request = """
                 {
                 "id":footballer.id,
@@ -405,7 +398,7 @@ class FootballerControllerTest {
     @DisplayName("Should not update footballer when height is not provided")
     void shouldNotUpdateFootballerWhenHeightIsNotProvided() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
+        Long footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
         String request = """
                 {
                 "id":footballer.id,
@@ -428,21 +421,20 @@ class FootballerControllerTest {
     @DisplayName("Should not update footballer when id is not provided")
     void shouldNotUpdateFootballerWhenIdIsNotProvided() throws Exception {
         footballerRepository.save(getFootballer1());
-        int footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
+        Long footballerIdToBeUpdated = footballerRepository.save(getFootballer2()).getId();
         String request = """
                 {
                 "name":"testPlayer3",
                 "pesel":"333333",
                 "height":170
                 }
-                """.
-                replace("footballer.id", String.valueOf(footballerIdToBeUpdated));
+                """;
 
         this.mockMvc.perform(put("/footballers/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andDo(print())
-                .andExpectAll(status().isNotFound());
+                .andExpectAll(status().isBadRequest());
     }
 
     @Transactional

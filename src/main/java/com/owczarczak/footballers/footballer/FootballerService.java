@@ -36,7 +36,7 @@ public class FootballerService {
         return dtos;
     }
 
-    public Optional<FootballerDto> getFootballerById(@PathVariable int id) {
+    public Optional<FootballerDto> getFootballerById(@PathVariable Long id) {
         if (!repository.existsById(id)) {
             return Optional.empty();
         } else {
@@ -50,7 +50,7 @@ public class FootballerService {
         }
     }
 
-    public List<FootballerDto> getXHighestFootballers(int pageNumber, int numberOfPlayers) {
+    public List<FootballerDto> getXHighestFootballers(Integer pageNumber, Integer numberOfPlayers) {
         Pageable pageable = PageRequest.of(pageNumber, numberOfPlayers);
         Page<Footballer> footballersList = repository.findAllByOrderBxyHeightDesc(pageable);
 
@@ -98,7 +98,7 @@ public class FootballerService {
                 .build();
     }
 
-    public Optional<FootballerDto> updateFootballer(int id, FootballerDto footballerToBeUpdated) {
+    public Optional<FootballerDto> updateFootballer(FootballerDto footballerToBeUpdated) {
         Footballer updatedFootballer = Footballer.builder()
                 .id(footballerToBeUpdated.getId())
                 .pesel(footballerToBeUpdated.getPesel())
@@ -116,12 +116,12 @@ public class FootballerService {
 
     //Returns FootballerDtoMostMatches with id only
     public List<FootballerDtoMostMatches> getFootballersWhoPlayedInMostMatches() {
-        List<Integer[]> footballersList = repository.whichFootballersPlayedInMostMatches();
+        List<Long[]> footballersList = repository.whichFootballersPlayedInMostMatches();
         List<FootballerDtoMostMatches> dtos = new LinkedList<>();
-        for (Integer[] integers : footballersList) {
+        for (Long[] longs : footballersList) {
             FootballerDtoMostMatches dtoToBeAdded = FootballerDtoMostMatches.builder()
-                    .id(integers[0])
-                    .representationSize(integers[1])
+                    .id(longs[0])
+                    .representationSize(Math.toIntExact(longs[1]))
                     .build();
             dtos.add(dtoToBeAdded);
         }
@@ -129,7 +129,7 @@ public class FootballerService {
     }
 
     @Transactional
-    public void deleteFootballer(@PathVariable int id) {
+    public void deleteFootballer(@PathVariable Long id) {
         repository.deleteAllById(id);
     }
 
@@ -137,10 +137,10 @@ public class FootballerService {
         return repository.existsByPesel(pesel);
     }
 
-    public List<Footballer> convertIdToEntityList(List<Integer> idList) {
+    public List<Footballer> convertIdToEntityList(List<Long> idList) {
         List<Footballer> listToReturn = new LinkedList<>();
 
-        for (Integer id : idList) {
+        for (Long id : idList) {
             Footballer optionalFootballer = repository.findById(id).orElseThrow(RuntimeException::new);
 
             listToReturn.add(optionalFootballer);
@@ -148,11 +148,11 @@ public class FootballerService {
         return listToReturn;
     }
 
-    public List<Integer> convertEntityToIdList(List<Footballer> footballerList) {
-        List<Integer> listToReturn = new LinkedList<>();
+    public List<Long> convertEntityToIdList(List<Footballer> footballerList) {
+        List<Long> listToReturn = new LinkedList<>();
 
         for (Footballer footballer : footballerList) {
-            int id = footballer.getId();
+            Long id = footballer.getId();
             listToReturn.add(id);
         }
         return listToReturn;

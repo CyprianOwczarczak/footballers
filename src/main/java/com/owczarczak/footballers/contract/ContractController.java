@@ -1,5 +1,6 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.club.ClubDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +33,13 @@ public class ContractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContractDto> getContractById(@PathVariable int id) {
+    public ResponseEntity<ContractDto> getContractById(@PathVariable Long id) {
         Optional<ContractDto> foundDtoOptional = service.getContractById(id);
         return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
 
     @GetMapping("/contractsForFootballer/{id}")
-    public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable int id) {
+    public ResponseEntity<Object> getListOfContractsForSpecificFootballer(@PathVariable Long id) {
         List<ContractDto> foundContractList = service.getListOfContractsForSpecificFootballer(id);
         if (foundContractList.isEmpty()) {
             return notFound().build();
@@ -47,18 +49,23 @@ public class ContractController {
     }
 
     @GetMapping("/lengthOf/{clubId}")
-    public ContractLengthDto getMeanLengthOfContractsInClub(@PathVariable("clubId") int clubId) {
+    public ContractLengthDto getMeanLengthOfContractsInClub(@PathVariable("clubId") Long clubId) {
         return service.getMeanLenghtOfContractsInClub(clubId);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteContract(@PathVariable int id) {
+    ResponseEntity<?> deleteContract(@PathVariable Long id) {
         service.deleteContractById(id);
         return ok().build();
     }
 
     @PostMapping("/")
     ResponseEntity<?> addContract(@RequestBody ContractAddDto newContractDto) {
+        ArrayList<String> errorList = returnErrorList(newContractDto);
+        if (!errorList.isEmpty()) {
+            return ResponseEntity.badRequest().body(errorList);
+        }
+
         ContractAddDto result = service.addContract(newContractDto);
 
         return ResponseEntity
@@ -67,13 +74,34 @@ public class ContractController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> extendContractLength(@PathVariable int id,
-                                           @RequestParam("daysToAdd") int daysToAdd) {
+    ResponseEntity<?> extendContractLength(@PathVariable Long id,
+                                           @RequestParam("daysToAdd") Long daysToAdd) {
         if (service.getContractById(id).isEmpty()) {
             return notFound().build();
         } else {
             Optional<ContractDto> result = service.extendContractLength(id, daysToAdd);
             return ok().body(result);
         }
+    }
+
+    private ArrayList<String> returnErrorList(ContractAddDto newContractDto) {
+        ArrayList<String> errorList = new ArrayList<>();
+
+        if (newContractDto.getClubId() == null) {
+            errorList.add("You have to provide a club id !");
+        }
+        if (newContractDto.getFootballerId() == null) {
+            errorList.add("You have to provide a footballer id !");
+        }
+        if (newContractDto.getContractStart() == null) {
+            errorList.add("You have to provide a contract start date !");
+        }
+        if (newContractDto.getContractEnd() == null) {
+            errorList.add("You have to provide a contract end date !");
+        }
+        if (newContractDto.getSalary() == null) {
+            errorList.add("You have to provide a salary !");
+        }
+        return errorList;
     }
 }

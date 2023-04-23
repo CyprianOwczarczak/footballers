@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "match_id")
@@ -33,18 +33,18 @@ public class Score {
     @JoinColumn(name = "footballer_id")
     private Footballer footballer;
 
-    private int minuteScored;
+    private Integer minuteScored;
 
     public Score() {
     }
 
-    public Score(Match match, Footballer footballer, int minuteScored) {
+    public Score(Match match, Footballer footballer, Integer minuteScored) {
         this.match = match;
         this.footballer = footballer;
         this.minuteScored = minuteScored;
     }
 
-    public Score(int id, Match match, Footballer footballer, int minuteScored) {
+    public Score(Long id, Match match, Footballer footballer, Integer minuteScored) {
         this.id = id;
         this.match = match;
         this.footballer = footballer;

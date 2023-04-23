@@ -25,7 +25,7 @@ import java.util.List;
 public class ClubRepresentation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "club_id")
@@ -49,7 +49,7 @@ public class ClubRepresentation {
         this.footballerList = footballerList;
     }
 
-    public ClubRepresentation(int id, Club club, List<Footballer> footballerList) {
+    public ClubRepresentation(Long id, Club club, List<Footballer> footballerList) {
         this.id = id;
         this.club = club;
         this.footballerList = footballerList;

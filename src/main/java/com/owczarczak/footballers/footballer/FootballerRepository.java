@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface FootballerRepository extends JpaRepository<Footballer, Integer> {
+public interface FootballerRepository extends JpaRepository<Footballer, Long> {
 
     @Query("SELECT a FROM Footballer a ORDER BY a.height DESC")
     Page<Footballer> findAllByOrderBxyHeightDesc(Pageable pageable);
@@ -31,7 +31,7 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
 
     @Modifying
     @Query("DELETE FROM Footballer f WHERE f.id = :id")
-    void deleteAllById(@Param("id") int id);
+    void deleteAllById(@Param("id") Long id);
 
     //Which footballers played in the biggest amount of matches (no "limit" option for JPQL)
     @Query(value = """
@@ -39,5 +39,5 @@ public interface FootballerRepository extends JpaRepository<Footballer, Integer>
             from Footballer f
             order by size(f.representationList) desc
             """)
-    List<Integer[]> whichFootballersPlayedInMostMatches();
+    List<Long[]> whichFootballersPlayedInMostMatches();
 }

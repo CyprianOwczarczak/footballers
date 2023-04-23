@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @Builder
 public class ClubRepresentationDto {
-    private int id;
-    private int clubId;
+    private Long id;
+    private Long clubId;
     private String clubName;
     private List<Footballer> footballerList;
 }

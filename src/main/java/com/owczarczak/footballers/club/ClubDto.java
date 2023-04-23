@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class ClubDto {
-    private int id;
+    private Long id;
 
     private String name;
 

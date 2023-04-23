@@ -24,7 +24,7 @@ public class Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "host_representation_id")
@@ -41,7 +41,7 @@ public class Match {
     public Match() {
     }
 
-    public Match(int id, ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, LocalDateTime date) {
+    public Match(Long id, ClubRepresentation host, ClubRepresentation guest, String nameOfReferee, LocalDateTime date) {
         this.id = id;
         this.host = host;
         this.guest = guest;

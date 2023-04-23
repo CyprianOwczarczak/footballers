@@ -24,7 +24,7 @@ import java.time.LocalDate;
 public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "club_id")
@@ -38,12 +38,12 @@ public class Contract {
 
     private LocalDate contractEnd;
 
-    private int salary;
+    private Integer salary;
 
     public Contract() {
     }
 
-    public Contract(Club club, Footballer footballer, LocalDate contractStart, LocalDate contractEnd, int salary) {
+    public Contract(Club club, Footballer footballer, LocalDate contractStart, LocalDate contractEnd, Integer salary) {
         this.club = club;
         this.footballer = footballer;
         this.contractStart = contractStart;
@@ -51,7 +51,7 @@ public class Contract {
         this.salary = salary;
     }
 
-    public Contract(int id, Club club, Footballer footballer, LocalDate contractStart, LocalDate contractEnd, int salary) {
+    public Contract(Long id, Club club, Footballer footballer, LocalDate contractStart, LocalDate contractEnd, Integer salary) {
         this.id = id;
         this.club = club;
         this.footballer = footballer;

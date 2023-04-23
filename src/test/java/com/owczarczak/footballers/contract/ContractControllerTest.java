@@ -1,11 +1,11 @@
 package com.owczarczak.footballers.contract;
 
+import com.owczarczak.footballers.IntegrationTestBasedClass;
 import com.owczarczak.footballers.TestDataFactory;
 import com.owczarczak.footballers.club.Club;
 import com.owczarczak.footballers.club.ClubRepository;
 import com.owczarczak.footballers.footballer.Footballer;
 import com.owczarczak.footballers.footballer.FootballerRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,12 +27,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ContractControllerTest {
+public class ContractControllerTest extends IntegrationTestBasedClass {
 
     @Autowired
     private ContractRepository contractRepository;
@@ -46,13 +47,6 @@ public class ContractControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @AfterEach
-    void setup() {
-        contractRepository.deleteAll();
-        clubRepository.deleteAll();
-        footballerRepository.deleteAll();
-    }
-
     @Test
     @DisplayName("Should get all contracts")
     void shouldGetAllContracts() throws Exception {
@@ -60,7 +54,7 @@ public class ContractControllerTest {
         clubRepository.saveAll(getClubList());
         footballerRepository.saveAll(getFootballerList());
         contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
-        //when
+        //when + then
         this.mockMvc.perform(get("/contracts/"))
                 .andDo(print())
                 .andExpectAll(
@@ -77,7 +71,7 @@ public class ContractControllerTest {
         List<Contract> contractList =
                 contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
 
-        int contractId = contractList.get(0).getId();
+        Long contractId = contractList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(get("/contracts/" + contractId))
@@ -105,7 +99,7 @@ public class ContractControllerTest {
         contractRepository.saveAll(getContractList1(clubList, footballerList));
 
         //Getting the id of the first footballer from the list to check contracts for him
-        int searchedId = footballerList.get(0).getId();
+        Long searchedId = footballerList.get(0).getId();
         // when + then
         this.mockMvc.perform(get("/contracts/contractsForFootballer/" + searchedId))
                 .andDo(print())
@@ -122,7 +116,7 @@ public class ContractControllerTest {
         List<Club> clubList = clubRepository.saveAll(getClubList());
         footballerRepository.saveAll(getFootballerList());
         contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
-        int clubId = clubList.get(0).getId();
+        Long clubId = clubList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(get("/contracts/lengthOf/" + clubId))
@@ -138,8 +132,8 @@ public class ContractControllerTest {
         List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
         List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
 
-        int clubId = clubList.get(0).getId();
-        int footballerId = footballerList.get(0).getId();
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
 
         String request = """
                 {
@@ -161,6 +155,146 @@ public class ContractControllerTest {
     }
 
     @Test
+    @DisplayName("Should not add contract when club id is not provided")
+    void shoudlNotAddContractWhenClubIdNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "footballerId":%d,
+                "contractStart":"2012-12-30",
+                "contractEnd":"2015-12-30",
+                "salary":1000
+                }
+                """.formatted(footballerId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a club id !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add contract when footballer id is not provided")
+    void shoudlNotAddContractWhenFootballerIdNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "contractStart":"2012-12-30",
+                "contractEnd":"2015-12-30",
+                "salary":1000
+                }
+                """.formatted(clubId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a footballer id !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add contract when contract start id is not provided")
+    void shoudlNotAddContractWhenContractStartNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "footballerId":%d,
+                "contractEnd":"2015-12-30",
+                "salary":1000
+                }
+                """.formatted(clubId, footballerId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a contract start date !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add contract when contract end is not provided")
+    void shoudlNotAddContractWhenContractEndNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "footballerId":%d,
+                "contractStart":"2012-12-30",
+                "salary":1000
+                }
+                """.formatted(clubId, footballerId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a contract end date !"]"""));
+    }
+
+    @Test
+    @DisplayName("Should not add contract when salary is not provided")
+    void shoudlNotAddContractWhenSalaryNotProvided() throws Exception {
+        //given
+        List<Club> clubList = clubRepository.saveAll(TestDataFactory.getClubList());
+        List<Footballer> footballerList = footballerRepository.saveAll(TestDataFactory.getFootballerList());
+
+        Long clubId = clubList.get(0).getId();
+        Long footballerId = footballerList.get(0).getId();
+
+        String request = """
+                {
+                "clubId":%d,
+                "footballerId":%d,
+                "contractStart":"2012-12-30",
+                "contractEnd":"2015-12-30"
+                }
+                """.formatted(clubId, footballerId);
+
+        this.mockMvc.perform(post("/contracts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest(),
+                        content().string("""
+                                ["You have to provide a salary !"]"""));
+    }
+
+    @Test
     @DisplayName("Should delete contract by id")
     void shouldDeleteContractById() throws Exception {
         //given
@@ -169,7 +303,7 @@ public class ContractControllerTest {
         List<Contract> contractList =
                 contractRepository.saveAll(getContractList1(clubRepository.findAll(), footballerRepository.findAll()));
 
-        int clubId = contractList.get(0).getId();
+        Long clubId = contractList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(delete("/contracts/" + clubId))
@@ -194,7 +328,7 @@ public class ContractControllerTest {
         List<Contract> contractList =
                 contractRepository.saveAll(getContractList1(clubList, footballerList));
 
-        int idToUpdate = contractList.get(0).getId();
+        Long idToUpdate = contractList.get(0).getId();
 
         //when + then
         this.mockMvc.perform(put("/contracts/" + idToUpdate + "?daysToAdd=12"))

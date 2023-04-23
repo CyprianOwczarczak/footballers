@@ -26,7 +26,7 @@ public class ClubRepresentationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClubRepresentationDto> getClubRepresentationById(@PathVariable int id) {
+    public ResponseEntity<ClubRepresentationDto> getClubRepresentationById(@PathVariable Long id) {
         Optional<ClubRepresentationDto> foundDtoOptional = service.getClubRepresentationById(id);
         if (foundDtoOptional.isEmpty()) {
             return notFound().build();
@@ -36,7 +36,7 @@ public class ClubRepresentationController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteClubRepresentation(@PathVariable int id) {
+    ResponseEntity<?> deleteClubRepresentation(@PathVariable Long id) {
         service.deleteClubRepresentation(id);
         return ok().build();
     }

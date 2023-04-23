@@ -33,7 +33,7 @@ public class MatchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MatchDto> getMatchById(@PathVariable int id) {
+    public ResponseEntity<MatchDto> getMatchById(@PathVariable Long id) {
         Optional<MatchDto> foundDtoOptional = service.getMatchById(id);
         return foundDtoOptional.map(ResponseEntity::ok).orElseGet(() -> notFound().build());
     }
@@ -56,7 +56,7 @@ public class MatchController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteMatch(@PathVariable int id) {
+    ResponseEntity<?> deleteMatch(@PathVariable Long id) {
         service.deleteMatchById(id);
         return ok().build();
     }
@@ -64,11 +64,17 @@ public class MatchController {
     private ArrayList<String> returnErrorList(MatchAddDto newMatchDto) {
         ArrayList<String> errorList = new ArrayList<>();
 
-        if (newMatchDto.getGuestRepresentation() == null) {
-            errorList.add("You have to provide a guest !");
+        if (newMatchDto.getGuestRepresentation().getClubId() == null) {
+            errorList.add("You have to provide a guest's club id !");
         }
-        if (newMatchDto.getHostRepresentation() == null) {
-            errorList.add("You have to provide a host !");
+        if (newMatchDto.getGuestRepresentation().getFootballersIdList() == null) {
+            errorList.add("You have to provide a guest's footballers list id !");
+        }
+        if (newMatchDto.getHostRepresentation().getClubId() == null) {
+            errorList.add("You have to provide a host's club id !");
+        }
+        if (newMatchDto.getHostRepresentation().getFootballersIdList() == null) {
+            errorList.add("You have to provide a host's footballers list id !");
         }
         if (StringUtils.isEmpty(newMatchDto.getNameOfReferee())) {
             errorList.add("You have to provide a referee name !");

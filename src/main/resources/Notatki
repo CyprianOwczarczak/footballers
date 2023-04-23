@@ -192,3 +192,12 @@ Sprawdzić czy wszystkie testy się odpalają
 20.04
 Jak działają wyjątki, łapanie rzucanie z przykładami, rodzaje wyjątków, które należy łapać a które nie i dlaczego
 Jak utworzyć i rzucić własny wyjątek,
+
+21.04
+Zamienić wszystkie int na Long
+Dodać errorlistę przy reszcie method Post
+Unhappy path testy do method Post (z errorlisty)
+Klasa bazowa której damy wymagane adnotacje i potem wszystkie klasy testowe będą dziedziczyć po tej klasie
+Codility --> https://app.codility.com/programmers/lessons/1-iterations/
+Postman requesty dopisać
+

@@ -7,8 +7,8 @@ import lombok.Data;
 @Builder
 public class ScoreAddDto {
 
-    private int id;
-    private int matchId;
-    private int footballerId;
-    private int minuteScored;
+    private Long id;
+    private Long matchId;
+    private Long footballerId;
+    private Integer minuteScored;
 }

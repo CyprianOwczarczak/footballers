@@ -9,14 +9,14 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface ContractRepository extends JpaRepository<Contract, Integer> {
+public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     @Query("""
             select c
             from Contract c
             where c.footballer.id = :fId
             """)
-    List<Contract> getListOfContractsForSpecificFootballer(@Param("fId") int fId);
+    List<Contract> getListOfContractsForSpecificFootballer(@Param("fId") Long fId);
 
     //The lenght of a contract in days, average in a given club
     @Query(value = """
@@ -26,7 +26,7 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
             where c.club_id = :clubId
             group by c.club_id
             """, nativeQuery = true)
-    BigDecimal getMeanLenghtOfContractsInClub(@Param("clubId") int clubId);
+    BigDecimal getMeanLenghtOfContractsInClub(@Param("clubId") Long clubId);
 
     //This query gets Contracts and orders them by salary
     @Query("SELECT c FROM Contract c ORDER BY c.salary DESC")
